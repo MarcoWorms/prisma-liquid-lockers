@@ -433,6 +433,14 @@ const App = () => {
       </div>
       {data && <ComparisonTable data={data} attributes={attributes} />}
       <div className="undertable">
+        <span>Week {data?.prisma_week}</span>
+
+        <div className="countdown-container-text">
+          <div className="countdown-container">
+            <Countdown date={getNextResetTime()} renderer={CountdownRenderer} />
+          </div>
+        </div>
+
         {data?.updated_at && (
           <div
             className="updated-at"
@@ -444,13 +452,6 @@ const App = () => {
               : `Updated At: ${new Date(data.updated_at * 1000).toLocaleString()}`}
           </div>
         )}
-
-        <div className="countdown-container-text">
-          Prisma week {data?.prisma_week} ends in:
-          <div className="countdown-container">
-            <Countdown date={getNextResetTime()} renderer={CountdownRenderer} />
-          </div>
-        </div>
       </div>
 
       {data &&
