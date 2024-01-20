@@ -108,6 +108,17 @@ const CustomTooltip = ({ active, payload, label }) => {
 
   return null;
 };
+// Custom tick formatter for the YAxis
+const yAxisTickFormatter = (value, attribute) => {
+  return formatValue(value, attribute);
+};
+
+// Custom tick formatter for the XAxis
+const xAxisTickFormatter = (value) => {
+  // Assuming the value is in the format "Week X"
+  const weekNumber = value.replace(/Week /, '');
+  return `W${weekNumber}`; // Shortened week format
+};
 
 const LineAreaChart = ({ data, attribute }) => (
   <div className="chart-container">
@@ -117,13 +128,13 @@ const LineAreaChart = ({ data, attribute }) => (
         data={data}
         margin={{
           top: 20,
-          right: 30,
-          left: 20,
+          right: 40,
+          left: 30,
           bottom: 5,
         }}
       >
-        <XAxis dataKey="name" />
-        <YAxis />
+        <XAxis dataKey="name" tickFormatter={xAxisTickFormatter} />
+        <YAxis tickFormatter={(value) => yAxisTickFormatter(value, attribute)} />
         <Tooltip
           content={<CustomTooltip />}
         />
@@ -168,10 +179,10 @@ const getNextResetTime = () => {
 const CountdownRenderer = ({ days, hours, minutes, seconds }) => {
   return (
     <span>
-      {String(days).padStart(2, '0')}:
-      {String(hours).padStart(2, '0')}:
-      {String(minutes).padStart(2, '0')}:
-      {String(seconds).padStart(2, '0')}
+      {String(days).padStart(2, '0')}d{' '}
+      {String(hours).padStart(2, '0')}h{' '}
+      {String(minutes).padStart(2, '0')}m{' '}
+      {String(seconds).padStart(2, '0')}s
     </span>
   );
 };
@@ -189,17 +200,13 @@ const ComparisonTable = ({ data, attributes }) => {
     <div className="table-container">
       <table>
         <colgroup>
-          <col span="1" style={{ width: "33%" }} />
-          <col span="1" style={{ width: "33%" }} />
-          <col span="1" style={{ width: "33%" }} />
+          <col span="1" style={{ width: "24%" }} />
+          <col span="1" style={{ width: "43%" }} />
+          <col span="1" style={{ width: "43%" }} />
         </colgroup>
         <thead>
           <tr>
-            <th className="countdown-container-text">
-              Week {data?.prisma_week} ends in:
-              <div className="countdown-container">
-                <Countdown date={getNextResetTime()} renderer={CountdownRenderer} />
-              </div>
+            <th>
             </th>
             <th>
               <a
@@ -341,14 +348,28 @@ const useDarkMode = () => {
   return [theme, setTheme];
 };
 
+const formatRelativeTime = (timestamp) => {
+  const now = Date.now();
+  const diffInSeconds = Math.floor((now - timestamp) / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 1) return 'less than a minute ago';
+  if (diffInMinutes === 1) return '1 minute ago';
+  return `${diffInMinutes} minutes ago`;
+};
 
 const App = () => {
   const [data, setData] = useState(null);
   const [paletteIndex, setPaletteIndex] = useState(0);
   const [theme, setTheme] = useDarkMode();
+  const [showRelativeTime, setShowRelativeTime] = useState(true);
+
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
+  const toggleUpdatedTime = () => {
+    setShowRelativeTime(!showRelativeTime);
   };
 
   useEffect(() => {
@@ -358,7 +379,7 @@ const App = () => {
           "https://wavey.info/data/prisma_liquid_locker_data.json"
         );
         const newData = await response.json();
-        setData(newData); // Set the entire data object
+        setData(newData); 
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -366,7 +387,6 @@ const App = () => {
 
     fetchData();
 
-    // Function to handle key press
     const handleKeyPress = (event) => {
       if (event.code === "KeyP") {
         const palettes = Array.from({ length: 6 }).map(
@@ -381,10 +401,8 @@ const App = () => {
       }
     };
 
-    // Add event listener for key press
     window.addEventListener("keydown", handleKeyPress);
 
-    // Cleanup event listener
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
@@ -397,12 +415,9 @@ const App = () => {
     "global_weight_ratio",
     // "weight"
   ];
-  console.log(data)
+
   return (
       <div className="app-container">
-      {/* <button onClick={toggleTheme} className="dark-mode-switch">
-        {theme === 'light' ? 'Go Dark' : 'Go Light'}
-      </button> */}
 
       <div class = 'toggle-switch' >
         <label>
@@ -417,7 +432,27 @@ const App = () => {
       </h1>
       </div>
       {data && <ComparisonTable data={data} attributes={attributes} />}
-      {data?.updated_at && <div className="updated-at">Table Updated At: {new Date(data.updated_at * 1000).toLocaleString()}</div>}
+      <div className="undertable">
+        {data?.updated_at && (
+          <div
+            className="updated-at"
+            onClick={toggleUpdatedTime}
+            style={{ cursor: 'pointer' }}
+          >
+            {showRelativeTime
+              ? `Updated: ${formatRelativeTime(data.updated_at * 1000)}`
+              : `Updated At: ${new Date(data.updated_at * 1000).toLocaleString()}`}
+          </div>
+        )}
+
+        <div className="countdown-container-text">
+          Prisma week {data?.prisma_week} ends in:
+          <div className="countdown-container">
+            <Countdown date={getNextResetTime()} renderer={CountdownRenderer} />
+          </div>
+        </div>
+      </div>
+
       {data &&
         attributes.map((attribute) => (
           <div key={attribute} className="chart-wrapper">

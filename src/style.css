@@ -1,14 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;600;900&display=swap");
-
-
-@font-face {
-  font-family: 'Alarm';
-  src: url('./digital-7-mono.ttf') format('embedded-opentype'), /* Internet Explorer */
-       url('./digital-7-mono.ttf') format('woff2'),             /* Super Modern Browsers */
-       url('./digital-7-mono.ttf') format('woff'),              /* Pretty Modern Browsers */
-       url('./digital-7-mono.ttf') format('truetype'),          /* Safari, Android, iOS */
-       url('./digital-7-mono.ttf') format('svg');               /* Legacy iOS */
-}
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;600;900&family=Sometype+Mono:wght@400;600&display=swap");
 
 :root {
   --color-text: #000;
@@ -51,6 +41,8 @@ body {
   background-color: var(--color-background);
   color: var(--color-text);
   font-family: "Red Hat Display", sans-serif;
+  /* font-family: 'Sometype Mono', monospace; */
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -210,10 +202,6 @@ tbody tr td:not(:first-child) {
   font-weight: 100;
 }
 
-.colgroup col {
-  width: 33%;
-}
-
 .palette-1 {
   --color-text: #000;
   --color-y-prisma: #414141;
@@ -256,44 +244,33 @@ tbody tr td:not(:first-child) {
   --color-background: #f2afef;
 }
 
-.countdown-container-text {
-  font-size: 1em;
+.countdown-container {
+  /* font-size: 1.2em; */
+  width: auto;
+  display: inline-block;
+  margin: 0;
+  margin-left: 5px;
 }
 
-
-.countdown-container {
-  font-size: 3em;
-  font-family: 'Alarm', monospace;
-  width: 100%;
+.countdown-container-text {
+  display: inline-block;
 }
 
 @media only screen and (max-width: 600px) {
   .link-container img {
     width: 55px;
   }
-  .countdown-container {
-    font-size: 2em;
-  }
 }
 
-@media only screen and (max-width: 400px) {
-  .countdown-container-text {
-    font-size: 0.8em;
-  }
-
-  .countdown-container {
-    font-size: 1.5em;
-  }
-}
-
-.updated-at {
-  font-size: 1em;
-  margin-bottom: 40px;
-  width: 90%;
+.undertable {
   display: flex;
-  justify-content: flex-end;
+  font-family: 'Sometype Mono', monospace;
+  width: 90%;
+  margin-bottom: 40px;
+  font-size: 1em;
+  flex-direction: column;
+  align-items: flex-end;
 }
-
 
 .dark {
   --color-text: #fff;
@@ -301,13 +278,6 @@ tbody tr td:not(:first-child) {
   --color-y-prisma: #545454;
   --color-cvx-prisma: #a9a9a9;
 }
-
-
-
-
-
-
-
 
 .toggle-switch {
   position: absolute;
