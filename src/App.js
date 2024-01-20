@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
+import Countdown from "react-countdown";
 import {
   LineChart,
   Line,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
@@ -19,9 +19,9 @@ const colors = {
 const formatAttributeName = (attribute) => {
   switch (attribute) {
     case "peg":
-      return "LOCKER PEG";
+      return "PEG";
     case "lock_gain":
-      return "LOCKS THIS WEEK";
+      return "LOCKS BY WEEK";
     case "current_boost_multiplier":
       return "BOOST MULTIPLIER";
     case "global_weight_ratio":
@@ -45,6 +45,7 @@ const formatValue = (value, attribute) => {
     });
   }
 };
+
 const transformData = (data) => {
   const cvxPrismaData = data.liquid_lockers.cvxPrisma.weekly_data;
   const yPRISMAData = data.liquid_lockers.yPRISMA.weekly_data;
@@ -91,6 +92,23 @@ const transformDataForChart = (data, attribute) => {
   return mergedData;
 };
 
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip" style={{ backgroundColor: "var(--color-background)" }}>
+        <p className="label">{label}</p>
+        {payload.map((entry, index) => (
+          <p key={`item-${index}`} style={{ color: entry.color }}>
+            {formatAttributeName(entry.name)}: {formatValue(entry.value, entry.name)}
+          </p>
+        ))}
+      </div>
+    );
+  }
+
+  return null;
+};
+
 const LineAreaChart = ({ data, attribute }) => (
   <div className="chart-container">
     <h3 className="chart-title">{formatAttributeName(attribute)}</h3>
@@ -104,11 +122,10 @@ const LineAreaChart = ({ data, attribute }) => (
           bottom: 5,
         }}
       >
-        {/* <CartesianGrid strokeDasharray="10" /> */}
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip
-          contentStyle={{ backgroundColor: "var(--color-background)" }}
+          content={<CustomTooltip />}
         />
         <Legend />
         <Line
@@ -140,14 +157,31 @@ const LineAreaChart = ({ data, attribute }) => (
   </div>
 );
 
+const getNextResetTime = () => {
+  const now = new Date();
+  const nextReset = new Date(now);
+  nextReset.setUTCDate(now.getUTCDay() >= 4 ? now.getUTCDate() + (11 - now.getUTCDay()) : now.getUTCDate() + (4 - now.getUTCDay()));
+  nextReset.setUTCHours(0, 0, 0, 0);
+  return nextReset;
+};
+
+const CountdownRenderer = ({ days, hours, minutes, seconds }) => {
+  return (
+    <span>
+      {String(days).padStart(2, '0')}:
+      {String(hours).padStart(2, '0')}:
+      {String(minutes).padStart(2, '0')}:
+      {String(seconds).padStart(2, '0')}
+    </span>
+  );
+};
+
 const ComparisonTable = ({ data, attributes }) => {
   if (!data || !data.liquid_lockers) return null;
 
-  // Extract the APR data from the root of cvxPrisma and yPRISMA
   const cvxPrismaAPRData = data.liquid_lockers.cvxPrisma;
   const yPRISMAAPRData = data.liquid_lockers.yPRISMA;
 
-  // Extract the last week's data from both cvxPrisma and yPRISMA
   const cvxPrismaLastWeekData = cvxPrismaAPRData.weekly_data.slice(-1)[0] || {};
   const yPRISMALastWeekData = yPRISMAAPRData.weekly_data.slice(-1)[0] || {};
 
@@ -161,22 +195,21 @@ const ComparisonTable = ({ data, attributes }) => {
         </colgroup>
         <thead>
           <tr>
-            <th></th>
+            <th className="countdown-container-text">
+              Week {data?.prisma_week} ends in:
+              <div className="countdown-container">
+                <Countdown date={getNextResetTime()} renderer={CountdownRenderer} />
+              </div>
+            </th>
             <th>
               <a
                 target="_blank"
-                style={{
-                  color: "var(--color-text)",
-                  fontSize: 12,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
+                className="link-container"
                 href="https://yprisma.yearn.fi/"
               >
                 <img
                   src="https://yprisma.yearn.fi/_next/image?url=https%3A%2F%2Fassets.smold.app%2Fapi%2Ftoken%2F1%2F0xe3668873D944E4A949DA05fc8bDE419eFF543882%2Flogo-128.png&w=64&q=75"
-                  width="64px"
+                  width="70px"
                 />
                 yPRISMA
               </a>
@@ -184,18 +217,12 @@ const ComparisonTable = ({ data, attributes }) => {
             <th>
               <a
                 target="_blank"
-                style={{
-                  color: "var(--color-text)",
-                  fontSize: 12,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
+                className="link-container"
                 href="https://prisma.convexfinance.com/"
               >
                 <img
                   src="https://assets.coingecko.com/coins/images/32961/standard/cvxprisma.png?1700026172"
-                  width="64px"
+                  width="70px"
                 />
                 cvxPrisma
               </a>
@@ -301,9 +328,28 @@ const ComparisonTable = ({ data, attributes }) => {
   );
 };
 
+const useDarkMode = () => {
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove(theme === 'light' ? 'dark' : 'light');
+    root.classList.add(theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  return [theme, setTheme];
+};
+
+
 const App = () => {
   const [data, setData] = useState(null);
   const [paletteIndex, setPaletteIndex] = useState(0);
+  const [theme, setTheme] = useDarkMode();
+
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -343,23 +389,35 @@ const App = () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
   }, [paletteIndex]);
-
+  
   const attributes = [
     "peg",
     "lock_gain",
     "current_boost_multiplier",
     "global_weight_ratio",
-    // "weight" // This attribute is skipped in the table
+    // "weight"
   ];
-
+  console.log(data)
   return (
-    <div className="app-container">
+      <div className="app-container">
+      {/* <button onClick={toggleTheme} className="dark-mode-switch">
+        {theme === 'light' ? 'Go Dark' : 'Go Light'}
+      </button> */}
+
+      <div class = 'toggle-switch' >
+        <label>
+          <input type='checkbox' onClick={toggleTheme} defaultChecked={theme === 'light'}/>
+          <span className='slider'></span>
+        </label>
+      </div>
+
       <div className="title-container">
-        <h1 className="neon-text">
-          <span className="block-line">Prisma Liquid Lockers</span>
-        </h1>
+      <h1 className="neon-text">
+        <span className="block-line">Prisma Liquid Lockers</span>
+      </h1>
       </div>
       {data && <ComparisonTable data={data} attributes={attributes} />}
+      {data?.updated_at && <div className="updated-at">Table Updated At: {new Date(data.updated_at * 1000).toLocaleString()}</div>}
       {data &&
         attributes.map((attribute) => (
           <div key={attribute} className="chart-wrapper">
