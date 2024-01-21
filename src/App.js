@@ -177,9 +177,9 @@ const ComparisonTable = ({ data, attributes }) => {
     <div className="table-container">
       <table>
         <colgroup>
-          <col className="col1" span="1" style={{ width: "33%" }} />
-          <col className="col2" span="1" style={{ width: "33%" }} />
-          <col className="col3" span="1" style={{ width: "33%" }} />
+          <col className="col1" span="1" style={{ width: "24%" }} />
+          <col className="col2" span="1" style={{ width: "38%" }} />
+          <col className="col3" span="1" style={{ width: "38%" }} />
         </colgroup>
         <thead>
           <tr>
@@ -418,7 +418,7 @@ const App = () => {
 
       <div className="title-container">
       <h1 className="neon-text">
-        <span className="block-line">Prisma Liquid Lockers</span>
+        Prisma Liquid Lockers
       </h1>
       </div>
       {data && <ComparisonTable data={data} attributes={attributes} />}

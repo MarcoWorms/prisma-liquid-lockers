@@ -2,8 +2,8 @@
 
 :root {
   --color-text: #000;
-  --color-y-prisma: #0675F9;
-  --color-cvx-prisma: #f99806;
+  --color-y-prisma: #7bb6ff;
+  --color-cvx-prisma: #ffcd82;
   --color-background: #fff;
   --animation-speed: 4s;
 
@@ -55,7 +55,7 @@ body {
 }
 
 .neon-text {
-  font-size: 4em;
+  font-size: 3.5em;
   margin-bottom: 0;
   margin-top: 20px;
   font-weight: 900;
@@ -63,13 +63,13 @@ body {
 
 @media only screen and (max-width: 650px) {
   .neon-text {
-    font-size: 3em;
+    font-size: 2.5em;
   }
 }
 
 @media only screen and (max-width: 380px) {
   .neon-text {
-    font-size: 2.5em;
+    font-size: 2em;
   }
 }
 
@@ -123,6 +123,7 @@ body {
   border-radius: 5px;
   width: 90%;
   margin-bottom: 10px;
+  margin-top: 30px;
   /* min-width: 400px; */
 }
 
@@ -179,6 +180,7 @@ tbody tr td:first-child {
   text-align: right;
   padding-right: 20px;
   font-weight: 600;
+  word-break: break-word  ;
 }
 
 @media only screen and (max-width: 600px) {
@@ -242,7 +244,7 @@ tbody tr td:not(:first-child) {
   display: flex;
   font-family: 'Sometype Mono', monospace;
   width: 90%;
-  margin-bottom: 40px;
+  margin-bottom: 80px;
   font-size: 1em;
   flex-direction: column;
   align-items: flex-end;
