@@ -302,20 +302,18 @@ input:checked ~ .slider::before {
 
 .info-mark {
   font-size: 0.7em;
-  cursor: help;
   vertical-align: top;
   /* text-decoration: underline; */
   font-weight: 300;
   margin-left: 2px;
 }
 
-.info-mark:hover + .boost-info {
+.hover-tip:hover > .boost-info {
   opacity: 1;
 }
-.info-mark:not(:hover) + .boost-info {
+.hover-tip:not(:hover) > .boost-info {
   opacity: 0;
 }
-
 
 
 

@@ -31,9 +31,10 @@ const formatAttributeName = (attribute) => {
   }
 };
 
-const formatValue = (value, attribute) => {
+const formatValue = (value, attribute, context = 'graph') => {
   if (attribute === "global_weight_ratio") {
-    return `${Math.round(value * 100)}%`; // No decimals for percentage
+    const decimalPlaces = context === 'table' ? 2 : 0;
+    return `${(value * 100).toFixed(decimalPlaces)}%`;
   } else if (attribute === "current_boost_multiplier") {
     return `${value.toFixed(2)}x`;
   } else if (attribute === "lock_gain") {
@@ -276,18 +277,20 @@ const ComparisonTable = ({ data, attributes }) => {
             if (attribute === "lock_gain") return null;
             const cvxPrismaValue = formatValue(
               cvxPrismaLastWeekData[attribute],
-              attribute
+              attribute,
+              'table'
             );
             const yPRISMAValue = formatValue(
               yPRISMALastWeekData[attribute],
-              attribute
+              attribute,
+              'table'
             );
             const isEqual = cvxPrismaValue === yPRISMAValue;
             const isCvxPrismaHigher = cvxPrismaValue > yPRISMAValue;
             const attributeName = formatAttributeName(attribute);
             return (
               <tr key={attribute}>
-                <td>
+                <td className={attribute === "current_boost_multiplier" ? 'hover-tip' : ''}>
                   {attributeName}{attribute === "current_boost_multiplier" && (
                     <span className="info-mark">?</span>
                   )}
