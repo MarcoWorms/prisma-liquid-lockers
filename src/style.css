@@ -193,6 +193,8 @@ tbody tr td:not(:first-child) {
 
 .custom-tooltip {
   background-color: var(--color-background);
+  border: solid 1px var(--color-text);
+  padding: 0 15px;
 }
 
 .font-weight-bold {
@@ -271,6 +273,7 @@ tbody tr td:not(:first-child) {
   font-size: 1em;
   flex-direction: column;
   align-items: flex-end;
+  color: var(--color-cvx-prisma);
 }
 
 .dark {
@@ -283,8 +286,15 @@ tbody tr td:not(:first-child) {
 .toggle-switch {
   position: absolute;
   width: 50px;
-  right: 10px;
-  top: 10px;
+  right: 20px;
+  top: 20px;
+}
+
+@media only screen and (max-width: 500px) {
+  .toggle-switch {
+    right: 15px;
+    top: 15px;
+  }
 }
 
 label {
@@ -330,4 +340,20 @@ input:checked ~ .slider::before {
   transform: translateX(25px);
   background-color: var(--switch-dark);
   box-shadow: none;
+}
+
+.info-mark {
+  font-size: 0.7em;
+  cursor: help;
+  vertical-align: top;
+  /* text-decoration: underline; */
+  font-weight: 300;
+  margin-left: 2px;
+}
+
+.info-mark:hover + .boost-info {
+  opacity: 1;
+}
+.info-mark:not(:hover) + .boost-info {
+  opacity: 0;
 }

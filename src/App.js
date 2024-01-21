@@ -288,10 +288,12 @@ const ComparisonTable = ({ data, attributes }) => {
             return (
               <tr key={attribute}>
                 <td>
-                  {attributeName}
+                  {attributeName}{attribute === "current_boost_multiplier" && (
+                    <span className="info-mark">?</span>
+                  )}
                   {attribute === "current_boost_multiplier" && (
-                    <div style={{ position: 'relative' }}>
-                      <div style={{ fontSize: '0.5em', marginTop: '2px', position: 'absolute', right: 0, top: -5, fontWeight: 300 }}>
+                    <div className="boost-info" style={{ position: 'relative' }}>
+                      <div style={{ fontSize: '0.6em', marginTop: '2px', position: 'absolute', right: 0, top: -5, fontWeight: 300 }}>
                         At the start of each week, boost reset to 2x.
                       </div>
                     </div>
