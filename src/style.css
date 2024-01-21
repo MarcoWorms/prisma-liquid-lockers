@@ -2,8 +2,8 @@
 
 :root {
   --color-text: #000;
-  --color-y-prisma: #545454;
-  --color-cvx-prisma: #a9a9a9;
+  --color-y-prisma: #0675F9;
+  --color-cvx-prisma: #f99806;
   --color-background: #fff;
   --animation-speed: 4s;
 
@@ -117,7 +117,7 @@ body {
   border-radius: 5px;
   width: 90%;
   margin-bottom: 10px;
-  min-width: 400px;
+  /* min-width: 400px; */
 }
 
 table {
@@ -130,6 +130,15 @@ table {
 @media only screen and (max-width: 750px) {
   table {
     font-size: 1em;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .table-container {
+    width: 100%;
+  }
+  table {
+    font-size: 0.8em;
   }
 }
 
@@ -219,7 +228,7 @@ tbody tr td:not(:first-child) {
 
 @media only screen and (max-width: 600px) {
   .link-container img {
-    width: 55px;
+    width: 50px;
   }
 }
 
@@ -231,14 +240,20 @@ tbody tr td:not(:first-child) {
   font-size: 1em;
   flex-direction: column;
   align-items: flex-end;
-  color: var(--color-cvx-prisma);
+  color: var(--color-text);
+  font-weight: 100;
+  opacity: 0.35;
+}
+
+@media only screen and (max-width: 400px) {
+  .undertable {
+    font-size: 0.7em;
+  }
 }
 
 .dark {
   --color-text: #fff;
   --color-background: #121212;
-  --color-y-prisma: #545454;
-  --color-cvx-prisma: #a9a9a9;
 }
 
 .toggle-switch {
@@ -320,8 +335,6 @@ input:checked ~ .slider::before {
 
 .palette-1 {
   --color-text: #000;
-  --color-y-prisma: #414141;
-  --color-cvx-prisma: #8a8a8a;
   --color-background: #fff;
 }
 

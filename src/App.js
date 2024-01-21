@@ -177,9 +177,9 @@ const ComparisonTable = ({ data, attributes }) => {
     <div className="table-container">
       <table>
         <colgroup>
-          <col span="1" style={{ width: "24%" }} />
-          <col span="1" style={{ width: "43%" }} />
-          <col span="1" style={{ width: "43%" }} />
+          <col className="col1" span="1" style={{ width: "33%" }} />
+          <col className="col2" span="1" style={{ width: "33%" }} />
+          <col className="col3" span="1" style={{ width: "33%" }} />
         </colgroup>
         <thead>
           <tr>
@@ -297,7 +297,7 @@ const ComparisonTable = ({ data, attributes }) => {
                   {attribute === "current_boost_multiplier" && (
                     <div className="boost-info" style={{ position: 'relative' }}>
                       <div style={{ fontSize: '0.6em', marginTop: '2px', position: 'absolute', right: 0, top: -5, fontWeight: 300 }}>
-                        At the start of each week, boost reset to 2x.
+                        At the start of each week, boosts reset to 2x.
                       </div>
                     </div>
                   )}
