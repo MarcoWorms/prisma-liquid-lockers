@@ -87,6 +87,12 @@ body {
   margin-bottom: 40px;
 }
 
+@media only screen and (max-width: 600px) {
+  .chart-container {
+    width: 99%;
+  }
+}
+
 .chart-title {
   text-align: center;
   font-size: 2em;
