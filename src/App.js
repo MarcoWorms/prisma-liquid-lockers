@@ -376,7 +376,7 @@ const App = () => {
 
     const handleKeyPress = (event) => {
       if (event.code === "KeyP") {
-        const palettes = Array.from({ length: 6 }).map(
+        const palettes = Array.from({ length: 20 }).map(
           (el, i) => "palette-" + (i + 1)
         );
         const nextPaletteIndex = (paletteIndex + 1) % palettes.length;
