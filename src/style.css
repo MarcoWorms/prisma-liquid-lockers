@@ -144,9 +144,9 @@ table {
   .table-container {
     width: 100%;
   }
-  table {
+  /* table {
     font-size: 0.8em;
-  }
+  } */
 }
 
 table,
