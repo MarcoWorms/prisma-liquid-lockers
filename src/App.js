@@ -33,7 +33,7 @@ const formatAttributeName = (attribute) => {
 
 const formatValue = (value, attribute) => {
   if (attribute === "global_weight_ratio") {
-    return `${(value * 100).toFixed(2)}%`;
+    return `${Math.round(value * 100)}%`; // No decimals for percentage
   } else if (attribute === "current_boost_multiplier") {
     return `${value.toFixed(2)}x`;
   } else if (attribute === "lock_gain") {
@@ -44,29 +44,6 @@ const formatValue = (value, attribute) => {
       maximumFractionDigits: 2,
     });
   }
-};
-
-const transformData = (data) => {
-  const cvxPrismaData = data.liquid_lockers.cvxPrisma.weekly_data;
-  const yPRISMAData = data.liquid_lockers.yPRISMA.weekly_data;
-
-  const mergedData = cvxPrismaData.map((cvxData, index) => {
-    const yData = yPRISMAData[index] || {};
-    const weekData = {
-      name: `Week ${cvxData.week_number}`,
-      cvxPrisma: {},
-      yPRISMA: {},
-    };
-    for (const key in cvxData) {
-      if (key !== "week_number") {
-        weekData.cvxPrisma[key] = cvxData[key];
-        weekData.yPRISMA[key] = yData[key] || null;
-      }
-    }
-    return weekData;
-  });
-
-  return mergedData;
 };
 
 const transformDataForChart = (data, attribute) => {
@@ -92,14 +69,14 @@ const transformDataForChart = (data, attribute) => {
   return mergedData;
 };
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload, label, attribute }) => {
   if (active && payload && payload.length) {
     return (
       <div className="custom-tooltip" style={{ backgroundColor: "var(--color-background)" }}>
         <p className="label">{label}</p>
         {payload.map((entry, index) => (
           <p key={`item-${index}`} style={{ color: entry.color }}>
-            {formatAttributeName(entry.name)}: {formatValue(entry.value, entry.name)}
+            {entry.dataKey} {formatValue(entry.value, attribute)}
           </p>
         ))}
       </div>
@@ -108,12 +85,11 @@ const CustomTooltip = ({ active, payload, label }) => {
 
   return null;
 };
-// Custom tick formatter for the YAxis
+
 const yAxisTickFormatter = (value, attribute) => {
   return formatValue(value, attribute);
 };
 
-// Custom tick formatter for the XAxis
 const xAxisTickFormatter = (value) => {
   // Assuming the value is in the format "Week X"
   const weekNumber = value.replace(/Week /, '');
@@ -136,7 +112,7 @@ const LineAreaChart = ({ data, attribute }) => (
         <XAxis dataKey="name" tickFormatter={xAxisTickFormatter} />
         <YAxis tickFormatter={(value) => yAxisTickFormatter(value, attribute)} />
         <Tooltip
-          content={<CustomTooltip />}
+          content={<CustomTooltip attribute={attribute} />}
         />
         <Legend />
         <Line
@@ -311,7 +287,16 @@ const ComparisonTable = ({ data, attributes }) => {
             const attributeName = formatAttributeName(attribute);
             return (
               <tr key={attribute}>
-                <td>{attributeName}</td>
+                <td>
+                  {attributeName}
+                  {attribute === "current_boost_multiplier" && (
+                    <div style={{ position: 'relative' }}>
+                      <div style={{ fontSize: '0.5em', marginTop: '2px', position: 'absolute', right: 0, top: -5, fontWeight: 300 }}>
+                        At the start of each week, boost reset to 2x.
+                      </div>
+                    </div>
+                  )}
+                </td>
                 <td
                   style={{
                     fontWeight: isEqual || !isCvxPrismaHigher ? 900 : 100,
@@ -417,9 +402,9 @@ const App = () => {
   ];
 
   return (
-      <div className="app-container">
+    <div className="app-container">
 
-      <div class = 'toggle-switch' >
+      <div className='toggle-switch' >
         <label>
           <input type='checkbox' onClick={toggleTheme} defaultChecked={theme === 'light'}/>
           <span className='slider'></span>

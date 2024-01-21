@@ -166,18 +166,19 @@ tbody tr td:first-child {
   font-weight: 600;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 600px) {
   tbody tr td:first-child {
     padding-right: 0px;
+    font-size: 0.8em;
   }
 }
 
 tbody tr:first-child td:not(:first-child) {
-  border-top: dashed 1px var(--color-text);
+  border-top: solid 1px var(--color-text);
 }
 tbody tr td:not(:first-child) {
   text-align: center;
-  border-bottom: dashed 1px var(--color-text);
+  border-bottom: solid 1px var(--color-text);
 }
 
 .link-container {
