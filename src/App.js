@@ -366,7 +366,7 @@ const App = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://wavey.info/data/prisma_liquid_locker_data.json"
+          "https://raw.githubusercontent.com/wavey0x/wavey0x.github.io/master/data/prisma_liquid_locker_data.json"
         );
         const newData = await response.json();
         setData(newData); 
