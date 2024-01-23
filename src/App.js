@@ -259,7 +259,7 @@ const ComparisonTable = ({ data, attributes }) => {
                 {formatValue(yPRISMAAPRData.current_lp_apr * 100, 'current_lp_apr')}%
               </span>
               <InfoMark>
-                Unboosted APR: {formatValue((yPRISMAAPRData.current_lp_apr / 2) * 100, 'current_lp_apr')}%
+                Unboosted APR:<br/><b>{formatValue((yPRISMAAPRData.current_lp_apr / 2) * 100, 'current_lp_apr')}%</b>
               </InfoMark>
             </td>
             <td>
@@ -269,7 +269,7 @@ const ComparisonTable = ({ data, attributes }) => {
                 {formatValue(cvxPrismaAPRData.current_lp_apr * 100, 'current_lp_apr')}%
               </span>
               <InfoMark>
-                Unboosted APR: {formatValue((cvxPrismaAPRData.current_lp_apr / 2) * 100, 'current_lp_apr')}%
+                Unboosted APR:<br/><b>{formatValue((cvxPrismaAPRData.current_lp_apr / 2) * 100, 'current_lp_apr')}%</b>
               </InfoMark>
             </td>
           </tr>
@@ -291,28 +291,28 @@ const ComparisonTable = ({ data, attributes }) => {
               cvxPrismaInfoContent = (
                 <>
                   <p>Boost resets to 2x weekly.</p>
-                  <p>Remaining: {formatValue(cvxPrismaLastWeekData.remaining_boost_data.max_boost_remaining)}</p>
-                  <p>Allocated: {formatValue(cvxPrismaLastWeekData.remaining_boost_data.max_boost_allocation)}</p>
+                  <p>Remaining:<br/><b>{formatValue(cvxPrismaLastWeekData.remaining_boost_data.max_boost_remaining)}</b></p>
+                  <p>Allocated:<br/><b>{formatValue(cvxPrismaLastWeekData.remaining_boost_data.max_boost_allocation)}</b></p>
                 </>
               );
               yPRISMAInfoContent = (
                 <>
                   <p>Boost resets to 2x weekly.</p>
-                  <p>Remaining: {formatValue(yPRISMALastWeekData.remaining_boost_data.max_boost_remaining)}</p>
-                  <p>Allocated: {formatValue(yPRISMALastWeekData.remaining_boost_data.max_boost_allocation)}</p>
+                  <p>Remaining:<br/><b>{formatValue(yPRISMALastWeekData.remaining_boost_data.max_boost_remaining)}</b></p>
+                  <p>Allocated:<br/><b>{formatValue(yPRISMALastWeekData.remaining_boost_data.max_boost_allocation)}</b></p>
                 </>
               );
             } else if (attribute === "global_weight_ratio") {
               cvxPrismaInfoContent = (
                 <>
-                  <p>Total vePRISMA: {cvxPrismaLastWeekData.global_weight}</p>
-                  <p>Total Weight: {cvxPrismaLastWeekData.weight}</p>
+                  <p>Total vePRISMA:<br/><b>{cvxPrismaLastWeekData.global_weight}</b></p>
+                  <p>Total Weight:<br/><b>{cvxPrismaLastWeekData.weight}</b></p>
                 </>
               );
               yPRISMAInfoContent = (
                 <>
-                  <p>Total vePRISMA: {yPRISMALastWeekData.global_weight}</p>
-                  <p>Total Weight: {yPRISMALastWeekData.weight}</p>
+                  <p>Total vePRISMA:<br/><b>{yPRISMALastWeekData.global_weight}</b></p>
+                  <p>Total Weight:<br/><b>{yPRISMALastWeekData.weight}</b></p>
                 </>
               );
             }
