@@ -330,12 +330,37 @@ input:checked ~ .slider::before {
 }
 
 .info-mark {
-  font-size: 0.7em;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
   vertical-align: top;
-  /* text-decoration: underline; */
-  font-weight: 300;
-  margin-left: 2px;
+  margin-left: 5px;
+  font-size: 0.5em;
 }
+
+.info-content {
+  visibility: hidden;
+  width: 300px;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  border: solid 1px var(--color-text);
+  text-align: left;
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.info-mark:hover .info-content {
+  visibility: visible;
+  opacity: 1;
+}
+
 
 .hover-tip:hover > .boost-info {
   opacity: 1;

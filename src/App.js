@@ -164,6 +164,13 @@ const CountdownRenderer = ({ days, hours, minutes, seconds }) => {
   );
 };
 
+const InfoMark = ({ children }) => (
+  <span className="info-mark">ⓘ
+    <span className="info-content">{children}</span>
+  </span>
+);
+
+
 const ComparisonTable = ({ data, attributes }) => {
   if (!data || !data.liquid_lockers) return null;
 
@@ -245,76 +252,90 @@ const ComparisonTable = ({ data, attributes }) => {
           </tr>
           <tr>
             <td>LP APR</td>
-            <td
-              style={{
-                fontWeight:
-                  yPRISMAAPRData.current_lp_apr ===
-                    cvxPrismaAPRData.current_lp_apr ||
-                  yPRISMAAPRData.current_lp_apr >
-                    cvxPrismaAPRData.current_lp_apr
-                    ? 900
-                    : 100,
-              }}
-            >
-              {(yPRISMAAPRData.current_lp_apr * 100).toFixed(2)}%
+            <td>
+              <span style={{
+                fontWeight: yPRISMAAPRData.current_lp_apr >= cvxPrismaAPRData.current_lp_apr ? 900 : 100
+              }}>
+                {formatValue(yPRISMAAPRData.current_lp_apr * 100, 'current_lp_apr')}%
+              </span>
+              <InfoMark>
+                Unboosted APR: {formatValue((yPRISMAAPRData.current_lp_apr / 2) * 100, 'current_lp_apr')}%
+              </InfoMark>
             </td>
-            <td
-              style={{
-                fontWeight:
-                  yPRISMAAPRData.current_lp_apr ===
-                    cvxPrismaAPRData.current_lp_apr ||
-                  yPRISMAAPRData.current_lp_apr <
-                    cvxPrismaAPRData.current_lp_apr
-                    ? 900
-                    : 100,
-              }}
-            >
-              {(cvxPrismaAPRData.current_lp_apr * 100).toFixed(2)}%
+            <td>
+              <span style={{
+                fontWeight: cvxPrismaAPRData.current_lp_apr >= yPRISMAAPRData.current_lp_apr ? 900 : 100
+              }} >
+                {formatValue(cvxPrismaAPRData.current_lp_apr * 100, 'current_lp_apr')}%
+              </span>
+              <InfoMark>
+                Unboosted APR: {formatValue((cvxPrismaAPRData.current_lp_apr / 2) * 100, 'current_lp_apr')}%
+              </InfoMark>
             </td>
           </tr>
           {attributes.map((attribute) => {
             if (attribute === "weight") return null;
             if (attribute === "lock_gain") return null;
-            const cvxPrismaValue = formatValue(
-              cvxPrismaLastWeekData[attribute],
-              attribute,
-              'table'
-            );
-            const yPRISMAValue = formatValue(
-              yPRISMALastWeekData[attribute],
-              attribute,
-              'table'
-            );
+            if (attribute === "boost_fees_collected") return null;
+
+            const cvxPrismaValue = formatValue(cvxPrismaLastWeekData[attribute], attribute, 'table');
+            const yPRISMAValue = formatValue(yPRISMALastWeekData[attribute], attribute, 'table');
             const isEqual = cvxPrismaValue === yPRISMAValue;
             const isCvxPrismaHigher = cvxPrismaValue > yPRISMAValue;
             const attributeName = formatAttributeName(attribute);
+
+            let cvxPrismaInfoContent = null;
+            let yPRISMAInfoContent = null;
+
+            if (attribute === "current_boost_multiplier") {
+              cvxPrismaInfoContent = (
+                <>
+                  <p>Boost resets to 2x weekly.</p>
+                  <p>Remaining: {formatValue(cvxPrismaLastWeekData.remaining_boost_data.max_boost_remaining)}</p>
+                  <p>Allocated: {formatValue(cvxPrismaLastWeekData.remaining_boost_data.max_boost_allocation)}</p>
+                </>
+              );
+              yPRISMAInfoContent = (
+                <>
+                  <p>Boost resets to 2x weekly.</p>
+                  <p>Remaining: {formatValue(yPRISMALastWeekData.remaining_boost_data.max_boost_remaining)}</p>
+                  <p>Allocated: {formatValue(yPRISMALastWeekData.remaining_boost_data.max_boost_allocation)}</p>
+                </>
+              );
+            } else if (attribute === "global_weight_ratio") {
+              cvxPrismaInfoContent = (
+                <>
+                  <p>Total vePRISMA: {cvxPrismaLastWeekData.global_weight}</p>
+                  <p>Total Weight: {cvxPrismaLastWeekData.weight}</p>
+                </>
+              );
+              yPRISMAInfoContent = (
+                <>
+                  <p>Total vePRISMA: {yPRISMALastWeekData.global_weight}</p>
+                  <p>Total Weight: {yPRISMALastWeekData.weight}</p>
+                </>
+              );
+            }
+
             return (
               <tr key={attribute}>
-                <td className={attribute === "current_boost_multiplier" ? 'hover-tip' : ''}>
-                  {attributeName}{attribute === "current_boost_multiplier" && (
-                    <span className="info-mark">?</span>
-                  )}
-                  {attribute === "current_boost_multiplier" && (
-                    <div className="boost-info" style={{ position: 'relative' }}>
-                      <div style={{ fontSize: '0.6em', marginTop: '2px', position: 'absolute', right: 0, top: -5, fontWeight: 300 }}>
-                        At the start of each week, boosts reset to 2x.
-                      </div>
-                    </div>
-                  )}
-                </td>
-                <td
-                  style={{
+                <td>{attributeName}</td>
+                <td>
+                  <span style={{
                     fontWeight: isEqual || !isCvxPrismaHigher ? 900 : 100,
-                  }}
-                >
-                  {yPRISMAValue}
+                  }}>
+                    {yPRISMAValue}
+                  </span>
+                  {yPRISMAInfoContent && <InfoMark>{yPRISMAInfoContent}</InfoMark>}
                 </td>
-                <td
-                  style={{
+                <td>
+                  <span style={{
                     fontWeight: isEqual || isCvxPrismaHigher ? 900 : 100,
-                  }}
-                >
-                  {cvxPrismaValue}
+                  }}>
+                    {cvxPrismaValue}
+                  </span>
+
+                  {cvxPrismaInfoContent && <InfoMark>{cvxPrismaInfoContent}</InfoMark>}
                 </td>
               </tr>
             );
@@ -403,6 +424,7 @@ const App = () => {
     "lock_gain",
     "current_boost_multiplier",
     "global_weight_ratio",
+    "boost_fees_collected",
     // "weight"
   ];
 
