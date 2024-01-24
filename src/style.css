@@ -28,6 +28,10 @@
   display: inline-block;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 html,
 body {
   padding: 0;
@@ -55,21 +59,21 @@ body {
 }
 
 .neon-text {
-  font-size: 3.5em;
+  font-size: 3em;
   margin-bottom: 0;
   margin-top: 20px;
   font-weight: 900;
 }
 
-@media only screen and (max-width: 650px) {
+@media only screen and (max-width: 720px) {
   .neon-text {
-    font-size: 2.5em;
+    font-size: 2em;
   }
 }
 
-@media only screen and (max-width: 380px) {
+@media only screen and (max-width: 450px) {
   .neon-text {
-    font-size: 2em;
+    font-size: 1.3em;
   }
 }
 
