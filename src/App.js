@@ -586,7 +586,12 @@
 
     return (
       <div className="app-container">
-
+        <div className='toggle-switch'>
+          <label>
+            <input type='checkbox' onClick={toggleTheme} defaultChecked={theme === 'light'}/>
+            <span className='slider'></span>
+          </label>
+        </div>
         <div className="title-container">
           <h1 className="neon-text">
             Prisma Liquid Lockers
@@ -628,6 +633,7 @@
                 </div>
               ))
             }
+            <br/><br/><br/>
           </>
         )}
         {activeTab === 'emissions' && data && (
@@ -636,7 +642,7 @@
           </>
         )}
         <div className="footer">
-          <div>
+          <div className="footer-tabs">
             <span
               className={`footer-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
               onClick={() => handleTabChange('dashboard')}
@@ -655,12 +661,6 @@
             >
               Emissions
             </span>
-          </div>
-          <div className='toggle-switch'>
-            <label>
-              <input type='checkbox' onClick={toggleTheme} defaultChecked={theme === 'light'}/>
-              <span className='slider'></span>
-            </label>
           </div>
         </div>
       </div>
