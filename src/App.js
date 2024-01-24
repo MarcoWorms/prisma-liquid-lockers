@@ -306,7 +306,7 @@ const ComparisonTable = ({ data, attributes }) => {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}</b></p>
-                  <p style={{fontWeight:100, fontSize: '0.8em'}}><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></p>
+                  <p style={{fontWeight:100, fontSize: '0.9em'}}><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></p>
                 </>
               );
               yPRISMAInfoContent = (
@@ -319,7 +319,7 @@ const ComparisonTable = ({ data, attributes }) => {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}</b></p>
-                  <p style={{fontWeight:100, fontSize: '0.8em'}}><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></p>
+                  <p style={{fontWeight:100, fontSize: '0.9em'}}><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></p>
                 </>
               );
             } else if (attribute === "global_weight_ratio") {
