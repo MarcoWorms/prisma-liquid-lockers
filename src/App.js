@@ -411,7 +411,7 @@
               </th>
               <th className="emissions-cell">
                 Protocol Fee Distribution
-                <div className="emissions-tooltip tiplast pink">
+                <div className="emissions-tooltip tiplast cyan">
                   <div className="emissions-tooltip-content">
                     Protocol fees are distributed to vePRISMA holders weekly.
                   </div>
@@ -488,7 +488,7 @@
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}</span>
-                  {emission.protocol_fee_distribution.total_value > 0 && <div className="emissions-tooltip penalty pink">
+                  {emission.protocol_fee_distribution.total_value > 0 && <div className="emissions-tooltip penalty cyan">
                     <div className="emissions-tooltip-content">
                       <span>Tokens:</span>
                       {emission.protocol_fee_distribution.distros.map(distro => (<p style={{display: 'flex', flexDirection: 'column', animation: 'unset'}}>
