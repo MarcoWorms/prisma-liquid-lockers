@@ -1,0 +1,137 @@
+.palette-1 {
+  --color-text: #000;
+  --color-background: #fff;
+}
+
+.palette-2 {
+  --color-text: #7d0a0a;
+  --color-y-prisma: #bf3131;
+  --color-cvx-prisma: #e7bb54;
+  --color-background: #f3edc8;
+}
+
+.palette-3 {
+  --color-text: #756ab6;
+  --color-y-prisma: #ac87c5;
+  --color-cvx-prisma: #dd98c7;
+  --color-background: #ffe5e5;
+}
+
+.palette-4 {
+  --color-text: #0f1035;
+  --color-y-prisma: #365486;
+  --color-cvx-prisma: #62c3db;
+  --color-background: #dcf2f1;
+}
+
+.palette-5 {
+  --color-text: #1b4242;
+  --color-y-prisma: #1b4242;
+  --color-cvx-prisma: #5c8374;
+  --color-background: #9ec8b9;
+}
+
+.palette-6 {
+  --color-text: #33186b;
+  --color-y-prisma: #7360df;
+  --color-cvx-prisma: #a564eb;
+  --color-background: #f2afef;
+}
+
+.palette-7 {
+  --color-text: #3e2723;
+  --color-y-prisma: #795548;
+  --color-cvx-prisma: #a1887f;
+  --color-background: #d7ccc8;
+}
+
+.palette-8 {
+  --color-text: #004d40;
+  --color-y-prisma: #00796b;
+  --color-cvx-prisma: #48a999;
+  --color-background: #b2dfdb;
+}
+
+.palette-9 {
+  --color-text: #bf360c;
+  --color-y-prisma: #e64a19;
+  --color-cvx-prisma: #ff7043;
+  --color-background: #ffccbc;
+}
+
+.palette-10 {
+  --color-text: #1a237e;
+  --color-y-prisma: #303f9f;
+  --color-cvx-prisma: #5c6bc0;
+  --color-background: #c5cae9;
+}
+
+.palette-11 {
+  --color-text: #004d40;
+  --color-y-prisma: #00695c;
+  --color-cvx-prisma: #26a69a;
+  --color-background: #b2dfdb;
+}
+
+.palette-12 {
+  --color-text: #0d47a1;
+  --color-y-prisma: #1976d2;
+  --color-cvx-prisma: #64b5f6;
+  --color-background: #bbdefb;
+}
+
+.palette-13 {
+  --color-text: #1b5e20;
+  --color-y-prisma: #388e3c;
+  --color-cvx-prisma: #66bb6a;
+  --color-background: #c8e6c9;
+}
+
+.palette-14 {
+  --color-text: #e65100;
+  --color-y-prisma: #f57c00;
+  --color-cvx-prisma: #ffb74d;
+  --color-background: #ffe0b2;
+}
+
+.palette-15 {
+  --color-text: #311b92;
+  --color-y-prisma: #512da8;
+  --color-cvx-prisma: #9575cd;
+  --color-background: #d1c4e9;
+}
+
+.palette-16 {
+  --color-text: #880e4f;
+  --color-y-prisma: #c2185b;
+  --color-cvx-prisma: #ec407a;
+  --color-background: #f8bbd0;
+}
+
+.palette-17 {
+  --color-text: #004d40;
+  --color-y-prisma: #00796b;
+  --color-cvx-prisma: #4db6ac;
+  --color-background: #b2dfdb;
+}
+
+.palette-18 {
+  --color-text: #263238;
+  --color-y-prisma: #37474f;
+  --color-cvx-prisma: #90a4ae;
+  --color-background: #cfd8dc;
+}
+
+.palette-19 {
+  --color-text: #b71c1c;
+  --color-y-prisma: #d32f2f;
+  --color-cvx-prisma: #ef5350;
+  --color-background: #ffcdd2;
+}
+
+.palette-20 {
+  --color-text: #01579b;
+  --color-y-prisma: #0288d1;
+  --color-cvx-prisma: #4fc3f7;
+  --color-background: #b3e5fc;
+}

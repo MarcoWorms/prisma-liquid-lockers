@@ -10,6 +10,7 @@
     ResponsiveContainer,
   } from "recharts";
   import "./style.css";
+  import "./palettes.css";
 
   const colors = {
     cvxPrisma: "var(--color-cvx-prisma)",
@@ -190,7 +191,7 @@
 
     return (
       <div className="table-container">
-        <table>
+        <table className="claim">
           <colgroup>
             <col className="col1" span="1" style={{ width: "24%" }} />
             <col className="col2" span="1" style={{ width: "38%" }} />
@@ -365,6 +366,62 @@
       </div>
     );
   };
+  const EmissionsTable = ({ emissionsData }) => {
+    return (
+      <div className="table-container">
+        <table className="emissions">
+          <thead>
+            <tr>
+              <th>System Week</th>
+              <th>Allocated Emissions</th>
+              <th>Net Emissions Returned</th>
+              <th>Lock Weeks</th>
+            </tr>
+          </thead>
+          <tbody>
+            {emissionsData.map((emission, index) => (
+              <tr key={index}>
+                <td className="emissions-cell">
+                  {emission.system_week}
+                  <div className="emissions-tooltip">
+                    <div className="emissions-tooltip-content">
+                      <span>Emissons Week:</span>
+                      <b>{emission.emissions_week}</b>
+                    </div>
+                  </div>
+                </td>
+                <td>{emission.allocated_emissions.toLocaleString(undefined, {
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    })}</td>
+                <td className="emissions-cell">
+                  {emission.net_emissions_returned.toLocaleString(undefined, {
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    })}
+                  <div className="emissions-tooltip">
+                    <div className="emissions-tooltip-content">
+                      <span>Notes:</span>
+                      <b>{emission.net_emissions_notes}</b>
+                    </div>
+                  </div>
+                </td>
+                <td className="emissions-cell">
+                  {emission.lock_weeks}
+                  <div className="emissions-tooltip">
+                    <div className="emissions-tooltip-content">
+                      <span>Withdraw Penalty:</span>
+                      <b>{emission.penalty_pct.toFixed(2)}%</b>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
 
   const useDarkMode = () => {
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
@@ -393,6 +450,8 @@
     const [paletteIndex, setPaletteIndex] = useState(0);
     const [theme, setTheme] = useDarkMode();
     const [showRelativeTime, setShowRelativeTime] = useState(true);
+    const [emissionsData, setEmissionsData] = useState([]);
+
 
 
     const toggleTheme = () => {
@@ -411,6 +470,7 @@
           );
           const newData = await response.json();
           setData(newData); 
+          setEmissionsData(newData.emissions_schedule);
         } catch (error) {
           console.error("Error fetching data: ", error);
         }
@@ -499,6 +559,11 @@
                 </div>
               ))
             }
+          </>
+        )}
+        {activeTab === 'emissions' && (
+          <>
+            <EmissionsTable emissionsData={emissionsData} />
           </>
         )}
         <div className="footer">
