@@ -35,7 +35,7 @@ body {
   background-color: var(--color-background);
 }
 
-.info-content, .emissions-tooltip, .custom-tooltip {
+.info-content, .emissions-tooltip{
   box-shadow: 0px 0px 15px var(--color-text);
 }
 
@@ -220,9 +220,11 @@ table.claim tbody tr td:not(:first-child) {
 
 .custom-tooltip {
   background-color: var(--color-background);
-  border: solid 1px var(--color-text);
-  padding: 0 15px;
+  /* border: solid 1px var(--color-text); */
+  padding: 5px 20px;
   font-size: 1.3em;
+  box-shadow: 0px 0px 10px var(--color-text);
+  border-radius: 6px;
 }
 
 .font-weight-bold {
