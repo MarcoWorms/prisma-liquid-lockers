@@ -33,12 +33,15 @@ const formatAttributeName = (attribute) => {
 
 const formatValue = (value, attribute, context = 'graph') => {
   if (attribute === "global_weight_ratio") {
-    const decimalPlaces = context === 'table' ? 0 : 0; // No decimals for table and graph
-    return `${(value * 100).toFixed(decimalPlaces)}%`;
+    const decimalPlaces = context === 'table' ? 2 : context === 'table-tooltip' ? 0 : 0;
+    return context === 'table-tooltip' ? value.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }) : `${(value * 100).toFixed(decimalPlaces)}%`;
   } else if (attribute === "current_boost_multiplier") {
     return `${value.toFixed(2)}x`;
   } else if (attribute === "lock_gain" || attribute === "boost_fees_collected") {
-    return value.toLocaleString(); // No decimals, just thousand delimiter
+    return value.toLocaleString(); 
   } else {
     return parseFloat(value).toLocaleString(undefined, {
       minimumFractionDigits: 2,
@@ -290,7 +293,7 @@ const ComparisonTable = ({ data, attributes }) => {
             if (attribute === "current_boost_multiplier") {
               cvxPrismaInfoContent = (
                 <>
-                  <p>Boost resets to 2x weekly.</p>
+                  <p><i>Boost resets to 2x weekly.</i></p>
                   <p>Remaining:<br/><b>{cvxPrismaLastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
@@ -303,7 +306,7 @@ const ComparisonTable = ({ data, attributes }) => {
               );
               yPRISMAInfoContent = (
                 <>
-                  <p>Boost resets to 2x weekly.</p>
+                  <p><i>Boost resets to 2x weekly.</i></p>
                   <p>Remaining:<br/><b>{yPRISMALastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
@@ -317,14 +320,14 @@ const ComparisonTable = ({ data, attributes }) => {
             } else if (attribute === "global_weight_ratio") {
               cvxPrismaInfoContent = (
                 <>
-                  <p>Locker Weight:<br/><b>{cvxPrismaLastWeekData.weight.toLocaleString()}</b></p>
-                  <p>Global Weight:<br/><b>{cvxPrismaLastWeekData.global_weight.toLocaleString()}</b></p>
+                  <p>Locker Weight:<br/><b>{formatValue(cvxPrismaLastWeekData.weight, attribute, 'table-tooltip')}</b></p>
+                  <p>Global Weight:<br/><b>{formatValue(cvxPrismaLastWeekData.global_weight, attribute, 'table-tooltip')}</b></p>
                 </>
               );
               yPRISMAInfoContent = (
                 <>
-                  <p>Locker Weight:<br/><b>{yPRISMALastWeekData.weight.toLocaleString()}</b></p>
-                  <p>Global Weight:<br/><b>{yPRISMALastWeekData.global_weight.toLocaleString()}</b></p>
+                  <p>Locker Weight:<br/><b>{formatValue(yPRISMALastWeekData.weight, attribute, 'table-tooltip')}</b></p>
+                  <p>Global Weight:<br/><b>{formatValue(yPRISMALastWeekData.global_weight, attribute, 'table-tooltip')}</b></p>
                 </>
               );
             }
