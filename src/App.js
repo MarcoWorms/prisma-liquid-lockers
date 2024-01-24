@@ -1,4 +1,5 @@
   import React, { useState, useEffect } from "react";
+  import { useNavigate, useLocation } from 'react-router-dom';
   import Countdown from "react-countdown";
   import {
     LineChart,
@@ -26,7 +27,7 @@
       case "current_boost_multiplier":
         return "BOOST MULTIPLIER";
       case "global_weight_ratio":
-        return "GOVERNANCE SHARE";
+        return "GOV SHARE";
       default:
         return attribute.replace(/_/g, " ").toUpperCase();
     }
@@ -366,24 +367,52 @@
       </div>
     );
   };
-  const EmissionsTable = ({ emissionsData }) => {
+  const EmissionsTable = ({ emissionsData, week }) => {
     return (
       <div className="table-container">
         <table className="emissions">
           <thead>
             <tr>
-              <th>System Week</th>
-              <th>Allocated Emissions</th>
-              <th>Net Emissions Returned</th>
-              <th>Lock Weeks</th>
+              <th className="emissions-cell">
+                System Week
+                <div className="emissions-tooltip tipone">
+                  <div className="emissions-tooltip-content">
+                    Week value returned by prisma contract.
+                  </div>
+                </div>
+              </th>
+              <th className="emissions-cell">
+                Allocated Emissions
+                <div className="emissions-tooltip">
+                  <div className="emissions-tooltip-content">
+                    The amount of emissions allocated to go out in a given week.
+                  </div>
+                </div>
+              </th>
+              <th className="emissions-cell">
+                Net Emissions Returned
+                <div className="emissions-tooltip">
+                  <div className="emissions-tooltip-content">
+                    Difference between allocated and consumed emissions + misc increases.
+                  </div>
+                </div>
+              </th>
+              <th className="emissions-cell">
+                Lock Weeks
+                <div className="emissions-tooltip tiplast">
+                  <div className="emissions-tooltip-content">
+                    Number of weeks that all claims are locked for.
+                  </div>
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody>
             {emissionsData.map((emission, index) => (
-              <tr key={index}>
+              <tr style={emission.system_week === week ? {fontWeight:700} : {}}  key={index} className={emission.projected && 'projected'}>
                 <td className="emissions-cell">
                   {emission.system_week}
-                  <div className="emissions-tooltip">
+                  <div className="emissions-tooltip tipone">
                     <div className="emissions-tooltip-content">
                       <span>Emissons Week:</span>
                       <b>{emission.emissions_week}</b>
@@ -399,16 +428,16 @@
                       minimumFractionDigits: 0,
                       maximumFractionDigits: 0,
                     })}
-                  <div className="emissions-tooltip">
+                  {emission.net_emissions_notes && <div className="emissions-tooltip">
                     <div className="emissions-tooltip-content">
                       <span>Notes:</span>
                       <b>{emission.net_emissions_notes}</b>
                     </div>
-                  </div>
+                  </div>}
                 </td>
                 <td className="emissions-cell">
                   {emission.lock_weeks}
-                  <div className="emissions-tooltip">
+                  <div className="emissions-tooltip penalty">
                     <div className="emissions-tooltip-content">
                       <span>Withdraw Penalty:</span>
                       <b>{emission.penalty_pct.toFixed(2)}%</b>
@@ -419,6 +448,10 @@
             ))}
           </tbody>
         </table>
+        <div className="undertable-emissions">
+          <p>Week {week}</p>
+          <p>Grey = Projected Values</p>
+        </div>
       </div>
     );
   };
@@ -450,8 +483,6 @@
     const [paletteIndex, setPaletteIndex] = useState(0);
     const [theme, setTheme] = useDarkMode();
     const [showRelativeTime, setShowRelativeTime] = useState(true);
-    const [emissionsData, setEmissionsData] = useState([]);
-
 
 
     const toggleTheme = () => {
@@ -470,7 +501,6 @@
           );
           const newData = await response.json();
           setData(newData); 
-          setEmissionsData(newData.emissions_schedule);
         } catch (error) {
           console.error("Error fetching data: ", error);
         }
@@ -510,9 +540,20 @@
 
     const [activeTab, setActiveTab] = useState('claiming');
 
-    // Add this function inside the App component to handle tab changes
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+      const searchParams = new URLSearchParams(location.search);
+      const tab = searchParams.get('tab');
+      if (tab) {
+        setActiveTab(tab);
+      }
+    }, [location]);
+
     const handleTabChange = (tab) => {
       setActiveTab(tab);
+      navigate(`?tab=${tab}`);
     };
 
     return (
@@ -561,9 +602,9 @@
             }
           </>
         )}
-        {activeTab === 'emissions' && (
+        {activeTab === 'emissions' && data && (
           <>
-            <EmissionsTable emissionsData={emissionsData} />
+            <EmissionsTable emissionsData={data.emissions_schedule} week={data.prisma_week} />
           </>
         )}
         <div className="footer">

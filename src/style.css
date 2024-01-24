@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;600;900&family=Sometype+Mono:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;600;900&family=Sometype+Mono:wght@400;700&display=swap");
 
 :root {
   --color-text: #000;
@@ -418,7 +418,7 @@ td:hover .info-content {
 
 .emissions-tooltip {
   visibility: hidden;
-  width: auto;
+  width: 250px;
   background-color: var(--color-background);
   color: var(--color-text);
   border: solid 1px var(--color-text);
@@ -432,10 +432,38 @@ td:hover .info-content {
   transform: translateX(-50%);
   opacity: 0;
   transition: opacity 0.3s;
-  font-size: 1em;
-  white-space: nowrap;
+  font-size: 0.8em;
   font-family: "Red Hat Display", sans-serif;
 
+}
+
+@media only screen and (max-width: 600px) {
+  .emissions-tooltip {
+    width: 200px
+  }
+}
+
+.emissions-tooltip.tipone {
+  left: 80%;
+}
+.emissions-tooltip.tiplast {
+  left: -30%;
+}
+.emissions-tooltip.penalty {
+  left: -30%;
+}
+
+@media only screen and (max-width: 700px) {
+  .emissions-tooltip.tipone {
+    left: 150%;
+  }
+  .emissions-tooltip.tiplast {
+    left: -60%;
+  }
+
+  .emissions-tooltip.penalty {
+    left: -60%;
+  }
 }
 
 .emissions-tooltip-content {
@@ -466,6 +494,7 @@ td:hover .info-content {
 
 table.emissions {
   text-align: left;
+  margin-top: 30px;
 }
 
 table.emissions td {
@@ -488,4 +517,22 @@ table.emissions th {
   table.emissions {
     font-size: 0.8em;
   }
+}
+
+.projected {
+  background-color: #00000016;
+}
+
+.undertable-emissions{
+  font-family: 'Sometype Mono', monospace;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  color: var(--color-text);
+  font-weight: 100;
+  opacity: 0.35;
+}
+
+.undertable-emissions p {
+  margin: 0;
 }
