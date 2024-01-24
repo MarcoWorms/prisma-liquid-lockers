@@ -28,12 +28,9 @@
   display: inline-block;
 }
 
-html {
-  overflow-x: hidden;
-}
-
 html,
 body {
+  overflow-x: hidden;
   padding: 0;
   margin: 0;
   background-color: var(--color-background);
@@ -41,7 +38,7 @@ body {
 
 .app-container {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   background-color: var(--color-background);
   color: var(--color-text);
   font-family: "Red Hat Display", sans-serif;
@@ -56,6 +53,7 @@ body {
 .title-container {
   padding: 20px;
   text-align: center;
+  width: 100%;
 }
 
 .neon-text {
@@ -73,7 +71,7 @@ body {
 
 @media only screen and (max-width: 450px) {
   .neon-text {
-    font-size: 1.3em;
+    font-size: 1.5em;
   }
 }
 
@@ -126,7 +124,6 @@ body {
 .table-container {
   border-radius: 5px;
   width: 90%;
-  margin-bottom: 10px;
   margin-top: 30px;
   /* min-width: 400px; */
 }
@@ -136,6 +133,7 @@ table {
   text-align: center;
   font-size: 1.4em;
   border-collapse: collapse;
+  margin-bottom: 8px;
 }
 
 @media only screen and (max-width: 750px) {
@@ -254,7 +252,7 @@ tbody tr td:not(:first-child) {
   display: flex;
   font-family: 'Sometype Mono', monospace;
   width: 90%;
-  margin-bottom: 80px;
+  /* margin-bottom: 80px; */
   font-size: 1em;
   flex-direction: column;
   align-items: flex-end;
@@ -382,6 +380,44 @@ input:checked ~ .slider::before {
 .hover-tip:not(:hover) > .boost-info {
   opacity: 0;
 }
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--color-background);
+  border-top: 1px solid var(--color-text);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  z-index: 100;
+}
+
+.footer-tab {
+  cursor: pointer;
+  padding: 5px 10px;
+  text-decoration: underline;
+  font-weight: normal;
+}
+
+.footer-tab.active {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -522,29 +558,4 @@ input:checked ~ .slider::before {
   --color-y-prisma: #0288d1;
   --color-cvx-prisma: #4fc3f7;
   --color-background: #b3e5fc;
-}
-
-.footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: var(--color-background);
-  border-top: 1px solid var(--color-text);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  z-index: 100;
-}
-
-.footer-tab {
-  cursor: pointer;
-  padding: 5px 10px;
-  text-decoration: underline;
-  font-weight: normal;
-}
-
-.footer-tab.active {
-  font-weight: bold;
-  text-decoration: none;
 }
