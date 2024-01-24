@@ -5,7 +5,6 @@
   --color-y-prisma: #7bb6ff;
   --color-cvx-prisma: #ffcd82;
   --color-background: #fff;
-  --animation-speed: 4s;
 
   --switch-light: #d8dbe0;
   --switch-dark: #28292c;
@@ -451,6 +450,33 @@ td:hover .info-content {
 
 }
 
+.emissions-tooltip.red {
+  box-shadow: 0px 0px 15px rgb(255, 122, 122);
+  border: solid 2px rgb(255, 122, 122);
+}
+
+.emissions-tooltip.blue {
+  box-shadow: 0px 0px 15px rgb(128, 128, 255);
+  border: solid 2px rgb(128, 128, 255);
+
+}
+
+.emissions-tooltip.green {
+  box-shadow: 0px 0px 15px rgb(126, 255, 126);
+  border: solid 2px rgb(126, 255, 126);
+
+}
+
+.emissions-tooltip.pink {
+  box-shadow: 0px 0px 15px rgb(228, 121, 255);
+  border: solid 2px rgb(228, 121, 255);
+
+}
+
+.emissions-tooltip {
+  text-shadow: none;
+}
+
 @media only screen and (max-width: 600px) {
   .emissions-tooltip {
     width: 200px
@@ -549,4 +575,33 @@ table.emissions th {
 
 .undertable-emissions p {
   margin: 0;
+}
+
+.current {
+  animation-name: rainbowShift;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.current td:nth-child(1) {
+  text-shadow: 0 0 3px red;
+}
+.current td:nth-child(2) {
+  text-shadow: 0 0 3px orange;
+}
+.current td:nth-child(3) {
+  text-shadow: 0 0 3px yellow;
+}
+.current td:nth-child(4) {
+  text-shadow: 0 0 3px green;
+}
+.current td:nth-child(5) {
+  text-shadow: 0 0 3px blue;
+}
+.current td:nth-child(6) {
+  text-shadow: 0 0 3px indigo;
+}
+.current td:nth-child(7) {
+  text-shadow: 0 0 3px violet;
 }

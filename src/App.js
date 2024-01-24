@@ -375,7 +375,7 @@
             <tr>
               <th className="emissions-cell">
                 System Week
-                <div className="emissions-tooltip tipone">
+                <div className="emissions-tooltip tipone red">
                   <div className="emissions-tooltip-content">
                     Week value returned by prisma contract.
                   </div>
@@ -383,7 +383,7 @@
               </th>
               <th className="emissions-cell">
                 Allocated Emissions
-                <div className="emissions-tooltip">
+                <div className="emissions-tooltip blue">
                   <div className="emissions-tooltip-content">
                     The amount of emissions allocated to go out in a given week.
                   </div>
@@ -391,7 +391,7 @@
               </th>
               <th className="emissions-cell">
                 Net Emissions Returned
-                <div className="emissions-tooltip">
+                <div className="emissions-tooltip green">
                   <div className="emissions-tooltip-content">
                     Difference between allocated and consumed emissions + misc increases.
                   </div>
@@ -399,7 +399,7 @@
               </th>
               <th className="emissions-cell">
                 Lock Weeks
-                <div className="emissions-tooltip tiplast">
+                <div className="emissions-tooltip tiplast pink">
                   <div className="emissions-tooltip-content">
                     Number of weeks that all claims are locked for.
                   </div>
@@ -409,10 +409,10 @@
           </thead>
           <tbody>
             {emissionsData.map((emission, index) => (
-              <tr key={index} className={emission.projected && 'projected'}>
+              <tr key={index} className={ (emission.projected && 'projected ') + (emission.system_week === week && ' current')}>
                 <td className="emissions-cell">
                   <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.system_week}</span>
-                  <div className="emissions-tooltip tipone">
+                  <div className="emissions-tooltip tipone red">
                     <div className="emissions-tooltip-content">
                       <span>Emissons Week:</span>
                       <b>{emission.emissions_week}</b>
@@ -429,7 +429,7 @@
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 0,
                       })}</span>
-                      <div className="emissions-tooltip">
+                      <div className="emissions-tooltip blue">
                         <div className="emissions-tooltip-content">
                           <span><b>Values in italic are future projections.</b></span>
                         </div>
@@ -447,7 +447,7 @@
                       minimumFractionDigits: 0,
                       maximumFractionDigits: 0,
                     })}</span>
-                  {emission.net_emissions_notes && <div className="emissions-tooltip">
+                  {emission.net_emissions_notes && <div className="emissions-tooltip green">
                     <div className="emissions-tooltip-content">
                       <span>Notes:</span>
                       <b>{emission.net_emissions_notes}</b>
@@ -460,7 +460,7 @@
                 </td>
                 <td className="emissions-cell">
                 <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.lock_weeks}</span>
-                  <div className="emissions-tooltip penalty">
+                  <div className="emissions-tooltip penalty pink">
                     <div className="emissions-tooltip-content">
                       <span>Withdraw Penalty:</span>
                       <b>{emission.penalty_pct.toFixed(2)}%</b>
