@@ -298,7 +298,6 @@ const ComparisonTable = ({ data, attributes }) => {
             if (attribute === "current_boost_multiplier") {
               cvxPrismaInfoContent = (
                 <>
-                  <p><b><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></b></p>
                   <p>Max Boost Remaining:<br/><b>{cvxPrismaLastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
@@ -307,11 +306,11 @@ const ComparisonTable = ({ data, attributes }) => {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}</b></p>
+                  <p style={{fontWeight:100, fontSize: '0.8em'}}><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></p>
                 </>
               );
               yPRISMAInfoContent = (
                 <>
-                  <p><b><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></b></p>
                   <p>Max Boost Remaining:<br/><b>{yPRISMALastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
@@ -320,6 +319,7 @@ const ComparisonTable = ({ data, attributes }) => {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}</b></p>
+                  <p style={{fontWeight:100, fontSize: '0.8em'}}><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></p>
                 </>
               );
             } else if (attribute === "global_weight_ratio") {
