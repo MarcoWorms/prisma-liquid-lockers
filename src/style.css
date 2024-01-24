@@ -277,16 +277,10 @@ tbody tr td:not(:first-child) {
 .toggle-switch {
   position: absolute;
   width: 50px;
-  right: 20px;
-  top: 20px;
+  right: 10px;
+  top: 10px;
 }
 
-@media only screen and (max-width: 500px) {
-  .toggle-switch {
-    right: 15px;
-    top: 15px;
-  }
-}
 
 label {
   position: absolute;
@@ -528,4 +522,29 @@ input:checked ~ .slider::before {
   --color-y-prisma: #0288d1;
   --color-cvx-prisma: #4fc3f7;
   --color-background: #b3e5fc;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--color-background);
+  border-top: 1px solid var(--color-text);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  z-index: 100;
+}
+
+.footer-tab {
+  cursor: pointer;
+  padding: 5px 10px;
+  text-decoration: underline;
+  font-weight: normal;
+}
+
+.footer-tab.active {
+  font-weight: bold;
+  text-decoration: none;
 }
