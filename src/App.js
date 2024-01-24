@@ -36,11 +36,8 @@
 
   const formatValue = (value, attribute, context = 'graph') => {
     if (attribute === "global_weight_ratio") {
-      const decimalPlaces = context === 'table' ? 2 : context === 'table-tooltip' ? 0 : 0; // No decimals for table and graph
-      return context === 'table-tooltip' ? value.toLocaleString(undefined, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      }) : `${(value * 100).toFixed(decimalPlaces)}%`;
+      const decimalPlaces = context === 'table' ? 2 : context === 'tooltip' ? 2 : 0; // No decimals for table and graph
+      return `${(value * 100).toFixed(decimalPlaces)}%`;
     } else if (attribute === "current_boost_multiplier") {
       return `${value.toFixed(2)}x`;
     } else if (attribute === "lock_gain") {

@@ -222,6 +222,7 @@ table.claim tbody tr td:not(:first-child) {
   background-color: var(--color-background);
   border: solid 1px var(--color-text);
   padding: 0 15px;
+  font-size: 1.3em;
 }
 
 .font-weight-bold {
