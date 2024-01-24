@@ -652,7 +652,6 @@ table.emissions th {
   animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  z-index: 5;
 }
 
 .current .emissions-tooltip {
