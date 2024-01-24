@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;600;900&family=Sometype+Mono:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;600;900&family=Sometype+Mono:wght@400;500&display=swap");
 
 :root {
   --color-text: #000;
@@ -65,13 +65,13 @@ body {
   margin-bottom: 0;
   margin-top: 20px;
   font-weight: 900;
-
+/* 
   animation-name: rainbowShift;
   animation-duration: 16s;
   animation-iteration-count: infinite;
-  animation-timing-function: linear;
+  animation-timing-function: linear; */
 
-  text-shadow: 0 0 8px var(--color-cvx-prisma);
+  /* text-shadow: 0 0 8px var(--color-cvx-prisma); */
 }
 
 @media only screen and (max-width: 720px) {
@@ -442,15 +442,24 @@ td:hover .info-content {
   min-width: 100px;
   padding: 0 40px;
   margin: 0 5px;
-  box-shadow: 0 10px 10px #ff00003c;
   position: relative;
   top: -10px;
   /* left: -5px; */
 
-  animation-name: rainbowShift;
+  /* animation-name: rainbowShift;
   animation-duration: 2s;
   animation-iteration-count: infinite;
-  animation-timing-function: linear;
+  animation-timing-function: linear; */
+}
+
+.footer-tab:nth-child(1) {
+  box-shadow: 0 10px 10px #ff00003c;
+}
+.footer-tab:nth-child(2) {
+  box-shadow: 0 10px 10px #00ff083c;
+}
+.footer-tab:nth-child(3) {
+  box-shadow: 0 10px 10px #0400ff3c;
 }
 
 .footer-tab.active {

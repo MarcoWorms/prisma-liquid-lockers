@@ -409,7 +409,7 @@
             {emissionsData.map((emission, index) => (
               <tr key={index} className={ (emission.projected ? 'projected ' : '') + (emission.system_week === week ? ' current' : '')}>
                 <td className="emissions-cell">
-                  <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.projected && (<span style={{fontSize: '0.5em', display: 'inline-block', verticalAlign: 'top'}}>*</span>)}{emission.system_week}</span>
+                  <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.projected && (<span style={{fontSize: '0.5em', display: 'inline-block', verticalAlign: 'top'}}>*</span>)}{emission.system_week}</span>
                   <div className="emissions-tooltip tipone red">
                     <div className="emissions-tooltip-content">
                       <span>Emissons Week:</span>
@@ -423,7 +423,7 @@
                 </td>
                   {emission.projected ? (<>
                     <td className="emissions-cell">
-                    <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.allocated_emissions.toLocaleString(undefined, {
+                    <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.allocated_emissions.toLocaleString(undefined, {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 0,
                       })}</span>
@@ -434,14 +434,14 @@
                       </div>
                     </td>
                 
-                  </>) : <td><span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.allocated_emissions.toLocaleString(undefined, {
+                  </>) : <td><span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.allocated_emissions.toLocaleString(undefined, {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}</span></td>}
 
                 
                 <td className={ emission.net_emissions_notes ? 'emissions-cell' : ''}>
-                  <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.net_emissions_notes && (<span style={{fontSize: '0.5em', display: 'inline-block', verticalAlign: 'top'}}>*</span>)}{emission.net_emissions_returned.toLocaleString(undefined, {
+                  <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.net_emissions_notes && (<span style={{fontSize: '0.5em', display: 'inline-block', verticalAlign: 'top'}}>*</span>)}{emission.net_emissions_returned.toLocaleString(undefined, {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}</span>
@@ -457,7 +457,7 @@
                   </div>}
                 </td>
                 <td className="emissions-cell">
-                <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.lock_weeks}</span>
+                <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.lock_weeks}</span>
                   <div className="emissions-tooltip penalty pink">
                     <div className="emissions-tooltip-content">
                       <span>Withdraw Penalty:</span>
