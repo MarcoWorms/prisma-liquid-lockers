@@ -471,6 +471,16 @@ td:hover .info-content {
   /* left: 0; */
 }
 
+.footer-tab.active:nth-child(1) {
+  box-shadow: 0 0 10px #ff00003c;
+}
+.footer-tab.active:nth-child(2) {
+  box-shadow: 0 0 10px #00ff083c;
+}
+.footer-tab.active:nth-child(3) {
+  box-shadow: 0 0 10px #0400ff3c;
+}
+
 
 
 
