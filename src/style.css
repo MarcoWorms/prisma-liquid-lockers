@@ -448,7 +448,11 @@ td:hover .info-content {
   font-size: 0.8em;
   font-family: "Red Hat Display", sans-serif;
   text-shadow: none;
-  word-break: break-all;
+  /* word-break: break-all; */
+}
+
+.emissions-tooltip p:last-child {
+  margin-bottom: 0;
 }
 
 .emissions-tooltip.red {

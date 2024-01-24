@@ -1,6 +1,7 @@
   import React, { useState, useEffect } from "react";
   import { useNavigate, useLocation } from 'react-router-dom';
   import Countdown from "react-countdown";
+  import Markdown from 'react-markdown'
   import {
     LineChart,
     Line,
@@ -450,7 +451,7 @@
                   {emission.net_emissions_notes && <div className="emissions-tooltip green">
                     <div className="emissions-tooltip-content">
                       <b><span>Notes:</span></b><br/>
-                      {emission.net_emissions_notes}
+                      <Markdown>{emission.net_emissions_notes}</Markdown>
                       {emission.projected && (<>
                         <br/>
                         <span className="italic-disc">Values in italic are future projections.</span>
