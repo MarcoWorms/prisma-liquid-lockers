@@ -424,7 +424,7 @@
                       <b>{emission.emissions_week}</b>
                       {emission.projected && (<>
                         <br/>
-                        <span className="italic-disc">Values in italic are future projections.</span>
+                        <span className="italic-disc">Next week projected value.</span>
                       </>)}
                     </div>
                   </div>
@@ -437,7 +437,7 @@
                       })}</span>
                       <div className="emissions-tooltip blue">
                         <div className="emissions-tooltip-content">
-                          <span className="italic-disc">Values in italic are future projections.</span>
+                          <span className="italic-disc">Next week projected value.</span>
                         </div>
                       </div>
                     </td>
@@ -459,7 +459,7 @@
                       <Markdown>{emission.net_emissions_notes}</Markdown>
                       {emission.projected && (<>
                         <br/>
-                        <span className="italic-disc">Values in italic are future projections.</span>
+                        <span className="italic-disc">Next week projected value.</span>
                       </>)}
                     </div>
                   </div>}
@@ -472,7 +472,7 @@
                       <b>{emission.penalty_pct.toFixed(2)}%</b>
                       {emission.projected && (<>
                         <br/>
-                        <span className="italic-disc">Values in italic are future projections.</span>
+                        <span className="italic-disc">Next week projected value.</span>
                       </>)}
                     </div>
                   </div>
@@ -494,7 +494,7 @@
                       </p>))}
                       
                       {emission.projected && (<>
-                        <span className="italic-disc">Values in italic are future projections.</span>
+                        <span className="italic-disc">Next week projected value.</span>
                       </>)}
                     </div>
                   </div>}
