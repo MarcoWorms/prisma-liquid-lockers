@@ -174,9 +174,9 @@
     );
   };
 
-  const InfoMark = ({ children }) => (
-    <span className="info-mark">ⓘ
-      <span className="info-content">{children}</span>
+  const InfoMark = ({ children, yearn, convex }) => (
+    <span className={'info-mark'}>ⓘ
+      <span className={'info-content' + (yearn ? ' yearn' : '') + (convex ? ' convex' : '')}>{children}</span>
     </span>
   );
 
@@ -268,7 +268,7 @@
                 }}>
                   {formatValue(yPRISMAAPRData.current_lp_apr * 100, 'current_lp_apr')}%
                 </span>
-                <InfoMark>
+                <InfoMark yearn>
                   Unboosted APR:<br/><b>{formatValue((yPRISMAAPRData.current_lp_apr / 2) * 100, 'current_lp_apr')}%</b>
                 </InfoMark>
               </td>
@@ -278,7 +278,7 @@
                 }} >
                   {formatValue(cvxPrismaAPRData.current_lp_apr * 100, 'current_lp_apr')}%
                 </span>
-                <InfoMark>
+                <InfoMark convex>
                   Unboosted APR:<br/><b>{formatValue((cvxPrismaAPRData.current_lp_apr / 2) * 100, 'current_lp_apr')}%</b>
                 </InfoMark>
               </td>
@@ -348,7 +348,7 @@
                     }}>
                       {yPRISMAValue}
                     </span>
-                    {yPRISMAInfoContent && <InfoMark>{yPRISMAInfoContent}</InfoMark>}
+                    {yPRISMAInfoContent && <InfoMark yearn>{yPRISMAInfoContent}</InfoMark>}
                   </td>
                   <td>
                     <span style={{
@@ -357,7 +357,7 @@
                       {cvxPrismaValue}
                     </span>
 
-                    {cvxPrismaInfoContent && <InfoMark>{cvxPrismaInfoContent}</InfoMark>}
+                    {cvxPrismaInfoContent && <InfoMark convex>{cvxPrismaInfoContent}</InfoMark>}
                   </td>
                 </tr>
               );
