@@ -85,7 +85,7 @@
     if (active && payload && payload.length) {
       return (
         <div className="custom-tooltip" style={{ backgroundColor: "var(--color-background)" }}>
-          <p className="label">{label}</p>
+          <p className="label"><b>{label}</b></p>
           {payload.map((entry, index) => (
             <p key={`item-${index}`} style={{ color: entry.color }}>
               {entry.dataKey} {formatValue(entry.value, attribute, 'tooltip')}
@@ -122,7 +122,7 @@
           }}
         >
           <XAxis dataKey="name" tickFormatter={xAxisTickFormatter} />
-          <YAxis tickFormatter={(value) => yAxisTickFormatter(value, attribute)} />
+          <YAxis tickFormatter={(value) => yAxisTickFormatter(value, attribute)} domain={attribute === 'current_boost_multiplier' ? [1,2] : undefined} />
           <Tooltip
             content={<CustomTooltip attribute={attribute} />}
           />
@@ -412,7 +412,7 @@
             {emissionsData.map((emission, index) => (
               <tr key={index} className={ (emission.projected && 'projected ') + (emission.system_week === week && ' current')}>
                 <td className="emissions-cell">
-                  <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.system_week}</span>
+                  <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.projected && (<span style={{fontSize: '0.5em', display: 'inline-block', verticalAlign: 'top'}}>*</span>)}{emission.system_week}</span>
                   <div className="emissions-tooltip tipone red">
                     <div className="emissions-tooltip-content">
                       <span>Emissons Week:</span>
@@ -444,13 +444,13 @@
 
                 
                 <td className={ emission.net_emissions_notes ? 'emissions-cell' : ''}>
-                  <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.net_emissions_returned.toLocaleString(undefined, {
+                  <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.net_emissions_notes && (<span style={{fontSize: '0.5em', display: 'inline-block', verticalAlign: 'top'}}>*</span>)}{emission.net_emissions_returned.toLocaleString(undefined, {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
-                  })}{emission.net_emissions_notes && (<span style={{fontSize: '0.5em', display: 'inline-block', verticalAlign: 'top' }}>*</span>)}</span>
+                  })}</span>
                   {emission.net_emissions_notes && <div className="emissions-tooltip green">
                     <div className="emissions-tooltip-content">
-                      <b><span>Notes:</span></b><br/>
+                      <b><span>Notes:</span></b>
                       <Markdown>{emission.net_emissions_notes}</Markdown>
                       {emission.projected && (<>
                         <br/>
@@ -592,7 +592,7 @@
             Prisma Liquid Lockers
           </h1>
         </div>
-        {activeTab === 'claiming' && data && (
+        {activeTab === 'dashboard' && data && (
           <>
             {data && <ComparisonTable data={data} attributes={attributes} />}
             <div className="undertable">
@@ -616,7 +616,7 @@
             </div>       
           </>
         )}
-        {activeTab === 'history' && data && (
+        {activeTab === 'charts' && data && (
           <>
             {data &&
               attributes.map((attribute) => (
@@ -638,16 +638,16 @@
         <div className="footer">
           <div>
             <span
-              className={`footer-tab ${activeTab === 'claiming' ? 'active' : ''}`}
-              onClick={() => handleTabChange('claiming')}
+              className={`footer-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
+              onClick={() => handleTabChange('dashboard')}
             >
-              Claiming
+              Dashboard
             </span>
             <span
-              className={`footer-tab ${activeTab === 'history' ? 'active' : ''}`}
-              onClick={() => handleTabChange('history')}
+              className={`footer-tab ${activeTab === 'charts' ? 'active' : ''}`}
+              onClick={() => handleTabChange('charts')}
             >
-              History
+              Charts
             </span>
             <span
               className={`footer-tab ${activeTab === 'emissions' ? 'active' : ''}`}

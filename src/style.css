@@ -373,7 +373,6 @@ input:checked ~ .slider::before {
   margin-bottom: 0;
 }
 
-
 @media only screen and (max-width: 600px) {
   .info-content {
     width: 200px;
@@ -449,6 +448,7 @@ td:hover .info-content {
   font-family: "Red Hat Display", sans-serif;
   text-shadow: none;
   /* word-break: break-all; */
+  z-index: 1;
 }
 
 .emissions-tooltip p:last-child {
@@ -512,10 +512,6 @@ td:hover .info-content {
   flex-direction: column;
 }
 
-.emissions-tooltip-content b {
-  font-weight: bold;
-}
-
 .emissions-tooltip-visible {
   visibility: visible;
   opacity: 1;
@@ -524,6 +520,14 @@ td:hover .info-content {
 .emissions-cell {
   position: relative;
   cursor: pointer;
+}
+
+.projected td > span {
+  opacity: 0.4;
+}
+
+th.emissions-cell .emissions-tooltip  {
+  font-weight: 400;
 }
 
 .emissions-cell:hover .emissions-tooltip {
