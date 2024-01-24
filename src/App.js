@@ -407,7 +407,7 @@
           </thead>
           <tbody>
             {emissionsData.map((emission, index) => (
-              <tr key={index} className={ (emission.projected && 'projected ') + (emission.system_week === week && ' current')}>
+              <tr key={index} className={ (emission.projected ? 'projected ' : '') + (emission.system_week === week ? ' current' : '')}>
                 <td className="emissions-cell">
                   <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.projected && (<span style={{fontSize: '0.5em', display: 'inline-block', verticalAlign: 'top'}}>*</span>)}{emission.system_week}</span>
                   <div className="emissions-tooltip tipone red">

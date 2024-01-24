@@ -65,6 +65,13 @@ body {
   margin-bottom: 0;
   margin-top: 20px;
   font-weight: 900;
+
+  animation-name: rainbowShift;
+  animation-duration: 16s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+  text-shadow: 0 0 8px var(--color-cvx-prisma);
 }
 
 @media only screen and (max-width: 720px) {
@@ -472,8 +479,8 @@ td:hover .info-content {
   border-radius: 6px;
   padding: 15px;
   position: absolute;
-  z-index: 1;
-  /* bottom: 125%; */
+  z-index: 10;
+  bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
@@ -482,7 +489,7 @@ td:hover .info-content {
   font-family: "Red Hat Display", sans-serif;
   text-shadow: none;
   /* word-break: break-all; */
-  z-index: 1;
+  animation-name: unset;
 }
 
 .emissions-tooltip p:last-child {
@@ -627,6 +634,7 @@ table.emissions th {
   animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
+  z-index: 5;
 }
 
 .current td:nth-child(1) {
