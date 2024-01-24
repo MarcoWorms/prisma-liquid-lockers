@@ -432,10 +432,15 @@ td:hover .info-content {
   min-width: 100px;
   padding: 0 40px;
   margin: 0 5px;
-  box-shadow: 0 10px 5px #0000004f;
+  box-shadow: 0 10px 10px #ff00003c;
   position: relative;
   top: -10px;
   /* left: -5px; */
+
+  animation-name: rainbowShift;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 
 .footer-tab.active {
@@ -443,7 +448,7 @@ td:hover .info-content {
   text-decoration: underline;
   background-color: #00000010;
   top: 0;
-  box-shadow: 0 0 10px #0000004f;
+  box-shadow: none;
   /* left: 0; */
 }
 
