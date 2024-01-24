@@ -403,6 +403,14 @@
                   </div>
                 </div>
               </th>
+              <th className="emissions-cell">
+                Protocol Fee Distribution
+                <div className="emissions-tooltip tiplast pink">
+                  <div className="emissions-tooltip-content">
+                    Protocol fees are distributed to vePRISMA holders weekly.
+                  </div>
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -457,7 +465,7 @@
                   </div>}
                 </td>
                 <td className="emissions-cell">
-                <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.lock_weeks}</span>
+                  <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.lock_weeks}</span>
                   <div className="emissions-tooltip penalty pink">
                     <div className="emissions-tooltip-content">
                       <span>Withdraw Penalty:</span>
@@ -468,6 +476,28 @@
                       </>)}
                     </div>
                   </div>
+                </td>
+                <td className="emissions-cell">
+                  <span style={emission.system_week === week ? {fontWeight:500} : {}}>${emission.protocol_fee_distribution.total_value.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}</span>
+                  {emission.protocol_fee_distribution.total_value > 0 && <div className="emissions-tooltip penalty pink">
+                    <div className="emissions-tooltip-content">
+                      <span>Tokens:</span>
+                      {emission.protocol_fee_distribution.distros.map(distro => (<p style={{display: 'flex', flexDirection: 'column', animation: 'unset'}}>
+                        <b style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}><img src={distro.token_logo_url} style={{marginRight: 5, width: 25}}/>{distro.symbol}</b>
+                        ${distro.value.toLocaleString(undefined, {
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 0,
+                        })}
+                      </p>))}
+                      
+                      {emission.projected && (<>
+                        <span className="italic-disc">Values in italic are future projections.</span>
+                      </>)}
+                    </div>
+                  </div>}
                 </td>
               </tr>
             ))}

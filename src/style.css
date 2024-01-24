@@ -508,7 +508,6 @@ td:hover .info-content {
   font-family: "Red Hat Display", sans-serif;
   text-shadow: none;
   /* word-break: break-all; */
-  animation-name: unset;
 }
 
 .emissions-tooltip p:last-child {
@@ -648,12 +647,16 @@ table.emissions th {
   margin: 0;
 }
 
-.current {
+.current span {
   animation-name: rainbowShift;
   animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
   z-index: 5;
+}
+
+.current .emissions-tooltip {
+  animation-name: unset;
 }
 
 .current td:nth-child(1) {
@@ -669,7 +672,7 @@ table.emissions th {
   text-shadow: 0 0 3px green;
 }
 .current td:nth-child(5) {
-  text-shadow: 0 0 3px blue;
+  text-shadow: 0 0 3px rgb(0, 229, 255);
 }
 .current td:nth-child(6) {
   text-shadow: 0 0 3px indigo;
