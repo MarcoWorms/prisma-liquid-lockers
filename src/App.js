@@ -33,12 +33,12 @@ const formatAttributeName = (attribute) => {
 
 const formatValue = (value, attribute, context = 'graph') => {
   if (attribute === "global_weight_ratio") {
-    const decimalPlaces = context === 'table' ? 2 : 0;
+    const decimalPlaces = context === 'table' ? 0 : 0; // No decimals for table and graph
     return `${(value * 100).toFixed(decimalPlaces)}%`;
   } else if (attribute === "current_boost_multiplier") {
     return `${value.toFixed(2)}x`;
-  } else if (attribute === "lock_gain") {
-    return value.toLocaleString();
+  } else if (attribute === "lock_gain" || attribute === "boost_fees_collected") {
+    return value.toLocaleString(); // No decimals, just thousand delimiter
   } else {
     return parseFloat(value).toLocaleString(undefined, {
       minimumFractionDigits: 2,
@@ -77,7 +77,7 @@ const CustomTooltip = ({ active, payload, label, attribute }) => {
         <p className="label">{label}</p>
         {payload.map((entry, index) => (
           <p key={`item-${index}`} style={{ color: entry.color }}>
-            {entry.dataKey} {formatValue(entry.value, attribute)}
+            {entry.dataKey} {formatValue(entry.value, attribute, 'tooltip')}
           </p>
         ))}
       </div>
@@ -291,28 +291,40 @@ const ComparisonTable = ({ data, attributes }) => {
               cvxPrismaInfoContent = (
                 <>
                   <p>Boost resets to 2x weekly.</p>
-                  <p>Remaining:<br/><b>{formatValue(cvxPrismaLastWeekData.remaining_boost_data.max_boost_remaining)}</b></p>
-                  <p>Allocated:<br/><b>{formatValue(cvxPrismaLastWeekData.remaining_boost_data.max_boost_allocation)}</b></p>
+                  <p>Remaining:<br/><b>{cvxPrismaLastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}</b></p>
+                  <p>Allocated:<br/><b>{cvxPrismaLastWeekData.remaining_boost_data.max_boost_allocation.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}</b></p>
                 </>
               );
               yPRISMAInfoContent = (
                 <>
                   <p>Boost resets to 2x weekly.</p>
-                  <p>Remaining:<br/><b>{formatValue(yPRISMALastWeekData.remaining_boost_data.max_boost_remaining)}</b></p>
-                  <p>Allocated:<br/><b>{formatValue(yPRISMALastWeekData.remaining_boost_data.max_boost_allocation)}</b></p>
+                  <p>Remaining:<br/><b>{yPRISMALastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}</b></p>
+                  <p>Allocated:<br/><b>{yPRISMALastWeekData.remaining_boost_data.max_boost_allocation.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}</b></p>
                 </>
               );
             } else if (attribute === "global_weight_ratio") {
               cvxPrismaInfoContent = (
                 <>
-                  <p>Total vePRISMA:<br/><b>{cvxPrismaLastWeekData.global_weight}</b></p>
-                  <p>Total Weight:<br/><b>{cvxPrismaLastWeekData.weight}</b></p>
+                  <p>Locker Weight:<br/><b>{cvxPrismaLastWeekData.weight.toLocaleString()}</b></p>
+                  <p>Global Weight:<br/><b>{cvxPrismaLastWeekData.global_weight.toLocaleString()}</b></p>
                 </>
               );
               yPRISMAInfoContent = (
                 <>
-                  <p>Total vePRISMA:<br/><b>{yPRISMALastWeekData.global_weight}</b></p>
-                  <p>Total Weight:<br/><b>{yPRISMALastWeekData.weight}</b></p>
+                  <p>Locker Weight:<br/><b>{yPRISMALastWeekData.weight.toLocaleString()}</b></p>
+                  <p>Global Weight:<br/><b>{yPRISMALastWeekData.global_weight.toLocaleString()}</b></p>
                 </>
               );
             }
