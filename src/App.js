@@ -299,7 +299,7 @@ const ComparisonTable = ({ data, attributes }) => {
               cvxPrismaInfoContent = (
                 <>
                   <p><b><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></b></p>
-                  <p>Remaining:<br/><b>{cvxPrismaLastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
+                  <p>Max Boost Remaining:<br/><b>{cvxPrismaLastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}</b></p>
@@ -312,7 +312,7 @@ const ComparisonTable = ({ data, attributes }) => {
               yPRISMAInfoContent = (
                 <>
                   <p><b><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></b></p>
-                  <p>Remaining:<br/><b>{yPRISMALastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
+                  <p>Max Boost Remaining:<br/><b>{yPRISMALastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}</b></p>
