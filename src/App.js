@@ -33,15 +33,20 @@ const formatAttributeName = (attribute) => {
 
 const formatValue = (value, attribute, context = 'graph') => {
   if (attribute === "global_weight_ratio") {
-    const decimalPlaces = context === 'table' ? 2 : context === 'table-tooltip' ? 0 : 0;
+    const decimalPlaces = context === 'table' ? 2 : context === 'table-tooltip' ? 0 : 0; // No decimals for table and graph
     return context === 'table-tooltip' ? value.toLocaleString(undefined, {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }) : `${(value * 100).toFixed(decimalPlaces)}%`;
   } else if (attribute === "current_boost_multiplier") {
     return `${value.toFixed(2)}x`;
-  } else if (attribute === "lock_gain" || attribute === "boost_fees_collected") {
+  } else if (attribute === "lock_gain") {
     return value.toLocaleString(); 
+  } else if (attribute === "boost_fees_collected") {
+    return value.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    })
   } else {
     return parseFloat(value).toLocaleString(undefined, {
       minimumFractionDigits: 2,
@@ -293,7 +298,7 @@ const ComparisonTable = ({ data, attributes }) => {
             if (attribute === "current_boost_multiplier") {
               cvxPrismaInfoContent = (
                 <>
-                  <p><i>Boost resets to 2x weekly.</i></p>
+                  <p><b><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></b></p>
                   <p>Remaining:<br/><b>{cvxPrismaLastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
@@ -306,7 +311,7 @@ const ComparisonTable = ({ data, attributes }) => {
               );
               yPRISMAInfoContent = (
                 <>
-                  <p><i>Boost resets to 2x weekly.</i></p>
+                  <p><b><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></b></p>
                   <p>Remaining:<br/><b>{yPRISMALastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,

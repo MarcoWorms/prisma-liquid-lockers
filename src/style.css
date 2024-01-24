@@ -346,7 +346,7 @@ input:checked ~ .slider::before {
   border: solid 1px var(--color-text);
   text-align: left;
   border-radius: 6px;
-  padding: 10px;
+  padding: 15px;
   position: absolute;
   z-index: 1;
   bottom: 125%;
@@ -356,6 +356,15 @@ input:checked ~ .slider::before {
   transition: opacity 0.3s;
   font-size: 1.2em;
 }
+
+.info-content p:first-child {
+  margin-top: 0;
+}
+
+.info-content p:last-child {
+  margin-bottom: 0;
+}
+
 
 @media only screen and (max-width: 600px) {
   .info-content {
