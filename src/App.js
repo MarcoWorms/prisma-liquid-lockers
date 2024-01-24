@@ -418,7 +418,7 @@
                       <b>{emission.emissions_week}</b>
                       {emission.projected && (<>
                         <br/>
-                        <span><b>Values in italic are future projections.</b></span>
+                        <span className="italic-disc">Values in italic are future projections.</span>
                       </>)}
                     </div>
                   </div>
@@ -431,7 +431,7 @@
                       })}</span>
                       <div className="emissions-tooltip blue">
                         <div className="emissions-tooltip-content">
-                          <span><b>Values in italic are future projections.</b></span>
+                          <span className="italic-disc">Values in italic are future projections.</span>
                         </div>
                       </div>
                     </td>
@@ -443,17 +443,17 @@
 
                 
                 <td className={ emission.net_emissions_notes ? 'emissions-cell' : ''}>
-                <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.net_emissions_returned.toLocaleString(undefined, {
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    })}</span>
+                  <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.net_emissions_returned.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}{emission.net_emissions_notes && (<span style={{fontSize: '0.5em', display: 'inline-block', verticalAlign: 'top' }}>*</span>)}</span>
                   {emission.net_emissions_notes && <div className="emissions-tooltip green">
                     <div className="emissions-tooltip-content">
-                      <span>Notes:</span>
-                      <b>{emission.net_emissions_notes}</b>
+                      <b><span>Notes:</span></b><br/>
+                      {emission.net_emissions_notes}
                       {emission.projected && (<>
                         <br/>
-                        <span><b>Values in italic are future projections.</b></span>
+                        <span className="italic-disc">Values in italic are future projections.</span>
                       </>)}
                     </div>
                   </div>}
@@ -466,7 +466,7 @@
                       <b>{emission.penalty_pct.toFixed(2)}%</b>
                       {emission.projected && (<>
                         <br/>
-                        <span><b>Values in italic are future projections.</b></span>
+                        <span className="italic-disc">Values in italic are future projections.</span>
                       </>)}
                     </div>
                   </div>
