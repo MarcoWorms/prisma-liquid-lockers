@@ -410,7 +410,9 @@ td:hover .info-content {
 
 
 
-
+.info-content, .emissions-tooltip, .custom-tooltip {
+  box-shadow: 0px 0px 15px var(--color-text);
+}
 
 .custom-tooltip p {
   font-weight: normal;
