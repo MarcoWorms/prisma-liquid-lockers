@@ -33,12 +33,20 @@ const formatAttributeName = (attribute) => {
 
 const formatValue = (value, attribute, context = 'graph') => {
   if (attribute === "global_weight_ratio") {
-    const decimalPlaces = context === 'table' ? 2 : 0;
-    return `${(value * 100).toFixed(decimalPlaces)}%`;
+    const decimalPlaces = context === 'table' ? 2 : context === 'table-tooltip' ? 0 : 0; // No decimals for table and graph
+    return context === 'table-tooltip' ? value.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }) : `${(value * 100).toFixed(decimalPlaces)}%`;
   } else if (attribute === "current_boost_multiplier") {
     return `${value.toFixed(2)}x`;
   } else if (attribute === "lock_gain") {
-    return value.toLocaleString();
+    return value.toLocaleString(); 
+  } else if (attribute === "boost_fees_collected") {
+    return value.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    })
   } else {
     return parseFloat(value).toLocaleString(undefined, {
       minimumFractionDigits: 2,
@@ -77,7 +85,7 @@ const CustomTooltip = ({ active, payload, label, attribute }) => {
         <p className="label">{label}</p>
         {payload.map((entry, index) => (
           <p key={`item-${index}`} style={{ color: entry.color }}>
-            {entry.dataKey} {formatValue(entry.value, attribute)}
+            {entry.dataKey} {formatValue(entry.value, attribute, 'tooltip')}
           </p>
         ))}
       </div>
@@ -164,6 +172,13 @@ const CountdownRenderer = ({ days, hours, minutes, seconds }) => {
   );
 };
 
+const InfoMark = ({ children }) => (
+  <span className="info-mark">ⓘ
+    <span className="info-content">{children}</span>
+  </span>
+);
+
+
 const ComparisonTable = ({ data, attributes }) => {
   if (!data || !data.liquid_lockers) return null;
 
@@ -245,76 +260,102 @@ const ComparisonTable = ({ data, attributes }) => {
           </tr>
           <tr>
             <td>LP APR</td>
-            <td
-              style={{
-                fontWeight:
-                  yPRISMAAPRData.current_lp_apr ===
-                    cvxPrismaAPRData.current_lp_apr ||
-                  yPRISMAAPRData.current_lp_apr >
-                    cvxPrismaAPRData.current_lp_apr
-                    ? 900
-                    : 100,
-              }}
-            >
-              {(yPRISMAAPRData.current_lp_apr * 100).toFixed(2)}%
+            <td>
+              <span style={{
+                fontWeight: yPRISMAAPRData.current_lp_apr >= cvxPrismaAPRData.current_lp_apr ? 900 : 100
+              }}>
+                {formatValue(yPRISMAAPRData.current_lp_apr * 100, 'current_lp_apr')}%
+              </span>
+              <InfoMark>
+                Unboosted APR:<br/><b>{formatValue((yPRISMAAPRData.current_lp_apr / 2) * 100, 'current_lp_apr')}%</b>
+              </InfoMark>
             </td>
-            <td
-              style={{
-                fontWeight:
-                  yPRISMAAPRData.current_lp_apr ===
-                    cvxPrismaAPRData.current_lp_apr ||
-                  yPRISMAAPRData.current_lp_apr <
-                    cvxPrismaAPRData.current_lp_apr
-                    ? 900
-                    : 100,
-              }}
-            >
-              {(cvxPrismaAPRData.current_lp_apr * 100).toFixed(2)}%
+            <td>
+              <span style={{
+                fontWeight: cvxPrismaAPRData.current_lp_apr >= yPRISMAAPRData.current_lp_apr ? 900 : 100
+              }} >
+                {formatValue(cvxPrismaAPRData.current_lp_apr * 100, 'current_lp_apr')}%
+              </span>
+              <InfoMark>
+                Unboosted APR:<br/><b>{formatValue((cvxPrismaAPRData.current_lp_apr / 2) * 100, 'current_lp_apr')}%</b>
+              </InfoMark>
             </td>
           </tr>
           {attributes.map((attribute) => {
             if (attribute === "weight") return null;
             if (attribute === "lock_gain") return null;
-            const cvxPrismaValue = formatValue(
-              cvxPrismaLastWeekData[attribute],
-              attribute,
-              'table'
-            );
-            const yPRISMAValue = formatValue(
-              yPRISMALastWeekData[attribute],
-              attribute,
-              'table'
-            );
+            if (attribute === "boost_fees_collected") return null;
+
+            const cvxPrismaValue = formatValue(cvxPrismaLastWeekData[attribute], attribute, 'table');
+            const yPRISMAValue = formatValue(yPRISMALastWeekData[attribute], attribute, 'table');
             const isEqual = cvxPrismaValue === yPRISMAValue;
             const isCvxPrismaHigher = cvxPrismaValue > yPRISMAValue;
             const attributeName = formatAttributeName(attribute);
+
+            let cvxPrismaInfoContent = null;
+            let yPRISMAInfoContent = null;
+
+            if (attribute === "current_boost_multiplier") {
+              cvxPrismaInfoContent = (
+                <>
+                  <p>Max Boost Remaining:<br/><b>{cvxPrismaLastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}</b></p>
+                  <p>Allocated:<br/><b>{cvxPrismaLastWeekData.remaining_boost_data.max_boost_allocation.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}</b></p>
+                  <p style={{fontWeight:100, fontSize: '0.9em'}}><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></p>
+                </>
+              );
+              yPRISMAInfoContent = (
+                <>
+                  <p>Max Boost Remaining:<br/><b>{yPRISMALastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}</b></p>
+                  <p>Allocated:<br/><b>{yPRISMALastWeekData.remaining_boost_data.max_boost_allocation.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}</b></p>
+                  <p style={{fontWeight:100, fontSize: '0.9em'}}><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></p>
+                </>
+              );
+            } else if (attribute === "global_weight_ratio") {
+              cvxPrismaInfoContent = (
+                <>
+                  <p>Locker Weight:<br/><b>{formatValue(cvxPrismaLastWeekData.weight, attribute, 'table-tooltip')}</b></p>
+                  <p>Global Weight:<br/><b>{formatValue(cvxPrismaLastWeekData.global_weight, attribute, 'table-tooltip')}</b></p>
+                </>
+              );
+              yPRISMAInfoContent = (
+                <>
+                  <p>Locker Weight:<br/><b>{formatValue(yPRISMALastWeekData.weight, attribute, 'table-tooltip')}</b></p>
+                  <p>Global Weight:<br/><b>{formatValue(yPRISMALastWeekData.global_weight, attribute, 'table-tooltip')}</b></p>
+                </>
+              );
+            }
+
             return (
               <tr key={attribute}>
-                <td className={attribute === "current_boost_multiplier" ? 'hover-tip' : ''}>
-                  {attributeName}{attribute === "current_boost_multiplier" && (
-                    <span className="info-mark">?</span>
-                  )}
-                  {attribute === "current_boost_multiplier" && (
-                    <div className="boost-info" style={{ position: 'relative' }}>
-                      <div style={{ fontSize: '0.6em', marginTop: '2px', position: 'absolute', right: 0, top: -5, fontWeight: 300 }}>
-                        At the start of each week, boosts reset to 2x.
-                      </div>
-                    </div>
-                  )}
-                </td>
-                <td
-                  style={{
+                <td>{attributeName}</td>
+                <td>
+                  <span style={{
                     fontWeight: isEqual || !isCvxPrismaHigher ? 900 : 100,
-                  }}
-                >
-                  {yPRISMAValue}
+                  }}>
+                    {yPRISMAValue}
+                  </span>
+                  {yPRISMAInfoContent && <InfoMark>{yPRISMAInfoContent}</InfoMark>}
                 </td>
-                <td
-                  style={{
+                <td>
+                  <span style={{
                     fontWeight: isEqual || isCvxPrismaHigher ? 900 : 100,
-                  }}
-                >
-                  {cvxPrismaValue}
+                  }}>
+                    {cvxPrismaValue}
+                  </span>
+
+                  {cvxPrismaInfoContent && <InfoMark>{cvxPrismaInfoContent}</InfoMark>}
                 </td>
               </tr>
             );
@@ -403,6 +444,7 @@ const App = () => {
     "lock_gain",
     "current_boost_multiplier",
     "global_weight_ratio",
+    "boost_fees_collected",
     // "weight"
   ];
 
