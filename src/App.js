@@ -409,38 +409,65 @@
           </thead>
           <tbody>
             {emissionsData.map((emission, index) => (
-              <tr style={emission.system_week === week ? {fontWeight:700} : {}}  key={index} className={emission.projected && 'projected'}>
+              <tr key={index} className={emission.projected && 'projected'}>
                 <td className="emissions-cell">
-                  {emission.system_week}
+                  <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.system_week}</span>
                   <div className="emissions-tooltip tipone">
                     <div className="emissions-tooltip-content">
                       <span>Emissons Week:</span>
                       <b>{emission.emissions_week}</b>
+                      {emission.projected && (<>
+                        <br/>
+                        <span><b>Values in italic are future projections.</b></span>
+                      </>)}
                     </div>
                   </div>
                 </td>
-                <td>{emission.allocated_emissions.toLocaleString(undefined, {
+                  {emission.projected ? (<>
+                    <td className="emissions-cell">
+                    <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.allocated_emissions.toLocaleString(undefined, {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                      })}</span>
+                      <div className="emissions-tooltip">
+                        <div className="emissions-tooltip-content">
+                          <span><b>Values in italic are future projections.</b></span>
+                        </div>
+                      </div>
+                    </td>
+                
+                  </>) : <td><span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.allocated_emissions.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}</span></td>}
+
+                
+                <td className={ emission.net_emissions_notes ? 'emissions-cell' : ''}>
+                <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.net_emissions_returned.toLocaleString(undefined, {
                       minimumFractionDigits: 0,
                       maximumFractionDigits: 0,
-                    })}</td>
-                <td className="emissions-cell">
-                  {emission.net_emissions_returned.toLocaleString(undefined, {
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    })}
+                    })}</span>
                   {emission.net_emissions_notes && <div className="emissions-tooltip">
                     <div className="emissions-tooltip-content">
                       <span>Notes:</span>
                       <b>{emission.net_emissions_notes}</b>
+                      {emission.projected && (<>
+                        <br/>
+                        <span><b>Values in italic are future projections.</b></span>
+                      </>)}
                     </div>
                   </div>}
                 </td>
                 <td className="emissions-cell">
-                  {emission.lock_weeks}
+                <span style={emission.system_week === week ? {fontWeight:700} : {}}>{emission.lock_weeks}</span>
                   <div className="emissions-tooltip penalty">
                     <div className="emissions-tooltip-content">
                       <span>Withdraw Penalty:</span>
                       <b>{emission.penalty_pct.toFixed(2)}%</b>
+                      {emission.projected && (<>
+                        <br/>
+                        <span><b>Values in italic are future projections.</b></span>
+                      </>)}
                     </div>
                   </div>
                 </td>
@@ -448,10 +475,10 @@
             ))}
           </tbody>
         </table>
-        <div className="undertable-emissions">
+        {/* <div className="undertable-emissions">
           <p>Week {week}</p>
           <p>Grey = Projected Values</p>
-        </div>
+        </div> */}
       </div>
     );
   };

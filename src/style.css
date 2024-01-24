@@ -520,7 +520,8 @@ table.emissions th {
 }
 
 .projected {
-  background-color: #00000016;
+  /* background-color: #00000016; */
+  font-style: italic;
 }
 
 .undertable-emissions{
@@ -530,7 +531,6 @@ table.emissions th {
   text-align: right;
   color: var(--color-text);
   font-weight: 100;
-  opacity: 0.35;
 }
 
 .undertable-emissions p {
