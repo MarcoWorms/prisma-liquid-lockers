@@ -599,7 +599,7 @@
       // "weight"
     ];
 
-    const [activeTab, setActiveTab] = useState('claiming');
+    const [activeTab, setActiveTab] = useState('dashboard');
 
     const navigate = useNavigate();
     const location = useLocation();
