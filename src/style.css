@@ -407,9 +407,10 @@ td:hover .info-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 100;
-  height: 56px;
-  margin-bottom: 10px;
+  z-index: 1;
+  height: 86px;
+  padding-top: 20px;
+  padding-bottom: 10px;
 }
 
 .footer-tabs {
