@@ -375,6 +375,13 @@
     return (
       <div className="table-container">
         <table className="emissions">
+          <colgroup>
+            <col span="1" style={{ width: "25%" }} />
+            <col span="1" style={{ width: "20%" }} />
+            <col span="1" style={{ width: "20%" }} />
+            <col span="1" style={{ width: "15%" }} />
+            <col span="1" style={{ width: "20%" }} />
+          </colgroup>
           <thead>
             <tr>
               <th className="emissions-cell">
@@ -424,7 +431,7 @@
               <tr key={index} className={ (emission.projected ? 'projected ' : '') + (emission.system_week === week ? ' current' : '')}>
                 <td className="emissions-cell">
                   <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.projected && (<span style={{fontSize: '0.5em', display: 'inline-block', verticalAlign: 'top'}}>*</span>)}
-                    {emission.system_week} <span style={emission.projected ? {fontSize: '0.8em'} : {opacity: 0.4, fontSize: '0.8em'}}>{new Date(emission.week_start_ts * 1000).toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}</span>
+                    <span>{emission.system_week}</span> <pre style={{opacity: emission.projected ? 1 : 0.4, fontSize: '0.8em', wordWrap:'no', display: 'inline'}}>{new Date(emission.week_start_ts * 1000).toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}</pre>
                   </span>
                   <div className="emissions-tooltip tipone red">
                     <div className="emissions-tooltip-content">

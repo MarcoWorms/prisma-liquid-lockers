@@ -156,6 +156,7 @@ table {
 @media only screen and (max-width: 400px) {
   .table-container {
     width: 100%;
+    margin-top: 0px;
   }
   /* table {
     font-size: 0.8em;
