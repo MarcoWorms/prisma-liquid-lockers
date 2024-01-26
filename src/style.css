@@ -272,6 +272,7 @@ table.claim tbody tr td:not(:first-child) {
   color: var(--color-text);
   font-weight: 100;
   opacity: 0.35;
+  margin-bottom: 100px;
 }
 
 @media only screen and (max-width: 400px) {
@@ -611,7 +612,8 @@ th.emissions-cell .emissions-tooltip  {
 table.emissions {
   text-align: left;
   margin-top: 30px;
-  margin-bottom: 150px;
+  /* margin-bottom: 150px; */
+  overflow: visible;
 }
 
 table.emissions td {

@@ -626,6 +626,28 @@
       navigate(`?tab=${tab}`);
     };
 
+    const Undertable = () => (
+      <div className="undertable">
+        <span>Week {data?.prisma_week}</span>
+        <div className="countdown-container-text">
+          <div className="countdown-container">
+            <Countdown date={getNextResetTime()} renderer={CountdownRenderer} />
+          </div>
+        </div>
+        {data?.updated_at && (
+          <div
+            className="updated-at"
+            onClick={toggleUpdatedTime}
+            style={{ cursor: 'pointer' }}
+          >
+            {showRelativeTime
+              ? `Updated: ${formatRelativeTime(data.updated_at * 1000)}`
+              : `Updated At: ${new Date(data.updated_at * 1000).toLocaleString()}`}
+          </div>
+        )}
+      </div>   
+    )
+
     return (
       <div className="app-container">
         <div className='toggle-switch'>
@@ -642,25 +664,7 @@
         {activeTab === 'dashboard' && data && (
           <>
             {data && <ComparisonTable data={data} attributes={attributes} />}
-            <div className="undertable">
-              <span>Week {data?.prisma_week}</span>
-              <div className="countdown-container-text">
-                <div className="countdown-container">
-                  <Countdown date={getNextResetTime()} renderer={CountdownRenderer} />
-                </div>
-              </div>
-              {data?.updated_at && (
-                <div
-                  className="updated-at"
-                  onClick={toggleUpdatedTime}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {showRelativeTime
-                    ? `Updated: ${formatRelativeTime(data.updated_at * 1000)}`
-                    : `Updated At: ${new Date(data.updated_at * 1000).toLocaleString()}`}
-                </div>
-              )}
-            </div>       
+            <Undertable />
           </>
         )}
         {activeTab === 'charts' && data && (
@@ -675,12 +679,13 @@
                 </div>
               ))
             }
-            <br/><br/><br/>
+            <Undertable />
           </>
         )}
         {activeTab === 'emissions' && data && (
           <>
             <EmissionsTable emissionsData={data.emissions_schedule} week={data.prisma_week} />
+            <Undertable />
           </>
         )}
         <div className="footer">
