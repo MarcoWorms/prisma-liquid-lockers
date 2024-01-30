@@ -147,6 +147,7 @@ body {
   margin-top: 0px;
 }
 
+
 table {
   width: 100%;
   text-align: center;
@@ -520,10 +521,10 @@ td:hover .info-content {
 }
 
 .modal {
-  width: 60vw;
-  height: 60vh;
+  /* width: 60vw;
+  height: 60vh; */
   background-color: var(--color-background);
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 3;
@@ -535,12 +536,16 @@ td:hover .info-content {
   opacity: 0.6;
 }
 
+.modal table.emissions {
+  margin-top: 0;
+}
+
+.modal table.emissions th {
+  padding: 10px;
+}
+
 
 @media only screen and (max-width: 800px) {
-  .modal {
-    width: 70vw;
-    height: 70vh;
-  }
   .modal p {
     font-size: 0.8em;
   }
@@ -549,7 +554,6 @@ td:hover .info-content {
 @media only screen and (max-width: 500px) {
   .modal {
     width: 80vw;
-    height: 80vh;
   }
   .modal p {
     font-size: 0.7em;
