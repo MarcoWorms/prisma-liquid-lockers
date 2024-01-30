@@ -744,6 +744,20 @@ table.emissions th {
   margin: 0;
 }
 
+.rainbow-row {
+  animation-name: rainbowShift;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.rainbow-row td:nth-child(1) {
+  text-shadow: 0 0 3px red;
+}
+.rainbow-row td:nth-child(2) {
+  text-shadow: 0 0 3px orange;
+}
+
 .current span {
   animation-name: rainbowShift;
   animation-duration: 2s;

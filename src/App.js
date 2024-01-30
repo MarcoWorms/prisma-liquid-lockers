@@ -392,7 +392,9 @@ const DistributionScheduleTable = ({ distributionData }) => {
       </thead>
       <tbody>
         {distributionData.map((item, index) => (
-          <tr key={index}>
+          <tr key={index} style={((new Date(item.end_ts * 1000) < new Date()) && item.end_ts !== 0) ? {opacity: 0.4} : {}} className={
+            ((new Date(item.end_ts * 1000) >= new Date()) && (new Date(item.start_ts * 1000) <= new Date())) ? 'rainbow-row' : ''
+          }>
             {/* <td>{item.week}</td> */}
             <td>{new Date(item.start_ts * 1000).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
             {/* <td>
