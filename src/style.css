@@ -520,8 +520,8 @@ td:hover .info-content {
 }
 
 .modal {
-  width: 60%;
-  height: 60%;
+  width: 60vw;
+  height: 60vh;
   background-color: var(--color-background);
   padding: 20px;
   border-radius: 10px;
