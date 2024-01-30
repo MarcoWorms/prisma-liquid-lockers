@@ -374,36 +374,30 @@ const ComparisonTable = ({ data, attributes }) => {
 
 const DistributionScheduleTable = ({ distributionData }) => {
   return (
-    <table className="emissions">
-      <colgroup>
+    <table className="emissions" style={{textAlign: 'center'}}>
+      {/* <colgroup>
         <col span="1" style={{ width: "15%" }} />
         <col span="1" style={{ width: "35%" }} />
         <col span="1" style={{ width: "35%" }} />
         <col span="1" style={{ width: "15%" }} />
-      </colgroup>
+      </colgroup> */}
       
       <thead>
         <tr>
-          <th>System Week</th>
+          {/* <th>System Week</th> */}
           <th>Starting Date</th>
-          <th>Ending Date</th>
-          <th className="emissions-cell">*Emissions Schedule
-            <div className="emissions-tooltip tiplast cyan">
-              <div className="emissions-tooltip-content">
-                Weekly emissions as a percent of total remaining unallocated
-              </div>
-            </div>
-          </th>
+          {/* <th>Ending Date</th> */}
+          <th>*Emissions Schedule</th>
         </tr>
       </thead>
       <tbody>
         {distributionData.map((item, index) => (
           <tr key={index}>
-            <td>{item.week}</td>
+            {/* <td>{item.week}</td> */}
             <td>{new Date(item.start_ts * 1000).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
-            <td>
+            {/* <td>
               {item.end_ts === 0 ? 'Forever' : new Date(item.end_ts * 1000).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}
-            </td>
+            </td> */}
             <td>{(item.rate).toFixed(2)}%</td>
           </tr>
         ))}
@@ -412,160 +406,163 @@ const DistributionScheduleTable = ({ distributionData }) => {
   );
 };
 
-const EmissionsTable = ({ emissionsData, week, distributionData, showEmissions }) => {
+const EmissionsTable = ({ emissionsData, week, distributionData, showEmissions, handleOutsideClick }) => {
 
   return  (
     <>
-      {showEmissions ? (
-        <div className="table-container emi">
-          <table className="emissions">
-            <colgroup>
-              <col span="1" style={{ width: "25%" }} />
-              <col span="1" style={{ width: "20%" }} />
-              <col span="1" style={{ width: "20%" }} />
-              <col span="1" style={{ width: "15%" }} />
-              <col span="1" style={{ width: "20%" }} />
-            </colgroup>
-            <thead>
-              <tr>
-                <th className="emissions-cell">
-                  System Week
+      
+      <div className="table-container emi">
+        <table className="emissions">
+          <colgroup>
+            <col span="1" style={{ width: "25%" }} />
+            <col span="1" style={{ width: "20%" }} />
+            <col span="1" style={{ width: "20%" }} />
+            <col span="1" style={{ width: "15%" }} />
+            <col span="1" style={{ width: "20%" }} />
+          </colgroup>
+          <thead>
+            <tr>
+              <th className="emissions-cell">
+                System Week
+                <div className="emissions-tooltip tipone red">
+                  <div className="emissions-tooltip-content">
+                    Week value returned by prisma contract.
+                  </div>
+                </div>
+              </th>
+              <th className="emissions-cell">
+                Allocated Emissions
+                <div className="emissions-tooltip blue">
+                  <div className="emissions-tooltip-content">
+                    The amount of emissions allocated to go out in a given week.
+                  </div>
+                </div>
+              </th>
+              <th className="emissions-cell">
+                Net Emissions Returned
+                <div className="emissions-tooltip green">
+                  <div className="emissions-tooltip-content">
+                    Difference between allocated and consumed emissions + misc increases.
+                  </div>
+                </div>
+              </th>
+              <th className="emissions-cell">
+                Lock Weeks
+                <div className="emissions-tooltip tiplast pink">
+                  <div className="emissions-tooltip-content">
+                    Number of weeks that all claims are locked for.
+                  </div>
+                </div>
+              </th>
+              <th className="emissions-cell">
+                Protocol Fee Distribution
+                <div className="emissions-tooltip tiplast cyan">
+                  <div className="emissions-tooltip-content">
+                    Protocol fees are distributed to vePRISMA holders weekly.
+                  </div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {emissionsData.map((emission, index) => (
+              <tr key={index} className={ (emission.projected ? 'projected ' : '') + (emission.system_week === week ? ' current' : '')}>
+                <td className="emissions-cell">
+                  <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.projected && (<span style={{fontSize: '0.5em', display: 'inline-block', verticalAlign: 'top'}}>*</span>)}
+                    <span>{emission.system_week}</span> <pre style={{opacity: emission.projected ? 1 : 0.4, fontSize: '0.8em', wordWrap:'no', display: 'inline'}}>{new Date(emission.week_start_ts * 1000).toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}</pre>
+                  </span>
                   <div className="emissions-tooltip tipone red">
                     <div className="emissions-tooltip-content">
-                      Week value returned by prisma contract.
+                      <span>Emissons Week:</span>
+                      <b>{emission.emissions_week}</b>
+                      {emission.projected && (<>
+                        <br/>
+                        <span className="italic-disc">Next week projected value.</span>
+                      </>)}
                     </div>
                   </div>
-                </th>
-                <th className="emissions-cell">
-                  Allocated Emissions
-                  <div className="emissions-tooltip blue">
-                    <div className="emissions-tooltip-content">
-                      The amount of emissions allocated to go out in a given week.
-                    </div>
-                  </div>
-                </th>
-                <th className="emissions-cell">
-                  Net Emissions Returned
-                  <div className="emissions-tooltip green">
-                    <div className="emissions-tooltip-content">
-                      Difference between allocated and consumed emissions + misc increases.
-                    </div>
-                  </div>
-                </th>
-                <th className="emissions-cell">
-                  Lock Weeks
-                  <div className="emissions-tooltip tiplast pink">
-                    <div className="emissions-tooltip-content">
-                      Number of weeks that all claims are locked for.
-                    </div>
-                  </div>
-                </th>
-                <th className="emissions-cell">
-                  Protocol Fee Distribution
-                  <div className="emissions-tooltip tiplast cyan">
-                    <div className="emissions-tooltip-content">
-                      Protocol fees are distributed to vePRISMA holders weekly.
-                    </div>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {emissionsData.map((emission, index) => (
-                <tr key={index} className={ (emission.projected ? 'projected ' : '') + (emission.system_week === week ? ' current' : '')}>
-                  <td className="emissions-cell">
-                    <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.projected && (<span style={{fontSize: '0.5em', display: 'inline-block', verticalAlign: 'top'}}>*</span>)}
-                      <span>{emission.system_week}</span> <pre style={{opacity: emission.projected ? 1 : 0.4, fontSize: '0.8em', wordWrap:'no', display: 'inline'}}>{new Date(emission.week_start_ts * 1000).toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}</pre>
-                    </span>
-                    <div className="emissions-tooltip tipone red">
-                      <div className="emissions-tooltip-content">
-                        <span>Emissons Week:</span>
-                        <b>{emission.emissions_week}</b>
-                        {emission.projected && (<>
-                          <br/>
+                </td>
+                  {emission.projected ? (<>
+                    <td className="emissions-cell">
+                    <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.allocated_emissions.toLocaleString(undefined, {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                      })}</span>
+                      <div className="emissions-tooltip blue">
+                        <div className="emissions-tooltip-content">
                           <span className="italic-disc">Next week projected value.</span>
-                        </>)}
+                        </div>
                       </div>
+                    </td>
+                
+                  </>) : <td><span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.allocated_emissions.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}</span></td>}
+
+                
+                <td className={ emission.net_emissions_notes ? 'emissions-cell' : ''}>
+                  <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.net_emissions_notes && (<span style={{fontSize: '0.5em', display: 'inline-block', verticalAlign: 'top'}}>*</span>)}{emission.net_emissions_returned.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}</span>
+                  {emission.net_emissions_notes && <div className="emissions-tooltip green">
+                    <div className="emissions-tooltip-content">
+                      <b><span>Notes:</span></b>
+                      <Markdown>{emission.net_emissions_notes}</Markdown>
+                      {emission.projected && (<>
+                        <br/>
+                        <span className="italic-disc">Next week projected value.</span>
+                      </>)}
                     </div>
-                  </td>
-                    {emission.projected ? (<>
-                      <td className="emissions-cell">
-                      <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.allocated_emissions.toLocaleString(undefined, {
+                  </div>}
+                </td>
+                <td className="emissions-cell">
+                  <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.lock_weeks}</span>
+                  <div className="emissions-tooltip penalty pink">
+                    <div className="emissions-tooltip-content">
+                      <span>Withdraw Penalty:</span>
+                      <b>{emission.penalty_pct.toFixed(2)}%</b>
+                      {emission.projected && (<>
+                        <br/>
+                        <span className="italic-disc">Next week projected value.</span>
+                      </>)}
+                    </div>
+                  </div>
+                </td>
+                <td className="emissions-cell">
+                  <span style={emission.system_week === week ? {fontWeight:500} : {}}>${emission.protocol_fee_distribution.total_value.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}</span>
+                  {emission.protocol_fee_distribution.total_value > 0 && <div className="emissions-tooltip penalty cyan">
+                    <div className="emissions-tooltip-content">
+                      <span>Tokens:</span>
+                      {emission.protocol_fee_distribution.distros.map(distro => (<p style={{display: 'flex', flexDirection: 'column', animation: 'unset'}}>
+                        <b style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}><img src={distro.token_logo_url} style={{marginRight: 5, width: 25}}/>{distro.symbol}</b>
+                        ${distro.value.toLocaleString(undefined, {
                           minimumFractionDigits: 0,
                           maximumFractionDigits: 0,
-                        })}</span>
-                        <div className="emissions-tooltip blue">
-                          <div className="emissions-tooltip-content">
-                            <span className="italic-disc">Next week projected value.</span>
-                          </div>
-                        </div>
-                      </td>
-                  
-                    </>) : <td><span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.allocated_emissions.toLocaleString(undefined, {
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    })}</span></td>}
-
-                  
-                  <td className={ emission.net_emissions_notes ? 'emissions-cell' : ''}>
-                    <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.net_emissions_notes && (<span style={{fontSize: '0.5em', display: 'inline-block', verticalAlign: 'top'}}>*</span>)}{emission.net_emissions_returned.toLocaleString(undefined, {
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    })}</span>
-                    {emission.net_emissions_notes && <div className="emissions-tooltip green">
-                      <div className="emissions-tooltip-content">
-                        <b><span>Notes:</span></b>
-                        <Markdown>{emission.net_emissions_notes}</Markdown>
-                        {emission.projected && (<>
-                          <br/>
-                          <span className="italic-disc">Next week projected value.</span>
-                        </>)}
-                      </div>
-                    </div>}
-                  </td>
-                  <td className="emissions-cell">
-                    <span style={emission.system_week === week ? {fontWeight:500} : {}}>{emission.lock_weeks}</span>
-                    <div className="emissions-tooltip penalty pink">
-                      <div className="emissions-tooltip-content">
-                        <span>Withdraw Penalty:</span>
-                        <b>{emission.penalty_pct.toFixed(2)}%</b>
-                        {emission.projected && (<>
-                          <br/>
-                          <span className="italic-disc">Next week projected value.</span>
-                        </>)}
-                      </div>
+                        })}
+                      </p>))}
+                      
+                      {emission.projected && (<>
+                        <span className="italic-disc">Next week projected value.</span>
+                      </>)}
                     </div>
-                  </td>
-                  <td className="emissions-cell">
-                    <span style={emission.system_week === week ? {fontWeight:500} : {}}>${emission.protocol_fee_distribution.total_value.toLocaleString(undefined, {
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    })}</span>
-                    {emission.protocol_fee_distribution.total_value > 0 && <div className="emissions-tooltip penalty cyan">
-                      <div className="emissions-tooltip-content">
-                        <span>Tokens:</span>
-                        {emission.protocol_fee_distribution.distros.map(distro => (<p style={{display: 'flex', flexDirection: 'column', animation: 'unset'}}>
-                          <b style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}><img src={distro.token_logo_url} style={{marginRight: 5, width: 25}}/>{distro.symbol}</b>
-                          ${distro.value.toLocaleString(undefined, {
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
-                          })}
-                        </p>))}
-                        
-                        {emission.projected && (<>
-                          <span className="italic-disc">Next week projected value.</span>
-                        </>)}
-                      </div>
-                    </div>}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <div className="table-container emi">
-          <DistributionScheduleTable distributionData={distributionData} />
+                  </div>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {!showEmissions && (
+        <div id="modalBackground" className="modal-background" onClick={handleOutsideClick}>
+          <div className="modal">
+            <DistributionScheduleTable distributionData={distributionData} />
+            <span style={{textAlign: 'center' }}>*Weekly emissions as a percent of total remaining unallocated</span>
+          </div>
         </div>
       )}
     </>
@@ -603,6 +600,12 @@ const App = () => {
 
   const toggleTable = () => {
     setShowEmissions(!showEmissions);
+  };
+  
+  const handleOutsideClick = (e) => {
+    if (e.target.id === "modalBackground") {
+      toggleTable();
+    }
   };
 
 
@@ -709,7 +712,7 @@ const App = () => {
       </div>
       <div className="title-container">
         <h1 className="neon-text">
-          {activeTab === 'emissions' ? (!showEmissions ? 'Distribution Schedule' : 'Emissions Schedule') : 'Prisma Liquid Lockers'}
+          Prisma Liquid Lockers
         </h1>
       </div>
       {activeTab === 'dashboard' && data && (
@@ -736,9 +739,9 @@ const App = () => {
       {activeTab === 'emissions' && data && (
         <>
           <button className="toggle-table" onClick={toggleTable}>
-            {showEmissions ? 'Show Distribution Schedule' : 'Show Emissions Schedule'}
+            {showEmissions ? 'Emissions Schedule' : 'Emissions Schedule'}
           </button>
-          <EmissionsTable emissionsData={data.emissions_schedule} week={data.prisma_week} distributionData={data.distribution_schedule} showEmissions={showEmissions} />
+          <EmissionsTable emissionsData={data.emissions_schedule} week={data.prisma_week} distributionData={data.distribution_schedule} showEmissions={showEmissions} handleOutsideClick={handleOutsideClick} />
           <Undertable />
         </>
       )}

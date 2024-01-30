@@ -467,7 +467,7 @@ td:hover .info-content {
   animation-timing-function: linear; */
 }
 
-.footer-tab:nth-child(1) {
+/* .footer-tab:nth-child(1) {
   box-shadow: 0 0 20px #ff00003c;
 }
 .footer-tab:nth-child(2) {
@@ -475,7 +475,7 @@ td:hover .info-content {
 }
 .footer-tab:nth-child(3) {
   box-shadow: 0 0 20px #0400ff3c;
-}
+} */
 
 .footer-tab.active {
   font-weight: bold;
@@ -489,7 +489,7 @@ td:hover .info-content {
   text-decoration: underline;
 }
 
-.footer-tab.active:nth-child(1) {
+/* .footer-tab.active:nth-child(1) {
   box-shadow: 0 0 20px #ff00003c;
 }
 .footer-tab.active:nth-child(2) {
@@ -497,7 +497,7 @@ td:hover .info-content {
 }
 .footer-tab.active:nth-child(3) {
   box-shadow: 0 0 20px #0400ff3c;
-}
+} */
 
 @media only screen and (max-width: 400px) {
   .footer-tabs {
@@ -506,6 +506,55 @@ td:hover .info-content {
 }
 
 
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.modal {
+  width: 60%;
+  height: 60%;
+  background-color: var(--color-background);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 3;
+  overflow-y: auto; /* In case the content is too long */
+  text-align: right;
+}
+
+.modal span {
+  opacity: 0.6;
+}
+
+
+@media only screen and (max-width: 800px) {
+  .modal {
+    width: 70%;
+    height: 70%;
+  }
+  .modal span {
+    font-size: 0.8em;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .modal {
+    width: 80%;
+    height: 80%;
+  }
+  .modal span {
+    font-size: 0.7em;
+  }
+}
 
 
 .custom-tooltip p {
