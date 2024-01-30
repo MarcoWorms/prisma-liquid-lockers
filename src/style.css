@@ -538,8 +538,8 @@ td:hover .info-content {
 
 @media only screen and (max-width: 800px) {
   .modal {
-    width: 70%;
-    height: 70%;
+    width: 70vw;
+    height: 70vh;
   }
   .modal p {
     font-size: 0.8em;
@@ -548,8 +548,8 @@ td:hover .info-content {
 
 @media only screen and (max-width: 500px) {
   .modal {
-    width: 80%;
-    height: 80%;
+    width: 80vw;
+    height: 80vh;
   }
   .modal p {
     font-size: 0.7em;
