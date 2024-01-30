@@ -387,7 +387,7 @@ const DistributionScheduleTable = ({ distributionData }) => {
           {/* <th>System Week</th> */}
           <th>Starting Date</th>
           {/* <th>Ending Date</th> */}
-          <th>*Emissions Schedule</th>
+          <th>Emissions Schedule *</th>
         </tr>
       </thead>
       <tbody>
@@ -398,7 +398,7 @@ const DistributionScheduleTable = ({ distributionData }) => {
             {/* <td>
               {item.end_ts === 0 ? 'Forever' : new Date(item.end_ts * 1000).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}
             </td> */}
-            <td>{(item.rate).toFixed(2)}%</td>
+            <td>{item.rate === 0 ? '-- **' : `${(item.rate).toFixed(2)}%`}</td>
           </tr>
         ))}
       </tbody>
@@ -561,7 +561,8 @@ const EmissionsTable = ({ emissionsData, week, distributionData, showEmissions, 
         <div id="modalBackground" className="modal-background" onClick={handleOutsideClick}>
           <div className="modal">
             <DistributionScheduleTable distributionData={distributionData} />
-            <span style={{textAlign: 'center' }}>*Weekly emissions as a percent of total remaining unallocated</span>
+            <p>*Weekly emissions as a percent of total remaining unallocated</p>
+            <p>**Initial 4 weeks of had 2,250,000 tokens emitted</p>
           </div>
         </div>
       )}

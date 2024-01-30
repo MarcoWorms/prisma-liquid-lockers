@@ -531,7 +531,7 @@ td:hover .info-content {
   text-align: right;
 }
 
-.modal span {
+.modal p {
   opacity: 0.6;
 }
 
@@ -541,7 +541,7 @@ td:hover .info-content {
     width: 70%;
     height: 70%;
   }
-  .modal span {
+  .modal p {
     font-size: 0.8em;
   }
 }
@@ -551,7 +551,7 @@ td:hover .info-content {
     width: 80%;
     height: 80%;
   }
-  .modal span {
+  .modal p {
     font-size: 0.7em;
   }
 }
