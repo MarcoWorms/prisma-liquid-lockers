@@ -740,7 +740,7 @@ const App = () => {
       {activeTab === 'emissions' && data && (
         <>
           <button className="toggle-table" onClick={toggleTable}>
-            {showEmissions ? 'Emissions Schedule' : 'Emissions Schedule'}
+            View all scheduled emissions changes
           </button>
           <EmissionsTable emissionsData={data.emissions_schedule} week={data.prisma_week} distributionData={data.distribution_schedule} showEmissions={showEmissions} handleOutsideClick={handleOutsideClick} />
           <Undertable />
