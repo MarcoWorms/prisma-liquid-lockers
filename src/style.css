@@ -27,6 +27,10 @@
   display: inline-block;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 html,
 body {
   overflow-x: hidden;
@@ -138,6 +142,11 @@ body {
   margin-top: 30px;
   /* min-width: 400px; */
 }
+
+.table-container.emi {
+  margin-top: 0px;
+}
+
 
 table {
   width: 100%;
@@ -411,32 +420,37 @@ td:hover .info-content {
 .footer {
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 100vw;
   background-color: var(--color-background);
   /* border: 1px solid var(--color-text); */
   border-radius: 40px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  padding: 0 5px;
   align-items: center;
   z-index: 1;
-  height: 86px;
-  padding-top: 20px;
+  height: 70px;
+  padding-top: 10px;
   padding-bottom: 10px;
+  box-shadow: 0 -10px 10px var(--color-background);
 }
 
 .footer-tabs {
   display: flex;
   width: 100%;
-  justify-content: center;
+  justify-content: space-evenly;
   height: 100%;
+  /* padding: 0 10px; */
+  font-size: 1.1em;
 }
 
 .footer-tab {
+  width: 30%;
   cursor: pointer;
   padding: 5px 10px;
   font-weight: normal;
   border: 1px solid var(--color-text);
-  border-radius: 30px;
+  border-radius: 40px;
   height: 100%;
   display: flex;
   align-items: center;
@@ -444,8 +458,8 @@ td:hover .info-content {
   min-width: 100px;
   padding: 0 40px;
   margin: 0 5px;
-  position: relative;
-  top: -10px;
+  /* position: relative; */
+  /* top: -10px; */
   /* left: -5px; */
 
   /* animation-name: rainbowShift;
@@ -454,36 +468,97 @@ td:hover .info-content {
   animation-timing-function: linear; */
 }
 
-.footer-tab:nth-child(1) {
-  box-shadow: 0 10px 10px #ff00003c;
+/* .footer-tab:nth-child(1) {
+  box-shadow: 0 0 20px #ff00003c;
 }
 .footer-tab:nth-child(2) {
-  box-shadow: 0 10px 10px #00ff083c;
+  box-shadow: 0 0 20px #00ff083c;
 }
 .footer-tab:nth-child(3) {
-  box-shadow: 0 10px 10px #0400ff3c;
-}
+  box-shadow: 0 0 20px #0400ff3c;
+} */
 
 .footer-tab.active {
-  /* font-weight: bold; */
-  text-decoration: underline;
-  background-color: #00000010;
-  top: 0;
+  font-weight: bold;
+  /* background-color: #00000010; */
+  /* top: 0; */
   box-shadow: none;
   /* left: 0; */
 }
 
-.footer-tab.active:nth-child(1) {
-  box-shadow: 0 0 15px #ff00003c;
+.footer-tab:hover {
+  text-decoration: underline;
+}
+
+/* .footer-tab.active:nth-child(1) {
+  box-shadow: 0 0 20px #ff00003c;
 }
 .footer-tab.active:nth-child(2) {
-  box-shadow: 0 0 15px #00ff083c;
+  box-shadow: 0 0 20px #00ff083c;
 }
 .footer-tab.active:nth-child(3) {
-  box-shadow: 0 0 15px #0400ff3c;
+  box-shadow: 0 0 20px #0400ff3c;
+} */
+
+@media only screen and (max-width: 400px) {
+  .footer-tabs {
+    font-size: 0.8em;
+  }
 }
 
 
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.modal {
+  /* width: 60vw;
+  height: 60vh; */
+  background-color: var(--color-background);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 3;
+  overflow-y: auto; /* In case the content is too long */
+  text-align: right;
+}
+
+.modal p {
+  opacity: 0.6;
+}
+
+.modal table.emissions {
+  margin-top: 0;
+}
+
+.modal table.emissions th {
+  padding: 10px;
+}
+
+
+@media only screen and (max-width: 800px) {
+  .modal p {
+    font-size: 0.8em;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .modal {
+    width: 80vw;
+  }
+  .modal p {
+    font-size: 0.7em;
+  }
+}
 
 
 .custom-tooltip p {
@@ -638,6 +713,19 @@ table.emissions th {
   }
 }
 
+.toggle-table {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  border: solid 1px var(--color-text);
+  padding: 5px 10px;
+  border-radius: 15px;
+}
+
+.toggle-table:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .projected {
   /* background-color: #00000016; */
   font-style: italic;
@@ -654,6 +742,20 @@ table.emissions th {
 
 .undertable-emissions p {
   margin: 0;
+}
+
+.rainbow-row {
+  animation-name: rainbowShift;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.rainbow-row td:nth-child(1) {
+  text-shadow: 0 0 3px red;
+}
+.rainbow-row td:nth-child(2) {
+  text-shadow: 0 0 3px orange;
 }
 
 .current span {
