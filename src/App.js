@@ -562,7 +562,7 @@ const EmissionsTable = ({ emissionsData, week, distributionData, showEmissions, 
           <div className="modal">
             <DistributionScheduleTable distributionData={distributionData} />
             <p>*Weekly emissions as a percent of total remaining unallocated</p>
-            <p>**Initial 4 weeks of had 2,250,000 tokens emitted</p>
+            <p>**Initial 4 weeks had 2,250,000 tokens emitted</p>
           </div>
         </div>
       )}
