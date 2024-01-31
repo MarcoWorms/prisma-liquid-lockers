@@ -526,7 +526,7 @@ const EmissionsTable = ({ emissionsData, week, distributionData, showEmissions, 
                   {emission.protocol_fee_distribution.total_value > 0 && <div className="emissions-tooltip penalty cyan">
                     <div className="emissions-tooltip-content">
                       <span>Tokens:</span>
-                      {emission.protocol_fee_distribution.distros.map(distro => (<p style={{display: 'flex', flexDirection: 'column', animation: 'unset'}}>
+                      {emission.protocol_fee_distribution.distros.map(distro => (<p key={distro.symbol} style={{display: 'flex', flexDirection: 'column', animation: 'unset'}}>
                         <b style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}><img src={distro.token_logo_url} style={{marginRight: 5, width: 25}}/>{distro.symbol}</b>
                         ${distro.value.toLocaleString(undefined, {
                           minimumFractionDigits: 0,
@@ -705,7 +705,6 @@ const App = () => {
   const [theme, setTheme] = useDarkMode()
   const [showRelativeTime, setShowRelativeTime] = useState(true)
   const [showEmissions, setShowEmissions] = useState(true) // New state to toggle between tables
-  const [boostsData, setBoostsData] = useState([])
   const [sortConfig, setSortConfig] = useState({ key: 'fee', direction: 'ascending' })
 
   const toggleTable = () => {
@@ -735,7 +734,6 @@ const App = () => {
       )
       const newData = await response.json()
       setData(newData)
-      setBoostsData(newData.active_fowarders) 
     } catch (error) {
       console.error("Error fetching data: ", error)
     }
@@ -802,8 +800,8 @@ const App = () => {
   }
   
   useEffect(() => {
-    if (!sortConfig.key) return
-    const sortedData = [...boostsData].sort((a, b) => {
+    if (!sortConfig.key || !data) return
+    const sortedData = [...data.active_fowarders].sort((a, b) => {
       if (a[sortConfig.key] < b[sortConfig.key]) {
         return sortConfig.direction === 'ascending' ? -1 : 1
       }
@@ -812,8 +810,8 @@ const App = () => {
       }
       return 0
     })
-    setBoostsData(sortedData)
-  }, [sortConfig, boostsData])
+    setData({ ...data, active_fowarders: sortedData })
+  }, [sortConfig])
 
   const Undertable = () => (
     <div className="undertable">
@@ -880,10 +878,10 @@ const App = () => {
           <Undertable />
         </>
       )}
-      {activeTab === 'boosts' && boostsData && (
+      {activeTab === 'boosts' && data && (
         <>
           <span className="boosts-disclaimer">The following table displays all boost delegates who have opt-ed into the new architecture which allows liquid lockers users to claim using their boost. We hope that surfacing this data will help encourage a more efficient and competitive marketplace.</span>
-          <BoostsTable boostsData={boostsData} onSort={handleSort} sortConfig={sortConfig} />
+          <BoostsTable boostsData={data.active_fowarders} onSort={handleSort} sortConfig={sortConfig} />
           <Undertable />
         </>
       )}
