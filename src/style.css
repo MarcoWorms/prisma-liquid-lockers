@@ -733,7 +733,7 @@ table.emissions th {
   text-shadow: 0 0 3px yellow;
 }
 .current td:nth-child(4) {
-  text-shadow: 0 0 3px green;
+  text-shadow: 0 0 3px rgb(0, 218, 0);
 }
 .current td:nth-child(5) {
   text-shadow: 0 0 3px rgb(0, 229, 255);
@@ -795,14 +795,14 @@ table.table-boosts th:not(:first-child) {
 
 .toast {
   position: fixed;
-  top: 20px;
+  top: 40px;
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--color-background);
-  border: solid 1px var(--color-text);
-  box-shadow: 0 0 10px var(--color-text);
+  border: solid 1px rgb(0, 218, 0);
+  box-shadow: 0 0 10px rgb(0, 218, 0);
   color: var(--color-text);
-  padding: 10px 20px;
+  padding: 20px 10px;
   border-radius: 5px;
   cursor: pointer;
   animation: fadein 0.5s, fadeout 0.5s 2.5s;
@@ -816,11 +816,11 @@ table.table-boosts th:not(:first-child) {
 
 @keyframes fadein {
   from { top: 0px; opacity: 0; }
-  to { top: 20px; opacity: 1; }
+  to { top: 40px; opacity: 1; }
 }
 
 @keyframes fadeout {
-  from { top: 20px; opacity: 1; }
+  from { top: 40px; opacity: 1; }
   to { top: 0px; opacity: 0; }
 }
 
@@ -834,4 +834,30 @@ table.table-boosts th:not(:first-child) {
   .boosts-disclaimer {
     font-size: 0.8em;
   }
+}
+
+.boost-tooltip {
+  position: absolute;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  border: 1px solid red;
+  padding: 15px;
+  border-radius: 5px;
+  z-index: 10;
+  left: 0; 
+  transform: translate(30vw, -105%);
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear;
+  box-shadow: 0 0 10px red;
+}
+
+tr:hover .boost-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+tr:not(:first-child):hover {
+  text-decoration: underline;
 }

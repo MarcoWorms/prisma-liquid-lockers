@@ -594,6 +594,18 @@ const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [timeoutId, setTimeoutId] = useState(-1);
+  const [hoveredRowIndex, setHoveredRowIndex] = useState(null); 
+
+  const renderTooltip = (boost) => (
+    <div className="boost-tooltip">
+      <b>{boost.delegate_ens ? boost.delegate_ens : shortenAddress(boost.boost_delegate)}</b><br /><br />
+      Percentage consumed: {boost.pct_max_consumed.toFixed(2)}%<br />
+      This Week Allocation: {boost.max_boost_allocation.toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      })}
+    </div>
+  );
 
   const getHeaderClass = (key) => {
     if (sortConfig.key !== key) return "";
@@ -661,8 +673,13 @@ const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
         </thead>
         <tbody>
           {boostsData.map((boost, index) => (
-            <tr key={index}>
-              <td className="clickable" onClick={() => copyToClipboard(boost.boost_delegate)}>{boost.delegate_ens ? boost.delegate_ens : shortenAddress(boost.boost_delegate)}</td>
+            <tr key={index}
+              onMouseEnter={() => setHoveredRowIndex(index)} // Show tooltip
+              onMouseLeave={() => setHoveredRowIndex(null)} // Hide tooltip
+            >
+              <td className="clickable" onClick={() => copyToClipboard(boost.boost_delegate)}>
+                {boost.delegate_ens ? boost.delegate_ens : shortenAddress(boost.boost_delegate)}
+              </td>
               <td>{(boost.fee/100).toFixed(2)}%</td>
               <td>{boost.max_boost_remaining.toLocaleString(undefined, {
                 minimumFractionDigits: 0,
@@ -672,6 +689,7 @@ const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
               })}</td>
+              {hoveredRowIndex === index && renderTooltip(boost)}
             </tr>
           ))}
         </tbody>
