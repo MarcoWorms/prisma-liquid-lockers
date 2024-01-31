@@ -634,6 +634,10 @@ th.emissions-cell .emissions-tooltip  {
   opacity: 1;
 }
 
+.emissions-cell:hover {
+  text-decoration: underline;
+}
+
 .emissions-tooltip:hover {
   visibility: visible;
   opacity: 1;
@@ -858,6 +862,6 @@ tr:hover .boost-tooltip {
   opacity: 1;
 }
 
-tr:not(:first-child):hover {
+.table-boosts tr:not(:first-child):hover{
   text-decoration: underline;
 }

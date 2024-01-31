@@ -518,7 +518,7 @@ const EmissionsTable = ({ emissionsData, week, distributionData, showEmissions, 
                     </div>
                   </div>
                 </td>
-                <td className="emissions-cell">
+                <td className={emission.protocol_fee_distribution.total_value > 0 ? "emissions-cell" : ''}>
                   <span style={emission.system_week === week ? {fontWeight:500} : {}}>${emission.protocol_fee_distribution.total_value.toLocaleString(undefined, {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
@@ -598,7 +598,7 @@ const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
 
   const renderTooltip = (boost) => (
     <div className="boost-tooltip">
-      <b>{boost.delegate_ens ? boost.delegate_ens : shortenAddress(boost.boost_delegate)}</b><br /><br />
+      <span style={{fontWeight: 900}}>{boost.delegate_ens ? boost.delegate_ens : shortenAddress(boost.boost_delegate)}</span><br /><br />
       Percentage consumed: {boost.pct_max_consumed.toFixed(2)}%<br />
       This Week Allocation: {boost.max_boost_allocation.toLocaleString(undefined, {
         minimumFractionDigits: 0,
@@ -734,6 +734,7 @@ const App = () => {
       )
       const newData = await response.json()
       setData(newData)
+      setSortConfig({ key: 'fee', direction: 'ascending' })
     } catch (error) {
       console.error("Error fetching data: ", error)
     }
@@ -812,6 +813,10 @@ const App = () => {
     })
     setData({ ...data, active_fowarders: sortedData })
   }, [sortConfig])
+
+  useEffect(() => {
+    setSortConfig({ key: 'fee', direction: 'ascending' })
+  }, [])
 
   const Undertable = () => (
     <div className="undertable">
