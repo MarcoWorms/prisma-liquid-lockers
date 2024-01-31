@@ -42,7 +42,7 @@ const formatValue = (value, attribute, context = 'graph') => {
         maximumFractionDigits: 0,
       })
     }
-    const decimalPlaces = context === 'table' ? 2 : context === 'tooltip' ? 2 : 0 // No decimals for table and graph
+    const decimalPlaces = context === 'table' ? 2 : context === 'tooltip' ? 2 : 0 
     return `${(value * 100).toFixed(decimalPlaces)}%`
   } else if (attribute === "current_boost_multiplier") {
     return `${value.toFixed(2)}x`
@@ -106,9 +106,8 @@ const yAxisTickFormatter = (value, attribute) => {
 }
 
 const xAxisTickFormatter = (value) => {
-  // Assuming the value is in the format "Week X"
   const weekNumber = value.replace(/Week /, '')
-  return `W${weekNumber}` // Shortened week format
+  return `W${weekNumber}`
 }
 
 const LineAreaChart = ({ data, attribute }) => (
@@ -375,18 +374,9 @@ const ComparisonTable = ({ data, attributes }) => {
 const DistributionScheduleTable = ({ distributionData }) => {
   return (
     <table className="emissions" style={{textAlign: 'center'}}>
-      {/* <colgroup>
-        <col span="1" style={{ width: "15%" }} />
-        <col span="1" style={{ width: "35%" }} />
-        <col span="1" style={{ width: "35%" }} />
-        <col span="1" style={{ width: "15%" }} />
-      </colgroup> */}
-      
       <thead>
         <tr>
-          {/* <th>System Week</th> */}
           <th>Starting Date</th>
-          {/* <th>Ending Date</th> */}
           <th>Emissions Schedule *</th>
         </tr>
       </thead>
@@ -395,11 +385,7 @@ const DistributionScheduleTable = ({ distributionData }) => {
           <tr key={index} style={((new Date(item.end_ts * 1000) < new Date()) && item.end_ts !== 0) ? {opacity: 0.4} : {}} className={
             ((new Date(item.end_ts * 1000) >= new Date() || item.end_ts === 0) && (new Date(item.start_ts * 1000) <= new Date())) ? 'rainbow-row' : ''
           }>
-            {/* <td>{item.week}</td> */}
             <td>{new Date(item.start_ts * 1000).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
-            {/* <td>
-              {item.end_ts === 0 ? 'Forever' : new Date(item.end_ts * 1000).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}
-            </td> */}
             <td>{item.rate === 0 ? '-- **' : `${(item.rate).toFixed(2)}%`}</td>
           </tr>
         ))}
@@ -605,14 +591,20 @@ const Toast = ({ message, show, onClose }) => {
 }
 
 const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
-  const [showToast, setShowToast] = useState(false)
-  const [toastMessage, setToastMessage] = useState('')
-  const [timeoutId, setTimeoutId] = useState(-1)
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [timeoutId, setTimeoutId] = useState(-1);
 
   const getHeaderClass = (key) => {
-    if (sortConfig.key !== key) return ""
-    return sortConfig.direction === 'ascending' ? 'ascending' : 'descending'
-  }
+    if (sortConfig.key !== key) return "";
+    return sortConfig.direction === 'ascending' ? 'ascending' : 'descending';
+  };
+
+  const tooltips = {
+    fee: "Amount charged by delegate to use their boost.",
+    max_boost_remaining: "Amount of claim tokens this delegate can boost up to 2x before falling below 2x.",
+    decay_boost_remaining: "After max boost is exhausted, boost is decayed linearly for this amount until it reaches 1x."
+  };
 
   const copyToClipboard = async (text) => {
     try {
@@ -647,14 +639,23 @@ const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
         <thead>
           <tr>
             <th>Boost Delegate</th>
-            <th className={getHeaderClass('fee')} onClick={() => onSort('fee')}>
-              {sortConfig.key === 'fee' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '*'} Fee 
+            <th className={getHeaderClass('fee') + ' emissions-cell'} onClick={() => onSort('fee')}>
+              {sortConfig.key === 'fee' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '*'} Fee
+              <div className="emissions-tooltip blue">
+                <div className="emissions-tooltip-content">{tooltips.fee}<br /><br /><i style={{opacity: 0.5}}>Click to sort</i></div>
+              </div>
             </th>
-            <th className={getHeaderClass('max_boost_remaining')} onClick={() => onSort('max_boost_remaining')}>
-              {sortConfig.key === 'max_boost_remaining' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '*'} Max Boost Remaining 
+            <th className={getHeaderClass('max_boost_remaining') + ' emissions-cell'} onClick={() => onSort('max_boost_remaining')}>
+              {sortConfig.key === 'max_boost_remaining' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '*'} Max Boost Remaining
+              <div className="emissions-tooltip green">
+                <div className="emissions-tooltip-content">{tooltips.max_boost_remaining}<br /><br /><i style={{opacity: 0.5}}>Click to sort</i></div>
+              </div>
             </th>
-            <th className={getHeaderClass('decay_boost_remaining')} onClick={() => onSort('decay_boost_remaining')}>
-             {sortConfig.key === 'decay_boost_remaining' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '*'} Decay Boost Remaining 
+            <th className={getHeaderClass('decay_boost_remaining') + ' emissions-cell'} onClick={() => onSort('decay_boost_remaining')}>
+              {sortConfig.key === 'decay_boost_remaining' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '*'} Decay Boost Remaining
+              <div className="emissions-tooltip pink tiplast">
+                <div className="emissions-tooltip-content">{tooltips.decay_boost_remaining}<br /><br /><i style={{opacity: 0.5}}>Click to sort</i></div>
+              </div>
             </th>
           </tr>
         </thead>
@@ -663,16 +664,22 @@ const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
             <tr key={index}>
               <td className="clickable" onClick={() => copyToClipboard(boost.boost_delegate)}>{boost.delegate_ens ? boost.delegate_ens : shortenAddress(boost.boost_delegate)}</td>
               <td>{(boost.fee/100).toFixed(2)}%</td>
-              <td>{boost.max_boost_remaining.toFixed(0)}</td>
-              <td>{boost.decay_boost_remaining.toFixed(0)}</td>
+              <td>{boost.max_boost_remaining.toLocaleString(undefined, {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              })}</td>
+              <td>{boost.decay_boost_remaining.toLocaleString(undefined, {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              })}</td>
             </tr>
           ))}
         </tbody>
       </table>
       <Toast message={toastMessage} show={showToast} onClose={() => setShowToast(false)} />
     </div>
-  )
-}
+  );
+};
 
 const App = () => {
   const [data, setData] = useState(null)
@@ -681,7 +688,7 @@ const App = () => {
   const [showRelativeTime, setShowRelativeTime] = useState(true)
   const [showEmissions, setShowEmissions] = useState(true) // New state to toggle between tables
   const [boostsData, setBoostsData] = useState([])
-  const [sortConfig, setSortConfig] = useState({ key: undefined, direction: 'ascending' })
+  const [sortConfig, setSortConfig] = useState({ key: 'fee', direction: 'ascending' })
 
   const toggleTable = () => {
     setShowEmissions(!showEmissions)
@@ -745,7 +752,6 @@ const App = () => {
     "current_boost_multiplier",
     "global_weight_ratio",
     "boost_fees_collected",
-    // "weight"
   ]
 
   const [activeTab, setActiveTab] = useState('dashboard')
@@ -858,6 +864,7 @@ const App = () => {
       )}
       {activeTab === 'boosts' && (
         <>
+          <span className="boosts-disclaimer">The following table displays all boost delegates who have opt-ed into the new architecture which allows liquid lockers users to claim using their boost. We hope that surfacing this data will help encourage a more efficient and competitive marketplace.</span>
           <BoostsTable boostsData={boostsData} onSort={handleSort} sortConfig={sortConfig} />
           <Undertable />
         </>
