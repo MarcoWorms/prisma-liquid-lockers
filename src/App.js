@@ -880,7 +880,7 @@ const App = () => {
           <Undertable />
         </>
       )}
-      {activeTab === 'boosts' && (
+      {activeTab === 'boosts' && boostsData && (
         <>
           <span className="boosts-disclaimer">The following table displays all boost delegates who have opt-ed into the new architecture which allows liquid lockers users to claim using their boost. We hope that surfacing this data will help encourage a more efficient and competitive marketplace.</span>
           <BoostsTable boostsData={boostsData} onSort={handleSort} sortConfig={sortConfig} />
