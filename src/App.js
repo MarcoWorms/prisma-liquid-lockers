@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from 'react-router-dom';
-import Countdown from "react-countdown";
+import React, { useState, useEffect } from "react"
+import { useNavigate, useLocation } from 'react-router-dom'
+import Countdown from "react-countdown"
 import Markdown from 'react-markdown'
 import {
   LineChart,
@@ -10,29 +10,29 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from "recharts";
-import "./style.css";
-import "./palettes.css";
+} from "recharts"
+import "./style.css"
+import "./palettes.css"
 
 const colors = {
   cvxPrisma: "var(--color-cvx-prisma)",
   yPRISMA: "var(--color-y-prisma)",
-};
+}
 
 const formatAttributeName = (attribute) => {
   switch (attribute) {
     case "peg":
-      return "PEG";
+      return "PEG"
     case "lock_gain":
-      return "LOCKS BY WEEK";
+      return "LOCKS BY WEEK"
     case "current_boost_multiplier":
-      return "BOOST MULTIPLIER";
+      return "BOOST MULTIPLIER"
     case "global_weight_ratio":
-      return "GOV SHARE";
+      return "GOV SHARE"
     default:
-      return attribute.replace(/_/g, " ").toUpperCase();
+      return attribute.replace(/_/g, " ").toUpperCase()
   }
-};
+}
 
 const formatValue = (value, attribute, context = 'graph') => {
   if (attribute === "global_weight_ratio") {
@@ -42,12 +42,12 @@ const formatValue = (value, attribute, context = 'graph') => {
         maximumFractionDigits: 0,
       })
     }
-    const decimalPlaces = context === 'table' ? 2 : context === 'tooltip' ? 2 : 0; // No decimals for table and graph
-    return `${(value * 100).toFixed(decimalPlaces)}%`;
+    const decimalPlaces = context === 'table' ? 2 : context === 'tooltip' ? 2 : 0 // No decimals for table and graph
+    return `${(value * 100).toFixed(decimalPlaces)}%`
   } else if (attribute === "current_boost_multiplier") {
-    return `${value.toFixed(2)}x`;
+    return `${value.toFixed(2)}x`
   } else if (attribute === "lock_gain") {
-    return value.toLocaleString(); 
+    return value.toLocaleString() 
   } else if (attribute === "boost_fees_collected") {
     return value.toLocaleString(undefined, {
       minimumFractionDigits: 0,
@@ -57,9 +57,9 @@ const formatValue = (value, attribute, context = 'graph') => {
     return parseFloat(value).toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-    });
+    })
   }
-};
+}
 
 const transformDataForChart = (data, attribute) => {
   const cvxPrismaData = data.liquid_lockers.cvxPrisma.weekly_data.map(
@@ -67,22 +67,22 @@ const transformDataForChart = (data, attribute) => {
       name: `Week ${weekData.week_number}`,
       cvxPrisma: weekData[attribute],
     })
-  );
+  )
 
   const yPRISMAData = data.liquid_lockers.yPRISMA.weekly_data.map(
     (weekData) => ({
       name: `Week ${weekData.week_number}`,
       yPRISMA: weekData[attribute],
     })
-  );
+  )
 
   const mergedData = cvxPrismaData.map((cvxData, index) => ({
     ...cvxData,
     yPRISMA: yPRISMAData[index] ? yPRISMAData[index].yPRISMA : null,
-  }));
+  }))
 
-  return mergedData;
-};
+  return mergedData
+}
 
 const CustomTooltip = ({ active, payload, label, attribute }) => {
   if (active && payload && payload.length) {
@@ -95,21 +95,21 @@ const CustomTooltip = ({ active, payload, label, attribute }) => {
           </p>
         ))}
       </div>
-    );
+    )
   }
 
-  return null;
-};
+  return null
+}
 
 const yAxisTickFormatter = (value, attribute) => {
-  return formatValue(value, attribute);
-};
+  return formatValue(value, attribute)
+}
 
 const xAxisTickFormatter = (value) => {
   // Assuming the value is in the format "Week X"
-  const weekNumber = value.replace(/Week /, '');
-  return `W${weekNumber}`; // Shortened week format
-};
+  const weekNumber = value.replace(/Week /, '')
+  return `W${weekNumber}` // Shortened week format
+}
 
 const LineAreaChart = ({ data, attribute }) => (
   <div className="chart-container">
@@ -157,15 +157,15 @@ const LineAreaChart = ({ data, attribute }) => (
       </LineChart>
     </ResponsiveContainer>
   </div>
-);
+)
 
 const getNextResetTime = () => {
-  const now = new Date();
-  const nextReset = new Date(now);
-  nextReset.setUTCDate(now.getUTCDay() >= 4 ? now.getUTCDate() + (11 - now.getUTCDay()) : now.getUTCDate() + (4 - now.getUTCDay()));
-  nextReset.setUTCHours(0, 0, 0, 0);
-  return nextReset;
-};
+  const now = new Date()
+  const nextReset = new Date(now)
+  nextReset.setUTCDate(now.getUTCDay() >= 4 ? now.getUTCDate() + (11 - now.getUTCDay()) : now.getUTCDate() + (4 - now.getUTCDay()))
+  nextReset.setUTCHours(0, 0, 0, 0)
+  return nextReset
+}
 
 const CountdownRenderer = ({ days, hours, minutes, seconds }) => {
   return (
@@ -175,24 +175,24 @@ const CountdownRenderer = ({ days, hours, minutes, seconds }) => {
       {String(minutes).padStart(2, '0')}m{' '}
       {String(seconds).padStart(2, '0')}s
     </span>
-  );
-};
+  )
+}
 
 const InfoMark = ({ children, yearn, convex }) => (
   <span className={'info-mark'}>ⓘ
     <span className={'info-content' + (yearn ? ' yearn' : '') + (convex ? ' convex' : '')}>{children}</span>
   </span>
-);
+)
 
 
 const ComparisonTable = ({ data, attributes }) => {
-  if (!data || !data.liquid_lockers) return null;
+  if (!data || !data.liquid_lockers) return null
 
-  const cvxPrismaAPRData = data.liquid_lockers.cvxPrisma;
-  const yPRISMAAPRData = data.liquid_lockers.yPRISMA;
+  const cvxPrismaAPRData = data.liquid_lockers.cvxPrisma
+  const yPRISMAAPRData = data.liquid_lockers.yPRISMA
 
-  const cvxPrismaLastWeekData = cvxPrismaAPRData.weekly_data.slice(-1)[0] || {};
-  const yPRISMALastWeekData = yPRISMAAPRData.weekly_data.slice(-1)[0] || {};
+  const cvxPrismaLastWeekData = cvxPrismaAPRData.weekly_data.slice(-1)[0] || {}
+  const yPRISMALastWeekData = yPRISMAAPRData.weekly_data.slice(-1)[0] || {}
 
   return (
     <div className="table-container">
@@ -288,18 +288,18 @@ const ComparisonTable = ({ data, attributes }) => {
             </td>
           </tr>
           {attributes.map((attribute) => {
-            if (attribute === "weight") return null;
-            if (attribute === "lock_gain") return null;
-            if (attribute === "boost_fees_collected") return null;
+            if (attribute === "weight") return null
+            if (attribute === "lock_gain") return null
+            if (attribute === "boost_fees_collected") return null
 
-            const cvxPrismaValue = formatValue(cvxPrismaLastWeekData[attribute], attribute, 'table');
-            const yPRISMAValue = formatValue(yPRISMALastWeekData[attribute], attribute, 'table');
-            const isEqual = cvxPrismaValue === yPRISMAValue;
-            const isCvxPrismaHigher = cvxPrismaValue > yPRISMAValue;
-            const attributeName = formatAttributeName(attribute);
+            const cvxPrismaValue = formatValue(cvxPrismaLastWeekData[attribute], attribute, 'table')
+            const yPRISMAValue = formatValue(yPRISMALastWeekData[attribute], attribute, 'table')
+            const isEqual = cvxPrismaValue === yPRISMAValue
+            const isCvxPrismaHigher = cvxPrismaValue > yPRISMAValue
+            const attributeName = formatAttributeName(attribute)
 
-            let cvxPrismaInfoContent = null;
-            let yPRISMAInfoContent = null;
+            let cvxPrismaInfoContent = null
+            let yPRISMAInfoContent = null
 
             if (attribute === "current_boost_multiplier") {
               cvxPrismaInfoContent = (
@@ -314,7 +314,7 @@ const ComparisonTable = ({ data, attributes }) => {
                   })}</b></p>
                   <p style={{fontWeight:100, fontSize: '0.9em'}}><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></p>
                 </>
-              );
+              )
               yPRISMAInfoContent = (
                 <>
                   <p>Max Boost Remaining:<br/><b>{yPRISMALastWeekData.remaining_boost_data.max_boost_remaining.toLocaleString(undefined, {
@@ -327,20 +327,20 @@ const ComparisonTable = ({ data, attributes }) => {
                   })}</b></p>
                   <p style={{fontWeight:100, fontSize: '0.9em'}}><i>Allocations of max boost refill every Thursday at 00:00 UTC</i></p>
                 </>
-              );
+              )
             } else if (attribute === "global_weight_ratio") {
               cvxPrismaInfoContent = (
                 <>
                   <p>Locker Weight:<br/><b>{formatValue(cvxPrismaLastWeekData.weight, attribute, 'table-tooltip')}</b></p>
                   <p>Global Weight:<br/><b>{formatValue(cvxPrismaLastWeekData.global_weight, attribute, 'table-tooltip')}</b></p>
                 </>
-              );
+              )
               yPRISMAInfoContent = (
                 <>
                   <p>Locker Weight:<br/><b>{formatValue(yPRISMALastWeekData.weight, attribute, 'table-tooltip')}</b></p>
                   <p>Global Weight:<br/><b>{formatValue(yPRISMALastWeekData.global_weight, attribute, 'table-tooltip')}</b></p>
                 </>
-              );
+              )
             }
 
             return (
@@ -364,13 +364,13 @@ const ComparisonTable = ({ data, attributes }) => {
                   {cvxPrismaInfoContent && <InfoMark convex>{cvxPrismaInfoContent}</InfoMark>}
                 </td>
               </tr>
-            );
+            )
           })}
         </tbody>
       </table>
     </div>
-  );
-};
+  )
+}
 
 const DistributionScheduleTable = ({ distributionData }) => {
   return (
@@ -405,8 +405,8 @@ const DistributionScheduleTable = ({ distributionData }) => {
         ))}
       </tbody>
     </table>
-  );
-};
+  )
+}
 
 const EmissionsTable = ({ emissionsData, week, distributionData, showEmissions, handleOutsideClick }) => {
 
@@ -569,122 +569,175 @@ const EmissionsTable = ({ emissionsData, week, distributionData, showEmissions, 
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
 const useDarkMode = () => {
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light')
 
   useEffect(() => {
-    const root = window.document.documentElement;
-    root.classList.remove(theme === 'light' ? 'dark' : 'light');
-    root.classList.add(theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    const root = window.document.documentElement
+    root.classList.remove(theme === 'light' ? 'dark' : 'light')
+    root.classList.add(theme)
+    localStorage.setItem('theme', theme)
+  }, [theme])
 
-  return [theme, setTheme];
-};
+  return [theme, setTheme]
+}
 
 const formatRelativeTime = (timestamp) => {
-  const now = Date.now();
-  const diffInSeconds = Math.floor((now - timestamp) / 1000);
-  const diffInMinutes = Math.floor(diffInSeconds / 60);
-  if (diffInMinutes < 1) return 'less than a minute ago';
-  if (diffInMinutes === 1) return '1 minute ago';
-  return `${diffInMinutes} minutes ago`;
-};
+  const now = Date.now()
+  const diffInSeconds = Math.floor((now - timestamp) / 1000)
+  const diffInMinutes = Math.floor(diffInSeconds / 60)
+  if (diffInMinutes < 1) return 'less than a minute ago'
+  if (diffInMinutes === 1) return '1 minute ago'
+  return `${diffInMinutes} minutes ago`
+}
 
-const BoostsTable = ({ boostsData, onSort }) => {
+const Toast = ({ message, show, onClose }) => {
+  if (!show) return null
+
+  return (
+    <div className="toast" onClick={onClose}>
+      {message}
+    </div>
+  )
+}
+
+const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
+  const [showToast, setShowToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
+  const [timeoutId, setTimeoutId] = useState(-1)
+
+  const getHeaderClass = (key) => {
+    if (sortConfig.key !== key) return ""
+    return sortConfig.direction === 'ascending' ? 'ascending' : 'descending'
+  }
+
+  const copyToClipboard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setToastMessage(`Copied: ${text}`)
+      setShowToast(false)
+      setTimeout(() => {
+        setShowToast(true)
+        clearTimeout(timeoutId)
+        setTimeoutId(setTimeout(() => setShowToast(false), 3000))
+      }, 10)
+    
+    } catch (err) {
+      console.error("Failed to copy: ", err)
+      setToastMessage("Failed to copy address.")
+      setShowToast(true)
+      setTimeout(() => setShowToast(false), 3000)
+    }
+  }
+
+  const shortenAddress = (address) => `${address.slice(0, 5)}...${address.slice(-2)}`
+
   return (
     <div className="table-container">
-      <table>
+      <table className="table-boosts">
+        <colgroup>
+          <col span="1" style={{ width: "31%" }} />
+          <col span="1" style={{ width: "23%" }} />
+          <col span="1" style={{ width: "23%" }} />
+          <col span="1" style={{ width: "23%" }} />
+        </colgroup>
         <thead>
           <tr>
             <th>Boost Delegate</th>
-            <th onClick={() => onSort('fee')}>Fee</th>
-            <th onClick={() => onSort('max_boost_remaining')}>Max Boost Remaining</th>
-            <th onClick={() => onSort('decay_boost_remaining')}>Decay Boost Remaining</th>
+            <th className={getHeaderClass('fee')} onClick={() => onSort('fee')}>
+              {sortConfig.key === 'fee' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '*'} Fee 
+            </th>
+            <th className={getHeaderClass('max_boost_remaining')} onClick={() => onSort('max_boost_remaining')}>
+              {sortConfig.key === 'max_boost_remaining' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '*'} Max Boost Remaining 
+            </th>
+            <th className={getHeaderClass('decay_boost_remaining')} onClick={() => onSort('decay_boost_remaining')}>
+             {sortConfig.key === 'decay_boost_remaining' ? (sortConfig.direction === 'ascending' ? '↑' : '↓') : '*'} Decay Boost Remaining 
+            </th>
           </tr>
         </thead>
         <tbody>
           {boostsData.map((boost, index) => (
             <tr key={index}>
-              <td>{boost.boost_delegate}</td>
-              <td>{boost.fee}</td>
-              <td>{boost.max_boost_remaining}</td>
-              <td>{boost.decay_boost_remaining}</td>
+              <td className="clickable" onClick={() => copyToClipboard(boost.boost_delegate)}>{boost.delegate_ens ? boost.delegate_ens : shortenAddress(boost.boost_delegate)}</td>
+              <td>{(boost.fee/100).toFixed(2)}%</td>
+              <td>{boost.max_boost_remaining.toFixed(0)}</td>
+              <td>{boost.decay_boost_remaining.toFixed(0)}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      <Toast message={toastMessage} show={showToast} onClose={() => setShowToast(false)} />
     </div>
-  );
-};
+  )
+}
 
 const App = () => {
-  const [data, setData] = useState(null);
-  const [paletteIndex, setPaletteIndex] = useState(0);
-  const [theme, setTheme] = useDarkMode();
-  const [showRelativeTime, setShowRelativeTime] = useState(true);
-  const [showEmissions, setShowEmissions] = useState(true); // New state to toggle between tables
-  const [boostsData, setBoostsData] = useState([]);
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+  const [data, setData] = useState(null)
+  const [paletteIndex, setPaletteIndex] = useState(0)
+  const [theme, setTheme] = useDarkMode()
+  const [showRelativeTime, setShowRelativeTime] = useState(true)
+  const [showEmissions, setShowEmissions] = useState(true) // New state to toggle between tables
+  const [boostsData, setBoostsData] = useState([])
+  const [sortConfig, setSortConfig] = useState({ key: undefined, direction: 'ascending' })
 
   const toggleTable = () => {
-    setShowEmissions(!showEmissions);
-  };
+    setShowEmissions(!showEmissions)
+  }
   
   const handleOutsideClick = (e) => {
     if (e.target.id === "modalBackground") {
-      toggleTable();
+      toggleTable()
     }
-  };
+  }
 
 
   const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
-  };
+    setTheme(theme === 'light' ? 'dark' : 'light')
+  }
 
   const toggleUpdatedTime = () => {
-    setShowRelativeTime(!showRelativeTime);
-  };
+    setShowRelativeTime(!showRelativeTime)
+  }
 
   useEffect(() => {
   const fetchData = async () => {
     try {
       const response = await fetch(
         "https://raw.githubusercontent.com/wavey0x/open-data/master/prisma_liquid_locker_data.json"
-      );
-      const newData = await response.json();
-      setData(newData);
-      setBoostsData(newData.active_fowarders); 
+      )
+      const newData = await response.json()
+      setData(newData)
+      setBoostsData(newData.active_fowarders) 
     } catch (error) {
-      console.error("Error fetching data: ", error);
+      console.error("Error fetching data: ", error)
     }
-  };
+  }
 
-    fetchData();
+    fetchData()
 
     const handleKeyPress = (event) => {
       if (event.code === "KeyP") {
         const palettes = Array.from({ length: 20 }).map(
           (el, i) => "palette-" + (i + 1)
-        );
-        const nextPaletteIndex = (paletteIndex + 1) % palettes.length;
-        setPaletteIndex(nextPaletteIndex);
-        const selectedPalette = palettes[nextPaletteIndex];
-        const rootElement = document.documentElement;
-        palettes.forEach((palette) => rootElement.classList.remove(palette));
-        rootElement.classList.add(selectedPalette);
+        )
+        const nextPaletteIndex = (paletteIndex + 1) % palettes.length
+        setPaletteIndex(nextPaletteIndex)
+        const selectedPalette = palettes[nextPaletteIndex]
+        const rootElement = document.documentElement
+        palettes.forEach((palette) => rootElement.classList.remove(palette))
+        rootElement.classList.add(selectedPalette)
       }
-    };
+    }
 
-    window.addEventListener("keydown", handleKeyPress);
+    window.addEventListener("keydown", handleKeyPress)
 
     return () => {
-      window.removeEventListener("keydown", handleKeyPress);
-    };
-  }, [paletteIndex]);
+      window.removeEventListener("keydown", handleKeyPress)
+    }
+  }, [paletteIndex])
   
   const attributes = [
     "peg",
@@ -693,50 +746,50 @@ const App = () => {
     "global_weight_ratio",
     "boost_fees_collected",
     // "weight"
-  ];
+  ]
 
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('dashboard')
 
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const tab = searchParams.get('tab');
+    const searchParams = new URLSearchParams(location.search)
+    const tab = searchParams.get('tab')
     if (tab) {
-      setActiveTab(tab);
+      setActiveTab(tab)
     }
-  }, [location]);
+  }, [location])
 
   const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    navigate(`?tab=${tab}`);
-  };
+    setActiveTab(tab)
+    navigate(`?tab=${tab}`)
+  }
 
   const handleSort = (key) => {
-    let direction = 'ascending';
+    let direction = 'ascending'
     if (
       sortConfig.key === key &&
       sortConfig.direction === 'ascending'
     ) {
-      direction = 'descending';
+      direction = 'descending'
     }
-    setSortConfig({ key, direction });
-  };
+    setSortConfig({ key, direction })
+  }
   
   useEffect(() => {
-    if (!sortConfig.key) return;
+    if (!sortConfig.key) return
     const sortedData = [...boostsData].sort((a, b) => {
       if (a[sortConfig.key] < b[sortConfig.key]) {
-        return sortConfig.direction === 'ascending' ? -1 : 1;
+        return sortConfig.direction === 'ascending' ? -1 : 1
       }
       if (a[sortConfig.key] > b[sortConfig.key]) {
-        return sortConfig.direction === 'ascending' ? 1 : -1;
+        return sortConfig.direction === 'ascending' ? 1 : -1
       }
-      return 0;
-    });
-    setBoostsData(sortedData);
-  }, [sortConfig, boostsData]);
+      return 0
+    })
+    setBoostsData(sortedData)
+  }, [sortConfig, boostsData])
 
   const Undertable = () => (
     <div className="undertable">
@@ -805,7 +858,8 @@ const App = () => {
       )}
       {activeTab === 'boosts' && (
         <>
-          <BoostsTable boostsData={boostsData} onSort={handleSort} />
+          <BoostsTable boostsData={boostsData} onSort={handleSort} sortConfig={sortConfig} />
+          <Undertable />
         </>
       )}
       <div className="footer">
@@ -837,7 +891,7 @@ const App = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

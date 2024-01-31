@@ -455,55 +455,24 @@ td:hover .info-content {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* min-width: 100px; */
   padding: 0 40px;
   margin: 0 5px;
   min-width: 60px;
-  /* position: relative; */
-  /* top: -10px; */
-  /* left: -5px; */
-
-  /* animation-name: rainbowShift;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear; */
 }
-
-/* .footer-tab:nth-child(1) {
-  box-shadow: 0 0 20px #ff00003c;
-}
-.footer-tab:nth-child(2) {
-  box-shadow: 0 0 20px #00ff083c;
-}
-.footer-tab:nth-child(3) {
-  box-shadow: 0 0 20px #0400ff3c;
-} */
 
 .footer-tab.active {
   font-weight: bold;
-  /* background-color: #00000010; */
-  /* top: 0; */
   box-shadow: none;
-  /* left: 0; */
 }
 
 .footer-tab:hover {
   text-decoration: underline;
 }
 
-/* .footer-tab.active:nth-child(1) {
-  box-shadow: 0 0 20px #ff00003c;
-}
-.footer-tab.active:nth-child(2) {
-  box-shadow: 0 0 20px #00ff083c;
-}
-.footer-tab.active:nth-child(3) {
-  box-shadow: 0 0 20px #0400ff3c;
-} */
-
 @media only screen and (max-width: 500px) {
   .footer-tab {
     padding: 0 20px;
+    margin: 0 2px;
   }
   .footer-tabs {
     font-size: 0.8em;
@@ -804,4 +773,69 @@ table.emissions th {
 
 .italic-disc {
   font-weight: 100;
+}
+
+
+.ascending, .descending {
+  cursor: pointer;
+}
+
+
+table.table-boosts {
+  font-family: 'Sometype Mono', monospace;
+  font-weight: 100;
+}
+
+table.table-boosts th {
+  font-weight: 600;
+  padding-bottom: 10px;
+}
+
+table.table-boosts th:not(:first-child) {
+  text-decoration: underline;
+  cursor: pointer;
+
+}
+
+@media only screen and (max-width: 500px) {
+  table.table-boosts {
+    font-size: 0.9em;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  table.table-boosts {
+    font-size: 0.8em;
+  }
+}
+
+
+.clickable {
+  cursor: pointer;
+  text-decoration: underline; 
+}
+
+
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  height: 40px;
+}
+
+@keyframes fadein {
+  from { top: 0px; opacity: 0; }
+  to { top: 20px; opacity: 1; }
+}
+
+@keyframes fadeout {
+  from { top: 20px; opacity: 1; }
+  to { top: 0px; opacity: 0; }
 }
