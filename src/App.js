@@ -594,12 +594,41 @@ const formatRelativeTime = (timestamp) => {
   return `${diffInMinutes} minutes ago`;
 };
 
+const BoostsTable = ({ boostsData, onSort }) => {
+  return (
+    <div className="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Boost Delegate</th>
+            <th onClick={() => onSort('fee')}>Fee</th>
+            <th onClick={() => onSort('max_boost_remaining')}>Max Boost Remaining</th>
+            <th onClick={() => onSort('decay_boost_remaining')}>Decay Boost Remaining</th>
+          </tr>
+        </thead>
+        <tbody>
+          {boostsData.map((boost, index) => (
+            <tr key={index}>
+              <td>{boost.boost_delegate}</td>
+              <td>{boost.fee}</td>
+              <td>{boost.max_boost_remaining}</td>
+              <td>{boost.decay_boost_remaining}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
 const App = () => {
   const [data, setData] = useState(null);
   const [paletteIndex, setPaletteIndex] = useState(0);
   const [theme, setTheme] = useDarkMode();
   const [showRelativeTime, setShowRelativeTime] = useState(true);
   const [showEmissions, setShowEmissions] = useState(true); // New state to toggle between tables
+  const [boostsData, setBoostsData] = useState([]);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
   const toggleTable = () => {
     setShowEmissions(!showEmissions);
@@ -621,17 +650,18 @@ const App = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://raw.githubusercontent.com/wavey0x/open-data/master/prisma_liquid_locker_data.json"
-        );
-        const newData = await response.json();
-        setData(newData); 
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        "https://raw.githubusercontent.com/wavey0x/open-data/master/prisma_liquid_locker_data.json"
+      );
+      const newData = await response.json();
+      setData(newData);
+      setBoostsData(newData.active_fowarders); 
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
 
     fetchData();
 
@@ -682,6 +712,31 @@ const App = () => {
     setActiveTab(tab);
     navigate(`?tab=${tab}`);
   };
+
+  const handleSort = (key) => {
+    let direction = 'ascending';
+    if (
+      sortConfig.key === key &&
+      sortConfig.direction === 'ascending'
+    ) {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
+  
+  useEffect(() => {
+    if (!sortConfig.key) return;
+    const sortedData = [...boostsData].sort((a, b) => {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'ascending' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'ascending' ? 1 : -1;
+      }
+      return 0;
+    });
+    setBoostsData(sortedData);
+  }, [sortConfig, boostsData]);
 
   const Undertable = () => (
     <div className="undertable">
@@ -748,6 +803,11 @@ const App = () => {
           <Undertable />
         </>
       )}
+      {activeTab === 'boosts' && (
+        <>
+          <BoostsTable boostsData={boostsData} onSort={handleSort} />
+        </>
+      )}
       <div className="footer">
         <div className="footer-tabs">
           <span
@@ -767,6 +827,12 @@ const App = () => {
             onClick={() => handleTabChange('emissions')}
           >
             Emissions
+          </span>
+          <span
+            className={`footer-tab ${activeTab === 'boosts' ? 'active' : ''}`}
+            onClick={() => handleTabChange('boosts')}
+          >
+            Boosts
           </span>
         </div>
       </div>
