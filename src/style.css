@@ -855,6 +855,13 @@ table.table-boosts th:not(:first-child) {
   opacity: 0;
   transition: visibility 0s, opacity 0.5s linear;
   box-shadow: 0 0 10px red;
+  font-size: 0.8em;
+}
+
+@media only screen and (max-width: 750px) {
+  .boost-tooltip {
+    font-size: 1em;
+  }
 }
 
 tr:hover .boost-tooltip {
