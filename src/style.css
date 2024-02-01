@@ -862,6 +862,6 @@ tr:hover .boost-tooltip {
   opacity: 1;
 }
 
-.table-boosts tr:not(:first-child):hover{
+.table-boosts tr:hover td{
   text-decoration: underline;
 }

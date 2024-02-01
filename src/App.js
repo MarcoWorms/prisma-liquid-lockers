@@ -598,12 +598,12 @@ const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
 
   const renderTooltip = (boost) => (
     <div className="boost-tooltip">
-      <span style={{fontWeight: 900}}>{boost.delegate_ens ? boost.delegate_ens : shortenAddress(boost.boost_delegate)}</span><br /><br />
-      Percentage consumed: {boost.pct_max_consumed.toFixed(2)}%<br />
-      This Week Allocation: {boost.max_boost_allocation.toLocaleString(undefined, {
+      <span style={{fontWeight: 900, fontSize: '1.2em'}}>{boost.delegate_ens ? boost.delegate_ens : shortenAddress(boost.boost_delegate)}</span><br /><br />
+      Percentage consumed:<br /><span style={{fontWeight: 900}}>{boost.pct_max_consumed.toFixed(2)}%</span><br /><br />
+      Max boost allocation:<br /><span style={{fontWeight: 900}}>{boost.max_boost_allocation.toLocaleString(undefined, {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
-      })}
+      })}</span>
     </div>
   );
 
