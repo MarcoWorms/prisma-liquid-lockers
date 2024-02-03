@@ -974,7 +974,7 @@ const App = () => {
             renderRow={(item, index) => (
               <tr key={index}>
                 <td>{shortenENS(item.ens) || shortenAddress(item.account)}</td>
-                <td>${item.total_fees_paid.toLocaleString(undefined, {
+                <td>{item.total_fees_paid.toLocaleString(undefined, {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 0,
                 })}</td>
@@ -1018,7 +1018,7 @@ const App = () => {
             renderRow={(item, index) => (
               <tr key={index}>
                 <td>{shortenENS(item.ens) || shortenAddress(item.boost_delegate)}</td>
-                <td>${item.earned_fees.toLocaleString(undefined, {
+                <td>{item.earned_fees.toLocaleString(undefined, {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 0,
                 })}</td>
