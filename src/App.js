@@ -590,6 +590,9 @@ const Toast = ({ message, show, onClose }) => {
   )
 }
 
+const shortenAddress = (address) => `${address.slice(0, 5)}...${address.slice(-2)}`
+const shortenENS = (ens) => ens.length > 20 ? `${ens.slice(0, 8)}...${ens.slice(-8)}` : ens
+
 const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -646,8 +649,6 @@ const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
     }
   }
 
-  const shortenAddress = (address) => `${address.slice(0, 5)}...${address.slice(-2)}`
-
   return (
     <div className="table-container">
       <table className="table-boosts">
@@ -683,8 +684,8 @@ const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
         <tbody>
           {boostsData.map((boost, index) => (
             <tr key={index}
-              onMouseEnter={() => setHoveredRowIndex(index)} // Show tooltip
-              onMouseLeave={() => setHoveredRowIndex(null)} // Hide tooltip
+              onMouseEnter={() => setHoveredRowIndex(index)} 
+              onMouseLeave={() => setHoveredRowIndex(null)}
             >
               <td className="clickable" onClick={() => copyToClipboard(boost.boost_delegate)}>
                 {boost.delegate_ens ? boost.delegate_ens : shortenAddress(boost.boost_delegate)}
@@ -708,13 +709,93 @@ const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
   );
 };
 
+const DataModal = ({ name, show, onClose, data, columns, renderRow, searchPlaceholder }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  if (!show) return null;
+
+  const filteredData = data.filter(item =>
+    Object.values(item).some(value => value.toString().toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
+  return (
+    <div className="modal-background alt" onClick={onClose}>
+      <div className="modal" onClick={e => e.stopPropagation()}>
+        <h2>{name}</h2>
+        <input
+          type="text"
+          placeholder={searchPlaceholder || "Search..."}
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          autoFocus
+        />
+        {filteredData.length === 0 ? 'No matching rows were found.' : (
+          <table className="modal-table">
+            <thead>
+              <tr>
+                {columns.map((column, index) => (
+                  <th key={index}>{column.title}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {filteredData.map((item, index) => renderRow(item, index))}
+            </tbody>
+          </table>
+        ) }
+
+      </div>
+    </div>
+  );
+};
+
 const App = () => {
   const [data, setData] = useState(null)
-  const [paletteIndex, setPaletteIndex] = useState(0)
   const [theme, setTheme] = useDarkMode()
   const [showRelativeTime, setShowRelativeTime] = useState(true)
-  const [showEmissions, setShowEmissions] = useState(true) // New state to toggle between tables
+  const [showEmissions, setShowEmissions] = useState(true)
   const [sortConfig, setSortConfig] = useState({ key: 'fee', direction: 'ascending' })
+
+  const [showFeesPaidModal, setShowFeesPaidModal] = useState(false);
+  const [showEmissionsClaimedModal, setShowEmissionsClaimedModal] = useState(false);
+  const [showFeesEarnedModal, setShowFeesEarnedModal] = useState(false);
+  const [showReceiversByEmissionsModal, setShowReceiversByEmissionsModal] = useState(false);
+
+  const [topAccountsByFeesPaid, setTopAccountsByFeesPaid] = useState([]);
+  const [topAccountsByTotalEmissionsClaimed, setTopAccountsByTotalEmissionsClaimed] = useState([]);
+  const [topBoostDelegatesByFeesEarned, setTopBoostDelegatesByFeesEarned] = useState([]);
+  const [topReceiversByEmissionsClaimed, setTopReceiversByEmissionsClaimed] = useState([]);
+
+  useEffect(() => {
+    fetchTopAccountsByFeesPaid();
+    fetchTopAccountsByTotalEmissionsClaimed();
+    fetchTopBoostDelegatesByFeesEarned();
+    fetchTopReceiversByEmissionsClaimed();
+  }, []);
+  
+  const fetchTopAccountsByFeesPaid = async () => {
+    const response = await fetch('https://raw.githubusercontent.com/wavey0x/open-data/master/query_results/top_accounts_by_fees_paid.json');
+    const data = await response.json();
+    setTopAccountsByFeesPaid(data.data);
+  };
+
+  const fetchTopAccountsByTotalEmissionsClaimed = async () => {
+    const response = await fetch('https://raw.githubusercontent.com/wavey0x/open-data/master/query_results/top_accounts_by_total_emissions_claimed.json');
+    const data = await response.json();
+    setTopAccountsByTotalEmissionsClaimed(data.data);
+  };
+
+  const fetchTopBoostDelegatesByFeesEarned = async () => {
+    const response = await fetch('https://raw.githubusercontent.com/wavey0x/open-data/master/query_results/top_boost_delegates_by_fees_earned.json');
+    const data = await response.json();
+    setTopBoostDelegatesByFeesEarned(data.data);
+  };
+
+  const fetchTopReceiversByEmissionsClaimed = async () => {
+    const response = await fetch('https://raw.githubusercontent.com/wavey0x/open-data/master/query_results/top_receivers_by_emissions_claimed.json');
+    const data = await response.json();
+    setTopReceiversByEmissionsClaimed(data.data);
+  };
 
   const toggleTable = () => {
     setShowEmissions(!showEmissions)
@@ -736,41 +817,20 @@ const App = () => {
   }
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        "https://raw.githubusercontent.com/wavey0x/open-data/master/prisma_liquid_locker_data.json"
-      )
-      const newData = await response.json()
-      setData(newData)
-      setSortConfig({ key: 'fee', direction: 'ascending' })
-    } catch (error) {
-      console.error("Error fetching data: ", error)
-    }
-  }
-
-    fetchData()
-
-    const handleKeyPress = (event) => {
-      if (event.code === "KeyP") {
-        const palettes = Array.from({ length: 20 }).map(
-          (el, i) => "palette-" + (i + 1)
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://raw.githubusercontent.com/wavey0x/open-data/master/prisma_liquid_locker_data.json"
         )
-        const nextPaletteIndex = (paletteIndex + 1) % palettes.length
-        setPaletteIndex(nextPaletteIndex)
-        const selectedPalette = palettes[nextPaletteIndex]
-        const rootElement = document.documentElement
-        palettes.forEach((palette) => rootElement.classList.remove(palette))
-        rootElement.classList.add(selectedPalette)
+        const newData = await response.json()
+        setData(newData)
+        setSortConfig({ key: 'fee', direction: 'ascending' })
+      } catch (error) {
+        console.error("Error fetching data: ", error)
       }
     }
-
-    window.addEventListener("keydown", handleKeyPress)
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyPress)
-    }
-  }, [paletteIndex])
+    fetchData()
+  }, [])
   
   const attributes = [
     "peg",
@@ -852,7 +912,7 @@ const App = () => {
   return (
     <div className="app-container">
       <div className='toggle-switch'>
-        <label>
+        <label className="switch">
           <input type='checkbox' onClick={toggleTheme} defaultChecked={theme === 'light'}/>
           <span className='slider'></span>
         </label>
@@ -894,7 +954,101 @@ const App = () => {
       )}
       {activeTab === 'boosts' && data && (
         <>
+          <div className="modal-buttons-container">
+            <button className="toggle-table" onClick={() => setShowFeesPaidModal(true)}>Top Accounts by Fees Paid</button>
+            <button className="toggle-table" onClick={() => setShowEmissionsClaimedModal(true)}>Top Accounts by Emissions Claimed</button>
+            <button className="toggle-table" onClick={() => setShowFeesEarnedModal(true)}>Top Boost Delegates by Fees Earned</button>
+            <button className="toggle-table" onClick={() => setShowReceiversByEmissionsModal(true)}>Top Receivers by Emissions Claimed</button>
+          </div>
           <span className="boosts-disclaimer">The following table displays all boost delegates who have opt-ed into the new architecture which allows liquid lockers users to claim using their boost. We hope that surfacing this data will help encourage a more efficient and competitive marketplace.</span>
+
+          {/* Top Accounts by Fees Paid Modal */}
+          <DataModal
+            name="Top Accounts by Fees Paid"
+            show={showFeesPaidModal}
+            onClose={() => setShowFeesPaidModal(false)}
+            data={topAccountsByFeesPaid}
+            columns={[
+              { title: "Account" },
+              { title: "Total Fees Paid" }
+            ]}
+            renderRow={(item, index) => (
+              <tr key={index}>
+                <td>{shortenENS(item.ens) || shortenAddress(item.account)}</td>
+                <td>${item.total_fees_paid.toLocaleString(undefined, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}</td>
+              </tr>
+            )}
+            searchPlaceholder="Search by account or ENS..."
+          />
+
+          {/* Top Accounts by Emissions Claimed Modal */}
+          <DataModal
+            name="Top Accounts by Emissions Claimed"
+            show={showEmissionsClaimedModal}
+            onClose={() => setShowEmissionsClaimedModal(false)}
+            data={topAccountsByTotalEmissionsClaimed}
+            columns={[
+              { title: "Account" },
+              { title: "Total Emissions Claimed" }
+            ]}
+            renderRow={(item, index) => (
+              <tr key={index}>
+                <td>{shortenENS(item.ens) || shortenAddress(item.account)}</td>
+                <td>{item.amount.toLocaleString(undefined, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}</td>
+              </tr>
+            )}
+            searchPlaceholder="Search by account or ENS..."
+          />
+
+          {/* Top Boost Delegates by Fees Earned Modal */}
+          <DataModal
+            name="Top Boost Delegates by Fees Earned"
+            show={showFeesEarnedModal}
+            onClose={() => setShowFeesEarnedModal(false)}
+            data={topBoostDelegatesByFeesEarned}
+            columns={[
+              { title: "Boost Delegate" },
+              { title: "Earned Fees" }
+            ]}
+            renderRow={(item, index) => (
+              <tr key={index}>
+                <td>{shortenENS(item.ens) || shortenAddress(item.boost_delegate)}</td>
+                <td>${item.earned_fees.toLocaleString(undefined, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}</td>
+              </tr>
+            )}
+            searchPlaceholder="Search by delegate or ENS..."
+          />
+
+          {/* Top Receivers by Emissions Claimed Modal */}
+          <DataModal
+            name="Top Receivers by Emissions Claimed"
+            show={showReceiversByEmissionsModal}
+            onClose={() => setShowReceiversByEmissionsModal(false)}
+            data={topReceiversByEmissionsClaimed}
+            columns={[
+              { title: "Receiver" },
+              { title: "Total Emissions Claimed" }
+            ]}
+            renderRow={(item, index) => (
+              <tr key={index}>
+                <td>{shortenENS(item.ens) || shortenAddress(item.receiver)}</td>
+                <td>{item.amount.toLocaleString(undefined, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}</td>
+              </tr>
+            )}
+            searchPlaceholder="Search by receiver or ENS..."
+          />
           <BoostsTable boostsData={data.active_fowarders} onSort={handleSort} sortConfig={sortConfig} />
           <Undertable />
         </>

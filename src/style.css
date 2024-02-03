@@ -286,7 +286,7 @@ table.claim tbody tr td:not(:first-child) {
 }
 
 
-label {
+label.switch {
   position: absolute;
   width: 100%;
   height: 25px;
@@ -295,7 +295,7 @@ label {
   cursor: pointer;
 }
 
-input {
+label.switch input {
   position: absolute;
   display: none;
 }
@@ -490,6 +490,7 @@ td:hover .info-content {
   text-align: right;
 }
 
+
 .modal p {
   opacity: 0.6;
 }
@@ -501,7 +502,6 @@ td:hover .info-content {
 .modal table.emissions th {
   padding: 10px;
 }
-
 
 @media only screen and (max-width: 800px) {
   .modal p {
@@ -788,6 +788,73 @@ table.table-boosts th:not(:first-child) {
   table.table-boosts {
     font-size: 0.8em;
   }
+}
+
+.modal-background.alt .modal {
+  height: 90vh;
+  /* width: 90vw; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-background.alt .modal input {
+  padding: 10px;
+  border: solid 2px var(--color-text);
+  margin-bottom: 20px;
+  width: 90%;
+}
+
+.modal-background.alt .modal table {
+  font-family: 'Sometype Mono', monospace;
+  font-weight: 100;
+  text-align: left;
+}
+
+.modal-background.alt .modal table th {
+  font-family: "Red Hat Display", sans-serif;
+  font-weight: 700;
+  padding-bottom: 10px;
+}
+
+.modal-background.alt .modal table th:first-child {
+  padding-right: 20px;
+}
+
+.modal-background.alt .modal table td:first-child {
+  padding-right: 20px;
+}
+
+@media only screen and (max-width: 500px) {
+  .modal-background.alt .modal table {
+    font-size: 0.9em;
+  }
+  .modal-background.alt .modal {
+    width: 94vw;
+  }
+}
+
+.modal-background.alt h2 {
+  margin-top: 0px;
+}
+
+@media only screen and (max-width: 700px) {
+  .modal-background.alt h2 {
+    font-size: 0.9em;
+  }
+}
+
+
+.modal-buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.modal-buttons-container button {
+  margin: 5px 20px;
+  max-width: 300px;
 }
 
 
