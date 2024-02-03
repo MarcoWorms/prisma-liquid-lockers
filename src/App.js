@@ -727,7 +727,6 @@ const DataModal = ({ name, show, onClose, data, columns, renderRow, searchPlaceh
           placeholder={searchPlaceholder || "Search..."}
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
-          autoFocus
         />
         {filteredData.length === 0 ? 'No matching rows were found.' : (
           <table className="modal-table">
