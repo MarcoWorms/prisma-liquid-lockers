@@ -45,6 +45,8 @@ const formatValue = (value, attribute, context = 'graph') => {
     }
     const decimalPlaces = context === 'table' ? 2 : context === 'tooltip' ? 2 : 0 
     return `${(value * 100).toFixed(decimalPlaces)}%`
+  } else if (attribute === "liquid_locker_weekly_dominance") {
+    return `${(value * 100).toFixed(2)}%`
   } else if (attribute === "current_boost_multiplier") {
     return `${value.toFixed(2)}x`
   } else if (attribute === "lock_gain") {
@@ -189,6 +191,18 @@ const LineAreaChart = ({ data, attribute }) => ( console.log(data) ||
         </>)}
       </LineChart>
     </ResponsiveContainer>
+    <p style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+      {attribute === 'adjusted_weight_capture' && (
+          <span className="undertable" style={{width: "95%", opacity: 0.6, marginBottom: 0}}>
+            Ratio of user's locks over total locks this week, divided by user's governance share.
+          </span>
+      )}
+      {attribute === 'liquid_locker_weekly_dominance' && (
+        <p className="undertable" style={{width: "95%", opacity: 0.6, marginBottom: 0}}>
+          Percentage of weekly emissions captured by liquid lockers through emission claims. 
+        </p>
+      )}
+    </p>
   </div>
 )
 
