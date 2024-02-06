@@ -112,7 +112,7 @@ const xAxisTickFormatter = (value) => {
   return `W${weekNumber}`
 }
 
-const LineAreaChart = ({ data, attribute }) => (
+const LineAreaChart = ({ data, attribute }) => ( console.log(data) ||
   <div className="chart-container">
     <h3 className="chart-title">{formatAttributeName(attribute)}</h3>
     <ResponsiveContainer width="100%" height={300}>
@@ -126,7 +126,24 @@ const LineAreaChart = ({ data, attribute }) => (
         }}
       >
         <XAxis dataKey="name" tickFormatter={xAxisTickFormatter} />
-        <YAxis tickFormatter={(value) => yAxisTickFormatter(value, attribute)} domain={attribute === 'current_boost_multiplier' ? [1,2] : undefined} />
+
+        <YAxis tickFormatter={(value) => yAxisTickFormatter(value, attribute)} domain={
+          attribute === 'current_boost_multiplier'
+            ? [1,2]
+            : attribute === 'liquid_locker_weekly_dominance'
+              ?  [
+                Math.min(
+                  data.reduce((acc, el) => (el.yPRISMA < acc) ? el.yPRISMA : acc, 100),
+                  data.reduce((acc, el) => (el.cvxPRISMA < acc) ? el.cvxPRISMA : acc, 100)
+                ),
+                Math.max(
+                  data.reduce((acc, el) => (el.yPRISMA > acc) ? el.yPRISMA : acc, 0),
+                  data.reduce((acc, el) => (el.cvxPRISMA > acc) ? el.cvxPRISMA : acc, 0)
+                ),
+              ] 
+              : undefined
+        }/>
+
         <Tooltip
           content={<CustomTooltip attribute={attribute} />}
         />
