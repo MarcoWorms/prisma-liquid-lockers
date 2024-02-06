@@ -17,6 +17,7 @@ import "./palettes.css"
 const colors = {
   cvxPrisma: "var(--color-cvx-prisma)",
   yPRISMA: "var(--color-y-prisma)",
+  ratio: "var(--color-text)",
 }
 
 const formatAttributeName = (attribute) => {
@@ -79,6 +80,7 @@ const transformDataForChart = (data, attribute) => {
   const mergedData = cvxPrismaData.map((cvxData, index) => ({
     ...cvxData,
     yPRISMA: yPRISMAData[index] ? yPRISMAData[index].yPRISMA : null,
+    Ratio: yPRISMAData[index] ? yPRISMAData[index].yPRISMA : null,
   }))
 
   return mergedData
@@ -129,30 +131,45 @@ const LineAreaChart = ({ data, attribute }) => (
           content={<CustomTooltip attribute={attribute} />}
         />
         <Legend />
-        <Line
-          type="monotone"
-          dataKey="yPRISMA"
-          dot={false}
-          activeDot={{
-            stroke: colors.yPRISMA,
-            fill: colors.yPRISMA,
-            strokeWidth: 4,
-          }}
-          stroke={colors.yPRISMA}
-          strokeWidth={4}
-        />
-        <Line
-          type="monotone"
-          dataKey="cvxPrisma"
-          dot={false}
-          activeDot={{
-            stroke: colors.cvxPrisma,
-            fill: colors.cvxPrisma,
-            strokeWidth: 4,
-          }}
-          stroke={colors.cvxPrisma}
-          strokeWidth={4}
-        />
+        {attribute === 'liquid_locker_weekly_dominance' ? (
+          <Line
+            type="monotone"
+            dataKey="Ratio"
+            dot={false}
+            activeDot={{
+              stroke: colors.ratio,
+              fill: colors.ratio,
+              strokeWidth: 4,
+            }}
+            stroke={colors.ratio}
+            strokeWidth={4}
+          />
+        ) : (<>
+          <Line
+            type="monotone"
+            dataKey="yPRISMA"
+            dot={false}
+            activeDot={{
+              stroke: colors.yPRISMA,
+              fill: colors.yPRISMA,
+              strokeWidth: 4,
+            }}
+            stroke={colors.yPRISMA}
+            strokeWidth={4}
+          />
+          <Line
+            type="monotone"
+            dataKey="cvxPrisma"
+            dot={false}
+            activeDot={{
+              stroke: colors.cvxPrisma,
+              fill: colors.cvxPrisma,
+              strokeWidth: 4,
+            }}
+            stroke={colors.cvxPrisma}
+            strokeWidth={4}
+          />
+        </>)}
       </LineChart>
     </ResponsiveContainer>
   </div>
@@ -290,6 +307,8 @@ const ComparisonTable = ({ data, attributes }) => {
             if (attribute === "weight") return null
             if (attribute === "lock_gain") return null
             if (attribute === "boost_fees_collected") return null
+            if (attribute === "adjusted_weight_capture") return null
+            if (attribute === "liquid_locker_weekly_dominance") return null
 
             const cvxPrismaValue = formatValue(cvxPrismaLastWeekData[attribute], attribute, 'table')
             const yPRISMAValue = formatValue(yPRISMALastWeekData[attribute], attribute, 'table')
@@ -837,6 +856,9 @@ const App = () => {
     "current_boost_multiplier",
     "global_weight_ratio",
     "boost_fees_collected",
+    "adjusted_weight_capture",
+    "liquid_locker_weekly_dominance",
+
   ]
 
   const [activeTab, setActiveTab] = useState('dashboard')
