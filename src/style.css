@@ -267,9 +267,15 @@ table.claim tbody tr td:not(:first-child) {
   margin-bottom: 100px;
 }
 
+@media only screen and (max-width: 600px) {
+  .undertable {
+    font-size: 0.85em;
+  }
+}
+
 @media only screen and (max-width: 400px) {
   .undertable {
-    font-size: 0.7em;
+    font-size: 0.75em;
   }
 }
 
