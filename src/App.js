@@ -1019,7 +1019,7 @@ const App = () => {
           </div>
           <span className="boosts-disclaimer">The following table displays all boost delegates who have opt-ed into the new architecture which allows liquid lockers users to claim using their boost. We hope that surfacing this data will help encourage a more efficient and competitive marketplace.</span>
           <label for="hideAllocationsSmallerThan200">
-            <i>Hide allocations smaller than 200</i>
+            <i className="filter200">Hide allocations smaller than 200</i>
             <input type="checkbox" id="hideAllocationsSmallerThan200" checked={hideAllocationsSmallerThan200} onChange={toggleHideAllocationsSmallerThan200} />
           </label>
           {/* Top Accounts by Fees Paid Modal */}
