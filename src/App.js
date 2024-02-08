@@ -643,7 +643,7 @@ const Toast = ({ message, show, onClose }) => {
 const shortenAddress = (address) => `${address.slice(0, 5)}...${address.slice(-2)}`
 const shortenENS = (ens) => ens.length > 20 ? `${ens.slice(0, 8)}...${ens.slice(-8)}` : ens
 
-const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
+const BoostsTable = ({ boostsData, onSort, sortConfig, hideAllocationsSmallerThan200 }) => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [timeoutId, setTimeoutId] = useState(-1);
@@ -732,7 +732,7 @@ const BoostsTable = ({ boostsData, onSort, sortConfig }) => {
           </tr>
         </thead>
         <tbody>
-          {boostsData.map((boost, index) => (
+          {boostsData.filter(boost => hideAllocationsSmallerThan200 && boost.max_boost_remaining < 200 ? false : true).map((boost, index) => (
             <tr key={index}
               onMouseEnter={() => setHoveredRowIndex(index)} 
               onMouseLeave={() => setHoveredRowIndex(null)}
@@ -814,6 +814,11 @@ const App = () => {
   const [topAccountsByTotalEmissionsClaimed, setTopAccountsByTotalEmissionsClaimed] = useState([]);
   const [topBoostDelegatesByFeesEarned, setTopBoostDelegatesByFeesEarned] = useState([]);
   const [topReceiversByEmissionsClaimed, setTopReceiversByEmissionsClaimed] = useState([]);
+  const [hideAllocationsSmallerThan200, setHideAllocationsSmallerThan200] = useState(true);
+
+  const toggleHideAllocationsSmallerThan200 = () => {
+    setHideAllocationsSmallerThan200(!hideAllocationsSmallerThan200)
+  }
 
   useEffect(() => {
     fetchTopAccountsByFeesPaid();
@@ -1013,7 +1018,10 @@ const App = () => {
             <button className="toggle-table" onClick={() => setShowReceiversByEmissionsModal(true)}>Top Receivers by Emissions Claimed</button>
           </div>
           <span className="boosts-disclaimer">The following table displays all boost delegates who have opt-ed into the new architecture which allows liquid lockers users to claim using their boost. We hope that surfacing this data will help encourage a more efficient and competitive marketplace.</span>
-
+          <label for="hideAllocationsSmallerThan200">
+            <i>Hide allocations smaller than 200</i>
+            <input type="checkbox" id="hideAllocationsSmallerThan200" checked={hideAllocationsSmallerThan200} onChange={toggleHideAllocationsSmallerThan200} />
+          </label>
           {/* Top Accounts by Fees Paid Modal */}
           <DataModal
             name="Top Accounts by Fees Paid"
@@ -1101,7 +1109,7 @@ const App = () => {
             )}
             searchPlaceholder="Search by receiver or ENS..."
           />
-          <BoostsTable boostsData={data.active_fowarders} onSort={handleSort} sortConfig={sortConfig} />
+          <BoostsTable boostsData={data.active_fowarders} onSort={handleSort} sortConfig={sortConfig} hideAllocationsSmallerThan200={hideAllocationsSmallerThan200} />
           <Undertable />
         </>
       )}
