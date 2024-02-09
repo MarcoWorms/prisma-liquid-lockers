@@ -732,7 +732,7 @@ const BoostsTable = ({ boostsData, onSort, sortConfig, hideAllocationsSmallerTha
           </tr>
         </thead>
         <tbody>
-          {boostsData.filter(boost => hideAllocationsSmallerThan200 && boost.max_boost_remaining < 200 ? false : true).map((boost, index) => (
+          {boostsData.filter(boost => hideAllocationsSmallerThan200 && boost.max_boost_allocation < 200 ? false : true).map((boost, index) => (
             <tr key={index}
               onMouseEnter={() => setHoveredRowIndex(index)} 
               onMouseLeave={() => setHoveredRowIndex(null)}
@@ -1021,7 +1021,7 @@ const App = () => {
           <div className="check-container">  
             <label for="hideAllocationsSmallerThan200">
               <input type="checkbox" id="hideAllocationsSmallerThan200" checked={hideAllocationsSmallerThan200} onChange={toggleHideAllocationsSmallerThan200} />
-              <i className="filter200">Hide allocations smaller than 200</i>
+              <i className="filter200">Hide users with allocations smaller than 200</i>
             </label>
           </div>
           {/* Top Accounts by Fees Paid Modal */}
