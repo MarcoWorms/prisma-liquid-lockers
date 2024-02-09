@@ -154,7 +154,10 @@ table {
 @media only screen and (max-width: 400px) {
   .table-container {
     width: 98%;
-    margin-top: 0px;
+    margin-top: 20px;
+  }
+  .filter200 {
+    font-size: 0.9em;
   }
 }
 
