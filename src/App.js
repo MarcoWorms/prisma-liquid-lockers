@@ -1018,10 +1018,12 @@ const App = () => {
             <button className="toggle-table" onClick={() => setShowReceiversByEmissionsModal(true)}>Top Receivers by Emissions Claimed</button>
           </div>
           <span className="boosts-disclaimer">The following table displays all boost delegates who have opt-ed into the new architecture which allows liquid lockers users to claim using their boost. We hope that surfacing this data will help encourage a more efficient and competitive marketplace.</span>
-          <label for="hideAllocationsSmallerThan200">
-            <i className="filter200">Hide allocations smaller than 200</i>
-            <input type="checkbox" id="hideAllocationsSmallerThan200" checked={hideAllocationsSmallerThan200} onChange={toggleHideAllocationsSmallerThan200} />
-          </label>
+          <div className="check-container">  
+            <label for="hideAllocationsSmallerThan200">
+              <input type="checkbox" id="hideAllocationsSmallerThan200" checked={hideAllocationsSmallerThan200} onChange={toggleHideAllocationsSmallerThan200} />
+              <i className="filter200">Hide allocations smaller than 200</i>
+            </label>
+          </div>
           {/* Top Accounts by Fees Paid Modal */}
           <DataModal
             name="Top Accounts by Fees Paid"

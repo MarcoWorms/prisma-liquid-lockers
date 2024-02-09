@@ -948,3 +948,14 @@ tr:hover .boost-tooltip {
 .table-boosts tr:hover td{
   text-decoration: underline;
 }
+
+.check-container {
+  width: 90%;
+  display: flex;
+}
+
+@media screen and (max-width: 400px) {
+  .check-container {
+    width: 98%;
+  }
+}
