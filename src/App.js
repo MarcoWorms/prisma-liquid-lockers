@@ -155,7 +155,7 @@ const LineAreaChart = ({ data, attribute }) => {
           />
           <Legend />
           {lastWeekName && (
-            <ReferenceArea x1={lastWeekName} strokeOpacity={0} fill="var(--color-text)" fillOpacity={0.1} />
+            <ReferenceArea x1={lastWeekName} strokeOpacity={0} fill="var(--color-text)" fillOpacity={0.1} label={"in progress"} />
           )}
           {attribute === 'liquid_locker_weekly_dominance' ? (
             <Line
