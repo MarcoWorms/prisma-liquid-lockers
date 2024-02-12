@@ -155,7 +155,7 @@ const LineAreaChart = ({ data, attribute }) => {
           />
           <Legend />
           {lastWeekName && (
-            <ReferenceArea x1={lastWeekName} strokeOpacity={0} fill="var(--color-text)" fillOpacity={0.1} label={"in progress"} />
+            <ReferenceArea x1={lastWeekName} strokeOpacity={0} fill="var(--color-text)" fillOpacity={0.1} label={"live"} />
           )}
           {attribute === 'liquid_locker_weekly_dominance' ? (
             <Line
@@ -201,7 +201,7 @@ const LineAreaChart = ({ data, attribute }) => {
       <p style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
         {attribute === 'adjusted_weight_capture' && (
             <span className="undertable" style={{width: "95%", opacity: 0.6, marginBottom: 0}}>
-              Ratio of user's locks over total locks this week, divided by user's governance share.
+              Ratio of users's weekly weight gain to total net weekly weight gain, divided by user's starting governance share.
             </span>
         )}
         {attribute === 'liquid_locker_weekly_dominance' && (
