@@ -115,6 +115,7 @@ const xAxisTickFormatter = (value) => {
   return `W${weekNumber}`
 }
 
+
 const LineAreaChart = ({ data, attribute }) => {
   
   const lastWeekName = data.length > 0 ? data[data.length - 2].name : null;
@@ -155,7 +156,7 @@ const LineAreaChart = ({ data, attribute }) => {
           />
           <Legend />
           {lastWeekName && (
-            <ReferenceArea x1={lastWeekName} strokeOpacity={0} fill="var(--color-text)" fillOpacity={0.1} label={"live"} />
+            <ReferenceArea x1={lastWeekName} strokeOpacity={0} fill="var(--color-text)" fillOpacity={0.1} />
           )}
           {attribute === 'liquid_locker_weekly_dominance' ? (
             <Line
