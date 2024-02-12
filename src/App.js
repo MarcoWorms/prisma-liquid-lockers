@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  ReferenceArea,
 } from "recharts"
 import "./style.css"
 import "./palettes.css"
@@ -114,97 +115,104 @@ const xAxisTickFormatter = (value) => {
   return `W${weekNumber}`
 }
 
-const LineAreaChart = ({ data, attribute }) => ( console.log(data) ||
-  <div className="chart-container">
-    <h3 className="chart-title">{formatAttributeName(attribute)}</h3>
-    <ResponsiveContainer width="100%" height={300}>
-      <LineChart
-        data={data}
-        margin={{
-          top: 20,
-          right: 40,
-          left: 30,
-          bottom: 5,
-        }}
-      >
-        <XAxis dataKey="name" tickFormatter={xAxisTickFormatter} />
+const LineAreaChart = ({ data, attribute }) => {
+  
+  const lastWeekName = data.length > 0 ? data[data.length - 2].name : null;
+  return (
+    <div className="chart-container">
+      <h3 className="chart-title">{formatAttributeName(attribute)}</h3>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart
+          data={data}
+          margin={{
+            top: 20,
+            right: 40,
+            left: 30,
+            bottom: 5,
+          }}
+        >
+          <XAxis dataKey="name" tickFormatter={xAxisTickFormatter} />
 
-        <YAxis tickFormatter={(value) => yAxisTickFormatter(value, attribute)} domain={
-          attribute === 'current_boost_multiplier'
-            ? [1,2]
-            : attribute === 'liquid_locker_weekly_dominance'
-              ?  [
-                Math.min(
-                  data.reduce((acc, el) => (el.yPRISMA < acc) ? el.yPRISMA : acc, 100),
-                  data.reduce((acc, el) => (el.cvxPRISMA < acc) ? el.cvxPRISMA : acc, 100)
-                ),
-                Math.max(
-                  data.reduce((acc, el) => (el.yPRISMA > acc) ? el.yPRISMA : acc, 0),
-                  data.reduce((acc, el) => (el.cvxPRISMA > acc) ? el.cvxPRISMA : acc, 0)
-                ),
-              ] 
-              : undefined
-        }/>
+          <YAxis tickFormatter={(value) => yAxisTickFormatter(value, attribute)} domain={
+            attribute === 'current_boost_multiplier'
+              ? [1,2]
+              : attribute === 'liquid_locker_weekly_dominance'
+                ?  [
+                  Math.min(
+                    data.reduce((acc, el) => (el.yPRISMA < acc) ? el.yPRISMA : acc, 100),
+                    data.reduce((acc, el) => (el.cvxPRISMA < acc) ? el.cvxPRISMA : acc, 100)
+                  ),
+                  Math.max(
+                    data.reduce((acc, el) => (el.yPRISMA > acc) ? el.yPRISMA : acc, 0),
+                    data.reduce((acc, el) => (el.cvxPRISMA > acc) ? el.cvxPRISMA : acc, 0)
+                  ),
+                ] 
+                : undefined
+          }/>
 
-        <Tooltip
-          content={<CustomTooltip attribute={attribute} />}
-        />
-        <Legend />
-        {attribute === 'liquid_locker_weekly_dominance' ? (
-          <Line
-            type="monotone"
-            dataKey="Ratio"
-            dot={false}
-            activeDot={{
-              stroke: colors.ratio,
-              fill: colors.ratio,
-              strokeWidth: 4,
-            }}
-            stroke={colors.ratio}
-            strokeWidth={4}
+          <Tooltip
+            content={<CustomTooltip attribute={attribute} />}
           />
-        ) : (<>
-          <Line
-            type="monotone"
-            dataKey="yPRISMA"
-            dot={false}
-            activeDot={{
-              stroke: colors.yPRISMA,
-              fill: colors.yPRISMA,
-              strokeWidth: 4,
-            }}
-            stroke={colors.yPRISMA}
-            strokeWidth={4}
-          />
-          <Line
-            type="monotone"
-            dataKey="cvxPrisma"
-            dot={false}
-            activeDot={{
-              stroke: colors.cvxPrisma,
-              fill: colors.cvxPrisma,
-              strokeWidth: 4,
-            }}
-            stroke={colors.cvxPrisma}
-            strokeWidth={4}
-          />
-        </>)}
-      </LineChart>
-    </ResponsiveContainer>
-    <p style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-      {attribute === 'adjusted_weight_capture' && (
-          <span className="undertable" style={{width: "95%", opacity: 0.6, marginBottom: 0}}>
-            Ratio of user's locks over total locks this week, divided by user's governance share.
-          </span>
-      )}
-      {attribute === 'liquid_locker_weekly_dominance' && (
-        <p className="undertable" style={{width: "95%", opacity: 0.6, marginBottom: 0}}>
-          Percentage of weekly emissions captured by liquid lockers through emission claims. 
-        </p>
-      )}
-    </p>
-  </div>
-)
+          <Legend />
+          {lastWeekName && (
+            <ReferenceArea x1={lastWeekName} strokeOpacity={0} fill="var(--color-text)" fillOpacity={0.1} />
+          )}
+          {attribute === 'liquid_locker_weekly_dominance' ? (
+            <Line
+              type="monotone"
+              dataKey="Ratio"
+              dot={false}
+              activeDot={{
+                stroke: colors.ratio,
+                fill: colors.ratio,
+                strokeWidth: 4,
+              }}
+              stroke={colors.ratio}
+              strokeWidth={4}
+            />
+          ) : (<>
+            <Line
+              type="monotone"
+              dataKey="yPRISMA"
+              dot={false}
+              activeDot={{
+                stroke: colors.yPRISMA,
+                fill: colors.yPRISMA,
+                strokeWidth: 4,
+              }}
+              stroke={colors.yPRISMA}
+              strokeWidth={4}
+            />
+            <Line
+              type="monotone"
+              dataKey="cvxPrisma"
+              dot={false}
+              activeDot={{
+                stroke: colors.cvxPrisma,
+                fill: colors.cvxPrisma,
+                strokeWidth: 4,
+              }}
+              stroke={colors.cvxPrisma}
+              strokeWidth={4}
+            />
+          </>)}
+        </LineChart>
+      </ResponsiveContainer>
+      <p style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+        {attribute === 'adjusted_weight_capture' && (
+            <span className="undertable" style={{width: "95%", opacity: 0.6, marginBottom: 0}}>
+              Ratio of user's locks over total locks this week, divided by user's governance share.
+            </span>
+        )}
+        {attribute === 'liquid_locker_weekly_dominance' && (
+          <p className="undertable" style={{width: "95%", opacity: 0.6, marginBottom: 0}}>
+            Percentage of weekly emissions captured by liquid lockers through emission claims. 
+          </p>
+        )}
+      </p>
+    </div>
+  )
+}
 
 const getNextResetTime = () => {
   const now = new Date()
