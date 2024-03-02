@@ -959,3 +959,36 @@ tr:hover .boost-tooltip {
     width: 98%;
   }
 }
+
+.progress {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.progress-out {
+  width: 120px;
+  /* opacity: 0.25; */
+  height: 6px;
+  border: solid 1px var(--color-text);
+  border-radius: 4px;
+}
+
+.progress-in {
+  /* width: 0%; */
+  background-color: var(--color-text);
+  height: 4px;
+  border-radius: 4px;
+}
+
+@media screen and (max-width: 750px) {
+  .progress-out{
+    width: 85px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .progress-out{
+    width: 75px;
+  }
+}
