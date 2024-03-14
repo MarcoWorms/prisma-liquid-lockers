@@ -813,6 +813,7 @@ const App = () => {
   const [showRelativeTime, setShowRelativeTime] = useState(true)
   const [showEmissions, setShowEmissions] = useState(true)
   const [sortConfig, setSortConfig] = useState({ key: 'fee', direction: 'ascending' })
+  const [isDataStale, setIsDataStale] = useState(false);
 
   const [showFeesPaidModal, setShowFeesPaidModal] = useState(false);
   const [showEmissionsClaimedModal, setShowEmissionsClaimedModal] = useState(false);
@@ -888,6 +889,16 @@ const App = () => {
         const newData = await response.json()
         setData(newData)
         setSortConfig({ key: 'fee', direction: 'ascending' })
+
+        const now = Date.now();
+        const lastUpdated = newData.updated_at * 1000;
+        const fiveHours = 5 * 60 * 60 * 1000;
+        if (now - lastUpdated > fiveHours) {
+          setIsDataStale(true);
+        } else {
+          setIsDataStale(false);
+        }
+
       } catch (error) {
         console.error("Error fetching data: ", error)
       }
@@ -977,12 +988,18 @@ const App = () => {
 
   return (
     <div className="app-container">
+            {isDataStale && (
+        <div className="data-stale-banner">
+          <p>Current data is stale. We are aware and working to fix it.</p>
+        </div>
+      )}
       <div className='toggle-switch'>
         <label className="switch">
           <input type='checkbox' onClick={toggleTheme} defaultChecked={theme === 'light'}/>
           <span className='slider'></span>
         </label>
       </div>
+
       <div className="title-container">
         <h1 className="neon-text">
           Prisma Liquid Lockers

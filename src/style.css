@@ -68,6 +68,15 @@ body {
   font-weight: 900;
 }
 
+.data-stale-banner {
+  background-color: red;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+}
+
 @media only screen and (max-width: 720px) {
   .neon-text {
     font-size: 2em;
