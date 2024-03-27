@@ -889,7 +889,6 @@ const App = () => {
         const newData = await response.json()
         setData(newData)
         setSortConfig({ key: 'fee', direction: 'ascending' })
-          console.log(newData)
         const now = Date.now();
         const lastUpdated = newData.updated_at * 1000;
         const fiveHours = 5 * 60 * 60 * 1000;
