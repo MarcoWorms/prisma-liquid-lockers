@@ -889,7 +889,7 @@ const App = () => {
         const newData = await response.json()
         setData(newData)
         setSortConfig({ key: 'fee', direction: 'ascending' })
-
+          console.log(newData)
         const now = Date.now();
         const lastUpdated = newData.updated_at * 1000;
         const fiveHours = 5 * 60 * 60 * 1000;
@@ -988,9 +988,24 @@ const App = () => {
 
   return (
     <div className="app-container">
-            {isDataStale && (
+      {isDataStale ? (
         <div className="data-stale-banner">
           <p>Current data is stale. We are aware and working to fix it.</p>
+        </div>
+      ) : data && (
+        <div className="data-normal-banner">
+          <div>
+            <img width="32px" src={data.token_info['0xdA47862a83dac0c112BA89c6abC2159b95afd71C'].token_logo_url} />
+            <span>{data.token_info['0xdA47862a83dac0c112BA89c6abC2159b95afd71C'].symbol}: <b>${data.token_info['0xdA47862a83dac0c112BA89c6abC2159b95afd71C'].price.toFixed(3)}</b></span>
+          </div>
+          <div>
+            <img width="32px" src={data.token_info['0x4591DBfF62656E7859Afe5e45f6f47D3669fBB28'].token_logo_url} />
+            <span>{data.token_info['0x4591DBfF62656E7859Afe5e45f6f47D3669fBB28'].symbol}: <b>${data.token_info['0x4591DBfF62656E7859Afe5e45f6f47D3669fBB28'].price.toFixed(3)}</b></span>
+          </div>
+          <div>
+            <img width="32px" src={data.token_info['0x35282d87011f87508D457F08252Bc5bFa52E10A0'].token_logo_url} />
+            <span>{data.token_info['0x35282d87011f87508D457F08252Bc5bFa52E10A0'].symbol}: <b>${data.token_info['0x35282d87011f87508D457F08252Bc5bFa52E10A0'].price.toFixed(3)}</b></span>
+          </div>
         </div>
       )}
       <div className='toggle-switch'>
