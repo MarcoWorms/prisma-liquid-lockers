@@ -994,16 +994,16 @@ const App = () => {
       ) : data && (
         <div className="data-normal-banner">
           <div>
-            <img width="32px" src={data.token_info['0xdA47862a83dac0c112BA89c6abC2159b95afd71C'].token_logo_url} />
-            <span>{data.token_info['0xdA47862a83dac0c112BA89c6abC2159b95afd71C'].symbol}: <b>${data.token_info['0xdA47862a83dac0c112BA89c6abC2159b95afd71C'].price.toFixed(3)}</b></span>
+            <img width="36px" src={data.token_info['0xdA47862a83dac0c112BA89c6abC2159b95afd71C'].token_logo_url} />
+            <span>{data.token_info['0xdA47862a83dac0c112BA89c6abC2159b95afd71C'].symbol}: <b>${data.token_info['0xdA47862a83dac0c112BA89c6abC2159b95afd71C'].price.toFixed(4)}</b></span>
           </div>
           <div>
-            <img width="32px" src={data.token_info['0x4591DBfF62656E7859Afe5e45f6f47D3669fBB28'].token_logo_url} />
-            <span>{data.token_info['0x4591DBfF62656E7859Afe5e45f6f47D3669fBB28'].symbol}: <b>${data.token_info['0x4591DBfF62656E7859Afe5e45f6f47D3669fBB28'].price.toFixed(3)}</b></span>
+            <img width="36px" src={data.token_info['0x4591DBfF62656E7859Afe5e45f6f47D3669fBB28'].token_logo_url} />
+            <span>{data.token_info['0x4591DBfF62656E7859Afe5e45f6f47D3669fBB28'].symbol}: <b>${data.token_info['0x4591DBfF62656E7859Afe5e45f6f47D3669fBB28'].price.toFixed(4)}</b></span>
           </div>
           <div>
-            <img width="32px" src={data.token_info['0x35282d87011f87508D457F08252Bc5bFa52E10A0'].token_logo_url} />
-            <span>{data.token_info['0x35282d87011f87508D457F08252Bc5bFa52E10A0'].symbol}: <b>${data.token_info['0x35282d87011f87508D457F08252Bc5bFa52E10A0'].price.toFixed(3)}</b></span>
+            <img width="36px" src={data.token_info['0x35282d87011f87508D457F08252Bc5bFa52E10A0'].token_logo_url} />
+            <span>{data.token_info['0x35282d87011f87508D457F08252Bc5bFa52E10A0'].symbol}: <b>${data.token_info['0x35282d87011f87508D457F08252Bc5bFa52E10A0'].price.toFixed(4)}</b></span>
           </div>
         </div>
       )}
