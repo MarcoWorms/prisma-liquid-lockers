@@ -410,7 +410,22 @@ const ComparisonTable = ({ data, attributes }) => {
                   }}>
                     {yPRISMAValue}
                   </span>
+
                   {yPRISMAInfoContent && <InfoMark yearn>{yPRISMAInfoContent}</InfoMark>}
+
+                  {attribute === 'current_boost_multiplier' && (
+                    <div className="progress">
+                      <div className="progress-out">
+                        <div className="progress-in" style={{width: `${
+                          ((
+                            yPRISMALastWeekData.remaining_boost_data.max_boost_remaining
+                            /
+                            yPRISMALastWeekData.remaining_boost_data.max_boost_allocation
+                          ) * 100).toFixed(0)
+                        }%`}} />
+                      </div>
+                    </div>
+                  )}
                 </td>
                 <td>
                   <span style={{
@@ -420,6 +435,20 @@ const ComparisonTable = ({ data, attributes }) => {
                   </span>
 
                   {cvxPrismaInfoContent && <InfoMark convex>{cvxPrismaInfoContent}</InfoMark>}
+
+                  {attribute === 'current_boost_multiplier' && (
+                    <div className="progress">
+                      <div className="progress-out">
+                        <div className="progress-in" style={{width: `${
+                          ((
+                            cvxPrismaLastWeekData.remaining_boost_data.max_boost_remaining
+                            /
+                            cvxPrismaLastWeekData.remaining_boost_data.max_boost_allocation
+                          ) * 100).toFixed(0)
+                        }%`}} />
+                      </div>
+                    </div>
+                  )}
                 </td>
               </tr>
             )
