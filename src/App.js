@@ -50,6 +50,11 @@ const formatValue = (value, attribute, context = 'graph') => {
     return `${(value * 100).toFixed(2)}%`
   } else if (attribute === "current_boost_multiplier") {
     return `${value.toFixed(2)}x`
+  } else if (attribute === "peg") {
+    return parseFloat(value).toLocaleString(undefined, {
+      minimumFractionDigits: 3,
+      maximumFractionDigits: 3,
+    })
   } else if (attribute === "lock_gain") {
     return value.toLocaleString() 
   } else if (attribute === "boost_fees_collected") {
