@@ -309,8 +309,7 @@ const ComparisonTable = ({ data, attributes }) => {
                     : 100,
               }}
             >
-              {/*{(yPRISMAAPRData.current_staking_apr * 100).toFixed(2)}%*/}
-              --.--%
+              {(yPRISMAAPRData.current_staking_apr * 100).toFixed(2)}%
             </td>
             <td
               style={{
