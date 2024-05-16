@@ -309,7 +309,7 @@ const ComparisonTable = ({ data, attributes }) => {
                     : 100,
               }}
             >
-              {(yPRISMAAPRData.current_staking_apr * 100).toFixed(2)}%
+              {yPRISMAAPRData.current_staking_apr === 0 ? '--.--%' : (yPRISMAAPRData.current_staking_apr * 100).toFixed(2)}%
             </td>
             <td
               style={{
@@ -322,7 +322,7 @@ const ComparisonTable = ({ data, attributes }) => {
                     : 100,
               }}
             >
-              {(cvxPrismaAPRData.current_staking_apr * 100).toFixed(2)}%
+              {cvxPrismaAPRData.current_staking_apr === 0 ? '--.--%' : (cvxPrismaAPRData.current_staking_apr * 100).toFixed(2)}%
             </td>
           </tr>
           <tr>
