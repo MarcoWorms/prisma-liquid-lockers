@@ -255,6 +255,8 @@ const ComparisonTable = ({ data, attributes }) => {
   const cvxPrismaLastWeekData = cvxPrismaAPRData.weekly_data.slice(-1)[0] || {}
   const yPRISMALastWeekData = yPRISMAAPRData.weekly_data.slice(-1)[0] || {}
 
+  console.log(yPRISMAAPRData)
+
   return (
     <div className="table-container">
       <table className="claim">
